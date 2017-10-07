@@ -12,9 +12,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
+import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
+import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.MatrixHelper;
+import pl.android.puzzledepartment.util.geometry.Circle;
+import pl.android.puzzledepartment.util.geometry.Point;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
@@ -42,9 +46,11 @@ public class MainGameRenderer implements Renderer {
     private final float[] modelViewProjectionMatrix = new float[16];
 
     private Cube cube;
+    private Cylinder cylinder;
     private Camera camera;
 
     private ColorShaderProgram colorShaderProgram;
+    private SimpleColorShaderProgram simpleColorShaderProgram;
 
     public MainGameRenderer(Context context){
         this.context = context;
@@ -57,7 +63,9 @@ public class MainGameRenderer implements Renderer {
         glEnable(GL_DEPTH_TEST);
 
         colorShaderProgram = new ColorShaderProgram(context);
+        simpleColorShaderProgram = new SimpleColorShaderProgram(context);
         cube = new Cube(-0.5f, 0.5f, -2);
+        cylinder = new Cylinder(new Circle(new Point(0f,-1f,0f), 1f), new Circle(new Point(0f,5f,0f), 0.5f));
         camera = new Camera();
     }
 
@@ -84,6 +92,14 @@ public class MainGameRenderer implements Renderer {
         colorShaderProgram.setUniforms(modelViewProjectionMatrix);
         cube.bindData(colorShaderProgram);
         cube.draw();
+
+        simpleColorShaderProgram.useProgram();
+        setIdentityM(modelMatrix, 0);
+        translateM(modelMatrix, 0, cylinder.getX(), cylinder.getY(), cylinder.getZ());
+        multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
+        simpleColorShaderProgram.setUniforms(modelViewProjectionMatrix, 1f, 0, 0);
+        cylinder.bindData(simpleColorShaderProgram);
+        cylinder.draw();
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {
