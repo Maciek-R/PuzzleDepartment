@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
@@ -13,7 +14,9 @@ import javax.microedition.khronos.opengles.GL10;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
+import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
+import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.MatrixHelper;
@@ -29,6 +32,7 @@ import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
+import static android.opengl.Matrix.scaleM;
 import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
 
@@ -47,10 +51,12 @@ public class MainGameRenderer implements Renderer {
 
     private Cube cube;
     private Cylinder cylinder;
+    private HeightMap heightMap;
     private Camera camera;
 
     private ColorShaderProgram colorShaderProgram;
     private SimpleColorShaderProgram simpleColorShaderProgram;
+    private HeightmapShaderProgram heightmapShaderProgram;
 
     public MainGameRenderer(Context context){
         this.context = context;
@@ -64,8 +70,10 @@ public class MainGameRenderer implements Renderer {
 
         colorShaderProgram = new ColorShaderProgram(context);
         simpleColorShaderProgram = new SimpleColorShaderProgram(context);
+        heightmapShaderProgram = new HeightmapShaderProgram(context);
         cube = new Cube(-0.5f, 0.5f, -2);
         cylinder = new Cylinder(new Circle(new Point(0f,-1f,0f), 1f), new Circle(new Point(0f,0.5f,0f), 0.5f));
+        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap());
         camera = new Camera();
     }
 
@@ -84,6 +92,14 @@ public class MainGameRenderer implements Renderer {
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
         translateM(viewMatrix, 0, -camera.getPosX(), -camera.getPosY(), -camera.getPosZ());
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+
+        setIdentityM(modelMatrix, 0);
+        scaleM(modelMatrix, 0, 100f, 10f, 100f);
+        multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
+        heightmapShaderProgram.useProgram();
+        heightmapShaderProgram.setUniforms(modelViewProjectionMatrix);
+        heightMap.bindData(heightmapShaderProgram);
+        heightMap.draw();
 
         colorShaderProgram.useProgram();
         setIdentityM(modelMatrix, 0);
