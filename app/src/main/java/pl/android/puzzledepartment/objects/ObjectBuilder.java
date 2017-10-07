@@ -17,7 +17,9 @@ public class ObjectBuilder {
     static interface DrawCommand{
         void draw();
     }
-    private static final int FLOATS_PER_VERTEX = 3;
+    private static final int POSITION_COMPONENT_COUNT = 3;
+    private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;
+    private static final int FLOATS_PER_VERTEX = POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT;
     private final float[] vertexData;
     private int offset;
     private final List<DrawCommand> drawList = new ArrayList<DrawCommand>();
@@ -66,12 +68,20 @@ public class ObjectBuilder {
         vertexData[offset++] = circle.center.y;
         vertexData[offset++] = circle.center.z;
 
+        vertexData[offset++] = 0f;
+        vertexData[offset++] = 0.5f;
+        vertexData[offset++] = 0.5f;
+
         for(int i=0; i<=numPoints; ++i){
             float angleInRadians = ((float)i / (float)numPoints) * ((float) Math.PI * 2f);
 
             vertexData[offset++] = circle.center.x + circle.radius * (float)Math.cos(angleInRadians);
             vertexData[offset++] = circle.center.y;
             vertexData[offset++] = circle.center.z + circle.radius * (float)Math.sin(angleInRadians);
+
+            vertexData[offset++] = 0f;
+            vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
+            vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
         }
         drawList.add(() -> glDrawArrays(GL_TRIANGLE_FAN, startVertex, numVertices));
     }
@@ -92,9 +102,16 @@ public class ObjectBuilder {
             vertexData[offset++] = xBottomPosition;
             vertexData[offset++] = yStart;
             vertexData[offset++] = zBottomPosition;
+            vertexData[offset++] = 0f;
+            vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
+            vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
+
             vertexData[offset++] = xTopPosition;
             vertexData[offset++] = yEnd;
             vertexData[offset++] = zTopPosition;
+            vertexData[offset++] = 0f;
+            vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
+            vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
         }
         drawList.add(new DrawCommand() {
             @Override

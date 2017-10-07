@@ -65,7 +65,7 @@ public class MainGameRenderer implements Renderer {
         colorShaderProgram = new ColorShaderProgram(context);
         simpleColorShaderProgram = new SimpleColorShaderProgram(context);
         cube = new Cube(-0.5f, 0.5f, -2);
-        cylinder = new Cylinder(new Circle(new Point(0f,-1f,0f), 1f), new Circle(new Point(0f,5f,0f), 0.5f));
+        cylinder = new Cylinder(new Circle(new Point(0f,-1f,0f), 1f), new Circle(new Point(0f,0.5f,0f), 0.5f));
         camera = new Camera();
     }
 
@@ -93,12 +93,13 @@ public class MainGameRenderer implements Renderer {
         cube.bindData(colorShaderProgram);
         cube.draw();
 
-        simpleColorShaderProgram.useProgram();
+        colorShaderProgram.useProgram();
         setIdentityM(modelMatrix, 0);
         translateM(modelMatrix, 0, cylinder.getX(), cylinder.getY(), cylinder.getZ());
         multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
-        simpleColorShaderProgram.setUniforms(modelViewProjectionMatrix, 1f, 0, 0);
-        cylinder.bindData(simpleColorShaderProgram);
+        colorShaderProgram.setUniforms(modelViewProjectionMatrix);
+        //simpleColorShaderProgram.setUniforms(modelViewProjectionMatrix, 1f, 0, 0);
+        cylinder.bindData(colorShaderProgram);
         cylinder.draw();
     }
 

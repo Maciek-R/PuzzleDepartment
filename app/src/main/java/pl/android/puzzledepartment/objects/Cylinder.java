@@ -6,6 +6,7 @@ import java.util.List;
 
 import pl.android.puzzledepartment.data.VertexArray;
 
+import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -22,7 +23,8 @@ public class Cylinder {
     private static final int numberOfVertices = 7;
 
     private static final int POSITION_COMPONENT_COUNT = 3;
-    private static final int STRIDE = POSITION_COMPONENT_COUNT * BYTES_PER_FLOAT;
+    private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;
+    private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT) * BYTES_PER_FLOAT;
 
     private final VertexArray vertexArray;
     private Circle bottomCircle;
@@ -40,6 +42,11 @@ public class Cylinder {
 
     public void bindData(SimpleColorShaderProgram simpleColorShaderProgram) {
         vertexArray.setVertexAttribPointer(0, simpleColorShaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
+    }
+
+    public void bindData(ColorShaderProgram colorShaderProgram) {
+        vertexArray.setVertexAttribPointer(0, colorShaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
+        vertexArray.setVertexAttribPointer(POSITION_COMPONENT_COUNT, colorShaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
     }
 
     public void draw() {
