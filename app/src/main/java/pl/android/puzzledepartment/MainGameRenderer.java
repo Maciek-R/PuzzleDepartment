@@ -5,9 +5,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -18,14 +15,11 @@ import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
-import pl.android.puzzledepartment.render_engine.EntityRenderer;
-import pl.android.puzzledepartment.render_engine.HeightmapRenderer;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.util.Logger;
-import pl.android.puzzledepartment.util.MatrixHelper;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
-import pl.android.puzzledepartment.util.geometry.Vector;
+import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
@@ -34,10 +28,8 @@ import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
-import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.scaleM;
-import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
 
 /**
@@ -79,7 +71,7 @@ public class MainGameRenderer implements Renderer {
 
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
         cylinder = new Cylinder(new Circle(new Point(0f,0.5f,0f), 1f), new Circle(new Point(0f,2f,0f), 0.5f));
-        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector(50f, 10f, 50f));
+        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         camera = new Camera();
         masterRenderer = new MasterRenderer(context);
     }

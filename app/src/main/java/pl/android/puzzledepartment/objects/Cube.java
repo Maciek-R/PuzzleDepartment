@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.objects;
 import android.opengl.GLES10;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
@@ -65,14 +66,13 @@ public class Cube extends Entity{
         vertexArray = new VertexArray(VERTEX_DATA);
         indexArray = ByteBuffer.allocateDirect(6*6).put(INDEX_DATA);
         indexArray.position(0);
+
+        drawList = new ArrayList<ObjectBuilder.DrawCommand>();
+        drawList.add(() -> glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indexArray));
     }
 
     public void bindData(ShaderProgram shaderProgram) {
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         vertexArray.setVertexAttribPointer(POSITION_COMPONENT_COUNT, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
-    }
-
-    public void draw() {
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indexArray);
     }
 }

@@ -7,8 +7,8 @@ import pl.android.puzzledepartment.data.IndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Maths;
-import pl.android.puzzledepartment.util.geometry.Vector;
-import pl.android.puzzledepartment.util.geometry.Vector2;
+import pl.android.puzzledepartment.util.geometry.Vector3f;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_TRIANGLES;
@@ -29,9 +29,9 @@ public class HeightMap {
     private final VertexBuffer vertexBuffer;
     private final IndexBuffer indexBuffer;
     private float[][] heights;
-    private final Vector scale;
+    private final Vector3f scale;
 
-    public HeightMap(Bitmap bitmap, Vector scale) {
+    public HeightMap(Bitmap bitmap, Vector3f scale) {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         this.scale = scale;
@@ -121,18 +121,18 @@ public class HeightMap {
         float height;
         if (xCoord <= (1-zCoord)) {
             height = Maths
-                    .barryCentric(new Vector(0, heights[gridZ][gridX], 0), new Vector(1,
-                            heights[gridZ][gridX + 1], 0), new Vector(0,
-                            heights[gridZ + 1][gridX], 1), new Vector2(xCoord, zCoord));
+                    .barryCentric(new Vector3f(0, heights[gridZ][gridX], 0), new Vector3f(1,
+                            heights[gridZ][gridX + 1], 0), new Vector3f(0,
+                            heights[gridZ + 1][gridX], 1), new Vector2f(xCoord, zCoord));
         } else {
             height = Maths
-                    .barryCentric(new Vector(1, heights[gridZ][gridX + 1], 0), new Vector(1,
-                            heights[gridZ][gridX], 1), new Vector(0,
-                            heights[gridZ + 1][gridX], 1), new Vector2(xCoord, zCoord));
+                    .barryCentric(new Vector3f(1, heights[gridZ][gridX + 1], 0), new Vector3f(1,
+                            heights[gridZ][gridX], 1), new Vector3f(0,
+                            heights[gridZ + 1][gridX], 1), new Vector2f(xCoord, zCoord));
         }
         return height*scale.y;
     }
-    public Vector getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 }

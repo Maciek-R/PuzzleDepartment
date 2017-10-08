@@ -56,7 +56,6 @@ public class ObjectBuilder {
         builder.appendCircle(topCircle, numPoints);
         builder.appendWallOfCylinder(bottomCircle, topCircle, numPoints);
 
-
         return builder.build();
     }
 
@@ -113,11 +112,6 @@ public class ObjectBuilder {
             vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
             vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
         }
-        drawList.add(new DrawCommand() {
-            @Override
-            public void draw() {
-                glDrawArrays(GL_TRIANGLE_STRIP, startVertex, numVertices);
-            }
-        });
+        drawList.add(() -> glDrawArrays(GL_TRIANGLE_STRIP, startVertex, numVertices));
     }
 }

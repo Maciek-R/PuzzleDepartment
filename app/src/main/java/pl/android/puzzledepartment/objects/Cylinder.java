@@ -20,7 +20,6 @@ import static pl.android.puzzledepartment.Constants.BYTES_PER_FLOAT;
  */
 
 public class Cylinder extends Entity{
-    private final List<ObjectBuilder.DrawCommand> drawList;
     private static final int numberOfVertices = 7;
 
     private static final int POSITION_COMPONENT_COUNT = 3;
@@ -49,20 +48,5 @@ public class Cylinder extends Entity{
     public void bindData(ShaderProgram shaderProgram) {
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         vertexArray.setVertexAttribPointer(POSITION_COMPONENT_COUNT, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
-    }
-
-    public void draw() {
-        for(ObjectBuilder.DrawCommand d:drawList)
-            d.draw();
-    }
-
-    public float getX(){
-        return bottomCircle.center.x;
-    }
-    public float getY(){
-        return bottomCircle.center.y;
-    }
-    public float getZ(){
-        return bottomCircle.center.z;
     }
 }

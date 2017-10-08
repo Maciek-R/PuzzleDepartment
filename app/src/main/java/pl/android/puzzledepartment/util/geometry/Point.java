@@ -13,7 +13,7 @@ public class Point {
         this.z = z;
     }
 
-    public Point translate(Vector vector){
+    public Point translate(Vector3f vector){
         return new Point(x + vector.x, y + vector.y, z + vector.z);
     }
 }
