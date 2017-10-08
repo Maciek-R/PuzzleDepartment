@@ -25,14 +25,16 @@ public class ColorShaderProgram extends ShaderProgram{
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         aColorLocation = glGetAttribLocation(program, A_COLOR);
     }
-
+    @Override
     public void setUniforms(float[] matrix){
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
     }
 
+    @Override
     public int getPositionAttributeLocation() {
         return aPositionLocation;
     }
+    @Override
     public int getColorAttributeLocation() {
         return aColorLocation;
     }

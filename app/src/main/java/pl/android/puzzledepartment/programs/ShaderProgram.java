@@ -5,6 +5,7 @@ import android.content.Context;
 import pl.android.puzzledepartment.util.ShaderHelper;
 import pl.android.puzzledepartment.util.TextResourceReader;
 
+import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 
 /**
@@ -30,5 +31,13 @@ public class ShaderProgram {
     }
     public void useProgram() {
         glUseProgram(program);
+    }
+
+    public void setUniforms(float[] matrix){}
+    public int getPositionAttributeLocation() {
+       return -1;
+    }
+    public int getColorAttributeLocation() {
+       return -1;
     }
 }
