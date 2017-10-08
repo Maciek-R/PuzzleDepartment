@@ -6,6 +6,9 @@ import android.graphics.Color;
 import pl.android.puzzledepartment.data.IndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
+import pl.android.puzzledepartment.util.geometry.Maths;
+import pl.android.puzzledepartment.util.geometry.Vector;
+import pl.android.puzzledepartment.util.geometry.Vector2;
 
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_TRIANGLES;
@@ -25,14 +28,18 @@ public class HeightMap {
     private final int numElements;
     private final VertexBuffer vertexBuffer;
     private final IndexBuffer indexBuffer;
+    private float[][] heights;
+    private final Vector scale;
 
-    public HeightMap(Bitmap bitmap) {
+    public HeightMap(Bitmap bitmap, Vector scale) {
         width = bitmap.getWidth();
         height = bitmap.getHeight();
+        this.scale = scale;
 
         if (width * height > 65536)
             throw new RuntimeException("Heightmap is too large for indexBuffer.");
 
+        heights = new float[height][width];
         numElements = calculateNumElements();
         vertexBuffer = new VertexBuffer(loadBitmapData(bitmap));
         indexBuffer = new IndexBuffer(createIndexData());
@@ -91,8 +98,41 @@ public class HeightMap {
                 heightMapVertices[offset++] = xPosition;
                 heightMapVertices[offset++] = yPosition;
                 heightMapVertices[offset++] = zPosition;
+                heights[row][col] = yPosition;
             }
         }
         return heightMapVertices;
+    }
+
+    public float getHeight(float worldX, float worldZ){
+        float gridXSquareSize = scale.x / ((float)width-1);
+        float gridZSquareSize = scale.z / ((float)height-1);
+
+        int gridX = (int) Math.floor(worldX / gridXSquareSize) + ((width-1) / 2);
+        int gridZ = (int) Math.floor(worldZ / gridZSquareSize) + ((height-1) / 2);
+
+        if(gridX >= width-1 || gridZ >= height-1 || gridX < 0 || gridZ < 0){
+            return 0;
+        }
+
+        float xCoord = (worldX % gridXSquareSize) / gridXSquareSize;
+        float zCoord = (worldZ % gridZSquareSize) / gridZSquareSize;
+
+        float height;
+        if (xCoord <= (1-zCoord)) {
+            height = Maths
+                    .barryCentric(new Vector(0, heights[gridZ][gridX], 0), new Vector(1,
+                            heights[gridZ][gridX + 1], 0), new Vector(0,
+                            heights[gridZ + 1][gridX], 1), new Vector2(xCoord, zCoord));
+        } else {
+            height = Maths
+                    .barryCentric(new Vector(1, heights[gridZ][gridX + 1], 0), new Vector(1,
+                            heights[gridZ][gridX], 1), new Vector(0,
+                            heights[gridZ + 1][gridX], 1), new Vector2(xCoord, zCoord));
+        }
+        return height*scale.y;
+    }
+    public Vector getScale() {
+        return scale;
     }
 }

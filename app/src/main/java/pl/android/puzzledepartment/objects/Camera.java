@@ -55,4 +55,9 @@ public class Camera {
 
     public float getRotationX() {return rotationX;}
     public float getRotationY() {return rotationY;}
+
+    public void setY(HeightMap heightMap) {
+        final float height = heightMap.getHeight(posX, posZ);
+        this.posY = height + 1.5f;
+    }
 }

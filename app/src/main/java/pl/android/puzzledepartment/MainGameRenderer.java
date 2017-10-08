@@ -22,6 +22,7 @@ import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.MatrixHelper;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
@@ -72,8 +73,8 @@ public class MainGameRenderer implements Renderer {
         simpleColorShaderProgram = new SimpleColorShaderProgram(context);
         heightmapShaderProgram = new HeightmapShaderProgram(context);
         cube = new Cube(-0.5f, 0.5f, -2);
-        cylinder = new Cylinder(new Circle(new Point(0f,-1f,0f), 1f), new Circle(new Point(0f,0.5f,0f), 0.5f));
-        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap());
+        cylinder = new Cylinder(new Circle(new Point(0f,0.5f,0f), 1f), new Circle(new Point(0f,2f,0f), 0.5f));
+        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector(50f, 10f, 50f));
         camera = new Camera();
     }
 
@@ -94,7 +95,7 @@ public class MainGameRenderer implements Renderer {
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
         setIdentityM(modelMatrix, 0);
-        scaleM(modelMatrix, 0, 100f, 10f, 100f);
+        scaleM(modelMatrix, 0, heightMap.getScale().x, heightMap.getScale().y, heightMap.getScale().z);
         multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
         heightmapShaderProgram.useProgram();
         heightmapShaderProgram.setUniforms(modelViewProjectionMatrix);
@@ -121,6 +122,7 @@ public class MainGameRenderer implements Renderer {
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {
         camera.move(deltaMoveY/32f, deltaMoveX/32f);
+        camera.setY(heightMap);
     }
 
     public void handleRotationCamera(float deltaRotateX, float deltaRotateY) {
