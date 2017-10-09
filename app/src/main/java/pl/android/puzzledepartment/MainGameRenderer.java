@@ -90,6 +90,9 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(heightMap);
         masterRenderer.render(cube);
         masterRenderer.render(cylinder);
+
+        cube.rotate(0.5f);
+        cylinder.rotate(1f);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

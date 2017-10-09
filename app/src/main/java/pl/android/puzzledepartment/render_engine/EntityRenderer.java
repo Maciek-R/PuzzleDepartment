@@ -9,6 +9,7 @@ import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
+import static android.opengl.Matrix.scaleM;
 import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
 
@@ -28,6 +29,8 @@ public class EntityRenderer {
     public void render(Entity entity, final float[] viewProjectionMatrix) {
         setIdentityM(modelMatrix, 0);
         translateM(modelMatrix, 0, entity.getPos().x, entity.getPos().y, entity.getPos().z);
+        rotateM(modelMatrix, 0, entity.getRotation(), 0f, 1f, 0f);
+        scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
         multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelViewProjectionMatrix);
