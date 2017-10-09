@@ -1,11 +1,7 @@
 package pl.android.puzzledepartment.render_engine;
 
-import java.util.List;
-
-import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.programs.ShaderProgram;
-import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
@@ -14,7 +10,7 @@ import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
 
 /**
- * Created by Maciek on 2017-10-08.
+ * Created by Maciek Ruszczyk on 2017-10-08.
  */
 
 public class EntityRenderer {

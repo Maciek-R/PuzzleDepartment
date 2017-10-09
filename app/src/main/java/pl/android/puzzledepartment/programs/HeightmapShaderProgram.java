@@ -9,7 +9,7 @@ import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
- * Created by Maciek on 2017-10-07.
+ * Created by Maciek Ruszczyk on 2017-10-07.
  */
 
 public class HeightmapShaderProgram extends ShaderProgram{

@@ -7,7 +7,7 @@ import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
- * Created by Maciek on 2017-10-08.
+ * Created by Maciek Ruszczyk on 2017-10-08.
  */
 
 public abstract class Entity {

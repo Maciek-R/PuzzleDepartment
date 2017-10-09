@@ -17,7 +17,7 @@ import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glDrawElements;
 
 /**
- * Created by Maciek on 2017-10-07.
+ * Created by Maciek Ruszczyk on 2017-10-07.
  */
 
 public class HeightMap {

@@ -7,9 +7,9 @@ import java.nio.FloatBuffer;
 import static android.opengl.GLES20.GL_FLOAT;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glVertexAttribPointer;
-import static pl.android.puzzledepartment.Constants.BYTES_PER_FLOAT;
+import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
 /**
- * Created by Maciek on 2017-10-06.
+ * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
 public class VertexArray {

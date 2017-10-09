@@ -10,7 +10,7 @@ import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
- * Created by Maciek on 2017-10-06.
+ * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
 public class SimpleColorShaderProgram extends ShaderProgram {

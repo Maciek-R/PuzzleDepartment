@@ -1,24 +1,18 @@
 package pl.android.puzzledepartment.objects;
 
-import android.opengl.GLES10;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import pl.android.puzzledepartment.data.VertexArray;
-import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 import static android.opengl.GLES20.GL_TRIANGLES;
 import static android.opengl.GLES20.GL_UNSIGNED_BYTE;
 import static android.opengl.GLES20.glDrawElements;
-import static android.opengl.Matrix.multiplyMM;
-import static android.opengl.Matrix.setIdentityM;
-import static android.opengl.Matrix.translateM;
-import static pl.android.puzzledepartment.Constants.BYTES_PER_FLOAT;
+import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
 /**
- * Created by Maciek on 2017-10-06.
+ * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
 public class Cube extends Entity{

@@ -1,7 +1,7 @@
 package pl.android.puzzledepartment.util.geometry;
 
 /**
- * Created by Maciek on 2017-10-07.
+ * Created by Maciek Ruszczyk on 2017-10-07.
  */
 
 public class Maths {

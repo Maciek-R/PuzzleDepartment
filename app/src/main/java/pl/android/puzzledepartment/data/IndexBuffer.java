@@ -2,23 +2,18 @@ package pl.android.puzzledepartment.data;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import static android.opengl.GLES20.GL_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_SHORT;
 import static android.opengl.GLES20.GL_STATIC_DRAW;
 import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glBufferData;
-import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGenBuffers;
 import static android.opengl.GLES20.glVertexAttribPointer;
-import static pl.android.puzzledepartment.Constants.BYTES_PER_SHORT;
+import static pl.android.puzzledepartment.util.Constants.BYTES_PER_SHORT;
 
 /**
- * Created by Maciek on 2017-10-07.
+ * Created by Maciek Ruszczyk on 2017-10-07.
  */
 
 public class IndexBuffer {
