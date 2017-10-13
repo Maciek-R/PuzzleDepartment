@@ -12,6 +12,8 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.HeightMap;
+import pl.android.puzzledepartment.objects.Light;
+import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.geometry.Circle;
@@ -35,6 +37,8 @@ public class MainGameRenderer implements Renderer {
     private final Context context;
 
     private Cube cube;
+    private ShaderCube shaderCube;
+    private Light light;
     private Cylinder cylinder;
     private HeightMap heightMap;
     private Camera camera;
@@ -52,10 +56,12 @@ public class MainGameRenderer implements Renderer {
         glEnable(GL_DEPTH_TEST);
 
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
+        shaderCube = new ShaderCube(new Point(-0.5f, 2.5f, -2));
+        light = new Light(new Point(-2.5f, 1.0f, -2), new Vector3f(0f, 1f, 1f));
         cylinder = new Cylinder(new Circle(new Point(0f,0.5f,0f), 1f), new Circle(new Point(0f,2f,0f), 0.5f));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         camera = new Camera();
-        masterRenderer = new MasterRenderer(context);
+        masterRenderer = new MasterRenderer(context, light);
     }
 
     @Override
@@ -70,11 +76,14 @@ public class MainGameRenderer implements Renderer {
 
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
+        masterRenderer.renderLight(light);
         masterRenderer.render(cube);
+        masterRenderer.renderNormalCube(shaderCube);
         masterRenderer.render(cylinder);
 
         cube.rotate(0.5f);
-        cylinder.rotate(1f);
+        shaderCube.rotate(-1.0f);
+       // cylinder.rotate(1f);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

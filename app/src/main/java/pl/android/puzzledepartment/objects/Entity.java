@@ -1,5 +1,6 @@
 package pl.android.puzzledepartment.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.android.puzzledepartment.programs.ShaderProgram;
@@ -29,6 +30,7 @@ public abstract class Entity {
         this.pos = pos;
         this.verAngle = angle;
         this.scale = scale;
+        drawList = new ArrayList<>();
     }
     public void rotate(float angle) {
         this.verAngle+=angle;

@@ -22,7 +22,7 @@ public class ObjectBuilder {
     private static final int FLOATS_PER_VERTEX = POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT;
     private final float[] vertexData;
     private int offset;
-    private final List<DrawCommand> drawList = new ArrayList<DrawCommand>();
+    private final List<DrawCommand> drawList;
 
     static class GeneratedVertexData{
         final float[] vertexData;
@@ -36,6 +36,7 @@ public class ObjectBuilder {
 
     private ObjectBuilder(int numOfVertices) {
         vertexData = new float[numOfVertices * FLOATS_PER_VERTEX];
+        drawList = new ArrayList<>();
     }
     private static int sizeOfCircleInVertices(int numPoints){
         return numPoints + 2;

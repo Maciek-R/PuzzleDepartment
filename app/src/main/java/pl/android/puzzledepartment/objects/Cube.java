@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 import static android.opengl.GLES20.GL_TRIANGLES;
 import static android.opengl.GLES20.GL_UNSIGNED_BYTE;

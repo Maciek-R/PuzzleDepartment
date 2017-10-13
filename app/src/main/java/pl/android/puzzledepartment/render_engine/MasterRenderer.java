@@ -7,8 +7,12 @@ import java.util.List;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
+import pl.android.puzzledepartment.objects.Light;
+import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
+import pl.android.puzzledepartment.programs.NormalShaderProgram;
+import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
@@ -22,19 +26,34 @@ import static android.opengl.Matrix.translateM;
 
 public class MasterRenderer {
     private final EntityRenderer entityRenderer;
+    private final EntityRenderer normalEntityRenderer;
+    private final EntityRenderer lightRenderer;
     private final HeightmapRenderer heightmapRenderer;
 
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
     private final float[] viewProjectionMatrix = new float[16];
 
-    public MasterRenderer(Context context) {
+    private Light light;
+
+    public MasterRenderer(Context context, Light light) {
         entityRenderer = new EntityRenderer(new ColorShaderProgram(context));
+        normalEntityRenderer = new EntityRenderer(new NormalShaderProgram(context));
+        lightRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
+        this.light = light;
     }
     public void render(List<Entity> entities) {
         for(Entity entity:entities)
             render(entity);
+    }
+
+    public void renderNormalCube(ShaderCube shaderCube) {
+        normalEntityRenderer.renderWithNormals(shaderCube, viewMatrix, projectionMatrix, light);
+    }
+
+    public void renderLight(Light light) {
+        lightRenderer.render(light, viewProjectionMatrix, light.getLightColor().x, light.getLightColor().y, light.getLightColor().z);
     }
 
     public void render(Entity entity) {
