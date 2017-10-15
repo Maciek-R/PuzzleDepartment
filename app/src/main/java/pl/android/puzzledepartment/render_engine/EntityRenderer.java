@@ -70,7 +70,7 @@ public class EntityRenderer {
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
         shaderProgram.useProgram();
-        shaderProgram.setUniforms(invertedModelMatrix, modelViewProjectionMatrix, light);
+        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light);
         bindDataAndDraw(shaderCube, shaderProgram);
     }
 
@@ -81,7 +81,7 @@ public class EntityRenderer {
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
         shaderProgram.useProgram();
-        shaderProgram.setUniforms(invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b);
+        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b);
         bindDataAndDraw(entity, shaderProgram);
     }
 }

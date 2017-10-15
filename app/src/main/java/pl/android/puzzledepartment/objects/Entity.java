@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
+import android.os.SystemClock;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,15 @@ public abstract class Entity {
         this.verAngle = angle;
         this.scale = scale;
         drawList = new ArrayList<>();
+    }
+    public void move() {
+
+        long time = SystemClock.currentThreadTimeMillis();
+
+        float x = 3*(float) Math.sin((float)time / 1000);
+        float z = 3*(float) Math.cos((float)time / 1000) - 3;
+
+        this.pos = new Point(x, pos.y, z);
     }
     public void rotate(float angle) {
         this.verAngle+=angle;
