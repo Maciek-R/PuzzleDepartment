@@ -28,8 +28,8 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
 public class Dragon extends Entity{
     private static final int POSITION_COMPONENT_COUNT = 3;
     //private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;
-    //private static final int NORMAL_COMPONENT_COUNT = 3;
-    private static final int STRIDE = (POSITION_COMPONENT_COUNT) * BYTES_PER_FLOAT;
+    private static final int NORMAL_COMPONENT_COUNT = 3;
+    private static final int STRIDE = (POSITION_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
 
     private final VertexArray vertexArray;
     private final IntBuffer indexArray;
@@ -40,7 +40,7 @@ public class Dragon extends Entity{
 
         EntityModel entityModel = OBJLoader.loadObjModel(context, R.raw.dragon);
 
-        vertexArray = new VertexArray(entityModel.verticesArray);
+        vertexArray = entityModel.getNormalVertexArray();
         indexArray = IntBuffer.allocate(entityModel.indicesArray.length).put(entityModel.indicesArray);
         indexArray.position(0);
         indicesLength = entityModel.indicesArray.length;
@@ -58,5 +58,7 @@ public class Dragon extends Entity{
     public void bindData(ShaderProgram shaderProgram) {
         int offset = 0;
         vertexArray.setVertexAttribPointer(offset, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
+        offset += POSITION_COMPONENT_COUNT;
+        vertexArray.setVertexAttribPointer(offset, shaderProgram.getNormalAttributeLocation(), NORMAL_COMPONENT_COUNT, STRIDE);
     }
 }

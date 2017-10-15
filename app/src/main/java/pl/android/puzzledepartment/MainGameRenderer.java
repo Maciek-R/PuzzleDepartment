@@ -11,6 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
+import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
@@ -38,8 +39,9 @@ public class MainGameRenderer implements Renderer {
 
     private Cube cube;
     private ShaderCube shaderCube;
-    private Light light;
     private Cylinder cylinder;
+    private Dragon dragon;
+    private Light light;
     private HeightMap heightMap;
     private Camera camera;
 
@@ -57,8 +59,9 @@ public class MainGameRenderer implements Renderer {
 
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
         shaderCube = new ShaderCube(new Point(-0.5f, 2.5f, -2));
-        light = new Light(new Point(-2.5f, 1.0f, -2), new Vector3f(0f, 1f, 1f));
         cylinder = new Cylinder(new Circle(new Point(0f,0.5f,0f), 1f), new Circle(new Point(0f,2f,0f), 0.5f));
+        light = new Light(new Point(-2.5f, 1.0f, -2), new Vector3f(0f, 1f, 1f));
+        dragon = new Dragon(new Point(-2.5f, 3.0f, -2), context);
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         camera = new Camera();
         masterRenderer = new MasterRenderer(context, light);
@@ -78,12 +81,14 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(heightMap);
         masterRenderer.renderLight(light);
         masterRenderer.render(cube);
-        masterRenderer.renderNormalCube(shaderCube);
+        masterRenderer.renderNormalColoured(shaderCube);
         masterRenderer.render(cylinder);
+        masterRenderer.renderNormalUnColoured(dragon);
 
         cube.rotate(0.5f);
         shaderCube.rotate(-1.0f);
-       // cylinder.rotate(1f);
+        dragon.rotate(2.0f);
+        cylinder.rotate(1f);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

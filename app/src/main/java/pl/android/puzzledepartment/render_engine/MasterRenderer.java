@@ -11,7 +11,8 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
-import pl.android.puzzledepartment.programs.NormalShaderProgram;
+import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
+import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
@@ -26,8 +27,9 @@ import static android.opengl.Matrix.translateM;
 
 public class MasterRenderer {
     private final EntityRenderer entityRenderer;
-    private final EntityRenderer normalEntityRenderer;
-    private final EntityRenderer lightRenderer;
+    private final EntityRenderer normalColouredEntityRenderer;
+    private final EntityRenderer normalUnColouredEntityRenderer;
+    private final EntityRenderer simpleColorRenderer;
     private final HeightmapRenderer heightmapRenderer;
 
     private final float[] viewMatrix = new float[16];
@@ -38,8 +40,9 @@ public class MasterRenderer {
 
     public MasterRenderer(Context context, Light light) {
         entityRenderer = new EntityRenderer(new ColorShaderProgram(context));
-        normalEntityRenderer = new EntityRenderer(new NormalShaderProgram(context));
-        lightRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
+        normalColouredEntityRenderer = new EntityRenderer(new NormalColouredShaderProgram(context));
+        normalUnColouredEntityRenderer = new EntityRenderer(new NormalUncolouredShaderProgram(context));
+        simpleColorRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
         this.light = light;
     }
@@ -48,12 +51,20 @@ public class MasterRenderer {
             render(entity);
     }
 
-    public void renderNormalCube(ShaderCube shaderCube) {
-        normalEntityRenderer.renderWithNormals(shaderCube, viewMatrix, projectionMatrix, light);
+    public void renderNormalColoured(ShaderCube shaderCube) {
+        normalColouredEntityRenderer.renderNormalColoured(shaderCube, viewMatrix, projectionMatrix, light);
+    }
+
+    public void renderNormalUnColoured(Entity entity) {
+        normalUnColouredEntityRenderer.renderNormalUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f);
+    }
+
+    public void renderSimpleColor(Entity entity) {
+        simpleColorRenderer.render(entity, viewProjectionMatrix, 1.0f, 0.0f, 0.0f);
     }
 
     public void renderLight(Light light) {
-        lightRenderer.render(light, viewProjectionMatrix, light.getLightColor().x, light.getLightColor().y, light.getLightColor().z);
+        simpleColorRenderer.render(light, viewProjectionMatrix, light.getLightColor().x, light.getLightColor().y, light.getLightColor().z);
     }
 
     public void render(Entity entity) {

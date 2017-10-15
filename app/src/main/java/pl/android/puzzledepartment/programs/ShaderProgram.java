@@ -40,6 +40,7 @@ public class ShaderProgram {
     public void setUniforms(float[] matrix){}
     public void setUniforms(float[] matrix, float r, float g, float b){}
     public void setUniforms(float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light) {};
+    public void setUniforms(float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue) {}
     public int getPositionAttributeLocation() {
        return -1;
     }
