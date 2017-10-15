@@ -45,4 +45,10 @@ public class Cylinder extends Entity{
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         vertexArray.setVertexAttribPointer(POSITION_COMPONENT_COUNT, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
     }
+
+    @Override
+    public void draw() {
+        for(ObjectBuilder.DrawCommand d:drawList)
+            d.draw();
+    }
 }

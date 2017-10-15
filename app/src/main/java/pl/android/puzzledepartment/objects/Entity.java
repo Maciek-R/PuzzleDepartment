@@ -36,10 +36,8 @@ public abstract class Entity {
         this.verAngle+=angle;
     }
     abstract public void bindData(ShaderProgram shaderProgram);
-    public void draw() {
-        for(ObjectBuilder.DrawCommand d:drawList)
-            d.draw();
-    }
+    abstract public void draw();
+
     public Point getPos() {
         return pos;
     }
