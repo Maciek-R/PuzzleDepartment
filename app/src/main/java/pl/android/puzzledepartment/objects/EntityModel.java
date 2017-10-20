@@ -2,7 +2,10 @@ package pl.android.puzzledepartment.objects;
 
 import java.nio.IntBuffer;
 
+import pl.android.puzzledepartment.data.IndexBuffer;
+import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexArray;
+import pl.android.puzzledepartment.data.VertexBuffer;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-15.
@@ -14,8 +17,10 @@ public class EntityModel {
     final float[] texturesArray;
     final int[] indicesArray;
 
-    private VertexArray vertexArray = null;
-    private IntBuffer indexArray = null;
+    private VertexBuffer vertexBuffer = null;
+    private IntegerIndexBuffer intIndexBuffer = null;
+   // private VertexArray vertexArray = null;
+  //  private IntBuffer indexArray = null;
 
     public EntityModel(float[] verticesArray, float[] texturesArray, float[] normalsArray, int[] indicesArray) {
         this.verticesArray = verticesArray;
@@ -24,12 +29,49 @@ public class EntityModel {
         this.indicesArray = indicesArray;
     }
 
+   // indexBuffer = new IndexBuffer(createIndexData());
     /**
      * Order: x, y, z, nx, ny, nz
      *
      * @return VertexArray
      */
-    public VertexArray getNormalVertexArray() {
+    public VertexBuffer getNormalVertexBuffer() {
+        if(vertexBuffer != null)
+            return vertexBuffer;
+
+        float[] vertexData = new float[verticesArray.length + normalsArray.length];
+
+        int verticesOffset = 0;
+        int normalsOffset = 0;
+        int offset = 0;
+        while (verticesOffset < verticesArray.length) {
+
+            vertexData[offset++] = verticesArray[verticesOffset++];
+            vertexData[offset++] = verticesArray[verticesOffset++];
+            vertexData[offset++] = verticesArray[verticesOffset++];
+
+            vertexData[offset++] = normalsArray[normalsOffset++];
+            vertexData[offset++] = normalsArray[normalsOffset++];
+            vertexData[offset++] = normalsArray[normalsOffset++];
+        }
+        vertexBuffer = new VertexBuffer(vertexData);
+        return vertexBuffer;
+    }
+
+    public IntegerIndexBuffer getIntIndexBuffer() {
+        if(intIndexBuffer!=null)
+            return intIndexBuffer;
+
+        intIndexBuffer = new IntegerIndexBuffer(indicesArray);
+        return intIndexBuffer;
+    }
+
+    /**
+     * Order: x, y, z, nx, ny, nz
+     *
+     * @return VertexArray
+     */
+    /*public VertexArray getNormalVertexArray() {
         if(vertexArray != null)
             return vertexArray;
 
@@ -52,6 +94,8 @@ public class EntityModel {
         return vertexArray;
     }
 
+
+
     public IntBuffer getIndexArray() {
         if(indexArray!=null)
             return indexArray;
@@ -61,5 +105,5 @@ public class EntityModel {
 
         return indexArray;
     }
-
+*/
 }

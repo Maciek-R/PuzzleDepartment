@@ -41,9 +41,9 @@ public class VertexBuffer {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    public void setVertexAttribPointer(int dataOffset, int attributeLocation, int componentCount, int stride) {
+    public void setVertexAttribPointer(int dataOffsetInBytes, int attributeLocation, int componentCount, int stride) {
         glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-        glVertexAttribPointer(attributeLocation, componentCount, GL_FLOAT, false, stride, dataOffset);
+        glVertexAttribPointer(attributeLocation, componentCount, GL_FLOAT, false, stride, dataOffsetInBytes);
         glEnableVertexAttribArray(attributeLocation);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }

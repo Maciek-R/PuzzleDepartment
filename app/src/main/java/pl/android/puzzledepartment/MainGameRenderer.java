@@ -75,7 +75,7 @@ public class MainGameRenderer implements Renderer {
         //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
         dragons = new ArrayList<Dragon>();
-        for(int i=-5; i<5; i+=2)
+        for(int i=-10; i<10; i+=2)
             dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         room = new Room(new Point(0f, 0.5f, 10f));
@@ -109,6 +109,8 @@ public class MainGameRenderer implements Renderer {
 
         light.move2();
         camera.update(heightMap, collisionManager);
+        for(Dragon d:dragons)
+            d.rotate(1f);
        // cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
         //dragon.rotate(2.0f);
