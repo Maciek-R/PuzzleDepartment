@@ -59,7 +59,12 @@ public class OnTouchListener implements View.OnTouchListener {
             if (event.getPointerId(i) == indexMove) {
                 deltaMoveX = event.getX(i) - startX;
                 deltaMoveY = event.getY(i) - startY;
-                glSurfaceView.queueEvent(() ->  mainGameRenderer.handleMoveCamera(deltaMoveX, deltaMoveY));
+                glSurfaceView.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainGameRenderer.handleMoveCamera(deltaMoveX, deltaMoveY);
+                    }
+                });
             }
             else if (event.getPointerId(i) == indexRotate) {
                 deltaRotateX = event.getX(i) - previousRotateX;
@@ -67,7 +72,12 @@ public class OnTouchListener implements View.OnTouchListener {
 
                 previousRotateX = event.getX(i);
                 previousRotateY = event.getY(i);
-                glSurfaceView.queueEvent(() -> mainGameRenderer.handleRotationCamera(deltaRotateX, deltaRotateY));
+                glSurfaceView.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainGameRenderer.handleRotationCamera(deltaRotateX, deltaRotateY);
+                    }
+                });
             }
         }
     }
@@ -89,18 +99,33 @@ public class OnTouchListener implements View.OnTouchListener {
                 touchTime = SystemClock.elapsedRealtime();
             }
         }
-        glSurfaceView.queueEvent(() -> mainGameRenderer.handleTouchPress(normalizedX, normalizedY));
+        glSurfaceView.queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mainGameRenderer.handleTouchPress(normalizedX, normalizedY);
+            }
+        });
     }
 
     private void actionUp(MotionEvent event) {
         Log.v("UP", String.valueOf(event.getPointerId(event.getActionIndex())));
         if (event.getPointerId(event.getActionIndex()) == indexMove) {
             indexMove = -1;
-            glSurfaceView.queueEvent(() ->  mainGameRenderer.handleMoveCamera(0, 0));
+            glSurfaceView.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    mainGameRenderer.handleMoveCamera(0, 0);
+                }
+            });
         } else if (event.getPointerId(event.getActionIndex()) == indexRotate) {
             indexRotate = -1;
             if((SystemClock.elapsedRealtime() - touchTime)/1000f < 0.3)
-                glSurfaceView.queueEvent(() -> mainGameRenderer.handleJumpCamera());
+                glSurfaceView.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainGameRenderer.handleJumpCamera();
+                    }
+                });
         }
     }
 }

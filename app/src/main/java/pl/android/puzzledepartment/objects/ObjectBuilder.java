@@ -103,7 +103,12 @@ public class ObjectBuilder {
             vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
             vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
         }
-        drawList.add(() -> glDrawArrays(GL_TRIANGLE_FAN, startVertex, numVertices));
+        drawList.add(new DrawCommand() {
+            @Override
+            public void draw() {
+                glDrawArrays(GL_TRIANGLE_FAN, startVertex, numVertices);
+            }
+        });
     }
     private void appendWallOfCylinder(int numPoints){
         final int startVertex = offset / FLOATS_PER_VERTEX;
@@ -141,6 +146,11 @@ public class ObjectBuilder {
             vertexData[offset++] = (float) (Math.cos((double)angleInRadians))/2 + 0.5f;
             vertexData[offset++] = (float) (Math.sin((double)angleInRadians))/2 + 0.5f;
         }
-        drawList.add(() -> glDrawArrays(GL_TRIANGLE_STRIP, startVertex, numVertices));
+        drawList.add(new DrawCommand() {
+            @Override
+            public void draw() {
+                glDrawArrays(GL_TRIANGLE_STRIP, startVertex, numVertices);
+            }
+        });
     }
 }
