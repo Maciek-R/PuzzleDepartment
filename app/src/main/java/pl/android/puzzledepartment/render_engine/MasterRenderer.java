@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import pl.android.puzzledepartment.objects.Camera;
+import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
@@ -51,8 +52,8 @@ public class MasterRenderer {
             render(entity);
     }
 
-    public void renderNormalColoured(ShaderCube shaderCube) {
-        normalColouredEntityRenderer.renderNormalColoured(shaderCube, viewMatrix, projectionMatrix, light);
+    public void renderNormalColoured(Entity entity) {
+        normalColouredEntityRenderer.renderNormalColoured(entity, viewMatrix, projectionMatrix, light);
     }
 
     public void renderNormalUnColoured(Entity entity) {

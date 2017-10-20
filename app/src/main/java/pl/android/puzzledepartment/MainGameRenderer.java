@@ -59,9 +59,10 @@ public class MainGameRenderer implements Renderer {
 
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
-        cylinder = new Cylinder(new Circle(new Point(0f,0.5f,0f), 1f), new Circle(new Point(0f,2f,0f), 0.5f));
-        light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
-        dragon = new Dragon(new Point(-2.5f, 3.0f, -2), context);
+        cylinder = new Cylinder(new Point(0.0f, 1.0f, 0.0f));
+        //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
+        light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
+        //dragon = new Dragon(new Point(-2.5f, 3.0f, -2), context);
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         camera = new Camera();
         masterRenderer = new MasterRenderer(context, light);
@@ -82,14 +83,14 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderLight(light);
         masterRenderer.render(cube);
         masterRenderer.renderNormalColoured(shaderCube);
-        masterRenderer.render(cylinder);
-        masterRenderer.renderNormalUnColoured(dragon);
+        masterRenderer.renderNormalColoured(cylinder);
+        //masterRenderer.renderNormalUnColoured(dragon);
 
-        light.move();
+        light.move2();
         cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
-        dragon.rotate(2.0f);
-        cylinder.rotate(1f);
+        //dragon.rotate(2.0f);
+        //cylinder.rotate(1f);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

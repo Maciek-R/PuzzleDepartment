@@ -43,6 +43,12 @@ public abstract class Entity {
 
         this.pos = new Point(x, pos.y, z);
     }
+    public void move2() {
+
+        long time = SystemClock.currentThreadTimeMillis();
+        float x = 3*(float) Math.sin((float)time / 500);
+        this.pos = new Point(x, pos.y, pos.z);
+    }
     public void rotate(float angle) {
         this.verAngle+=angle;
     }

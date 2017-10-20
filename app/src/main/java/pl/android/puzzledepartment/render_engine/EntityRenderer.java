@@ -63,15 +63,15 @@ public class EntityRenderer {
         entity.draw();
     }
 
-    public void renderNormalColoured(ShaderCube shaderCube, float[] viewMatrix, float[] projectionMatrix, Light light) {
-        prepareModelMatrix(shaderCube);
+    public void renderNormalColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light) {
+        prepareModelMatrix(entity);
         multiplyMM(modelViewMatrix, 0, viewMatrix, 0, modelMatrix, 0);
         invertM(tempMatrix, 0, modelMatrix, 0);
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light);
-        bindDataAndDraw(shaderCube, shaderProgram);
+        bindDataAndDraw(entity, shaderProgram);
     }
 
     public void renderNormalUnColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light, float r, float g, float b) {
