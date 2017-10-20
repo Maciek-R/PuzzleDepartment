@@ -17,7 +17,7 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  */
 
 public class Cylinder extends Entity{
-    private static final int numberOfVertices = 7;
+    private static final int numberOfVertices = 31;
 
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;

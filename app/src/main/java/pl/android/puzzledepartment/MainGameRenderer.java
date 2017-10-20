@@ -8,6 +8,7 @@ import android.util.Log;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import pl.android.puzzledepartment.managers.CollisionManager;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
@@ -16,6 +17,7 @@ import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
+import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -43,9 +45,11 @@ public class MainGameRenderer implements Renderer {
     private Dragon dragon;
     private Light light;
     private HeightMap heightMap;
+    private Room room;
     private Camera camera;
 
     private MasterRenderer masterRenderer;
+    private CollisionManager collisionManager;
 
     public MainGameRenderer(Context context){
         this.context = context;
@@ -64,8 +68,12 @@ public class MainGameRenderer implements Renderer {
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
         //dragon = new Dragon(new Point(-2.5f, 3.0f, -2), context);
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
+        room = new Room(new Point(0f, 0.5f, 10f));
         camera = new Camera();
         masterRenderer = new MasterRenderer(context, light);
+        collisionManager = new CollisionManager();
+        collisionManager.add(cube);
+        collisionManager.add(room);
     }
 
     @Override
@@ -84,18 +92,20 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(cube);
         masterRenderer.renderNormalColoured(shaderCube);
         masterRenderer.renderNormalColoured(cylinder);
+        masterRenderer.render(room);
         //masterRenderer.renderNormalUnColoured(dragon);
 
         light.move2();
-        cube.rotate(0.5f);
+       // cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
         //dragon.rotate(2.0f);
         //cylinder.rotate(1f);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {
-        camera.move(deltaMoveY/32f, deltaMoveX/32f);
-        camera.setY(heightMap);
+        camera.countNextPossiblePosition(deltaMoveY/32f, deltaMoveX/32f, heightMap);
+        if(!collisionManager.checkCollision(camera))
+            camera.move();
     }
 
     public void handleRotationCamera(float deltaRotateX, float deltaRotateY) {

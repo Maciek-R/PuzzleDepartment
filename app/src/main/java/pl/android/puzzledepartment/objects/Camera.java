@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
+import pl.android.puzzledepartment.util.geometry.Vector3f;
+
 /**
  * Created by Maciek Ruszczyk on 2017-10-06.
  */
@@ -13,6 +15,10 @@ public class Camera {
     private float rotationX;
     private float rotationY;
 
+    private float possiblePosX;
+    private float possiblePosY;
+    private float possiblePosZ;
+
     public Camera() {
         this(0, 0, 0);
     }
@@ -23,18 +29,30 @@ public class Camera {
         this.posZ = z;
     }
 
-    public void move(float transZ, float transX) {
+    public void move() {
+        this.posX = possiblePosX;
+        this.posY = possiblePosY + 1.5f;
+        this.posZ = possiblePosZ;
+    }
+
+    public void countNextPossiblePosition(float transZ, float transX, HeightMap heightMap) {
+        possiblePosX = posX;
+        possiblePosZ = posZ;
+
         float translationX = -(float) (Math.sin(Math.toRadians(rotationX)) * transZ);
         float translationZ = (float) (Math.cos(Math.toRadians(rotationX)) * transZ);
 
-        posX += translationX;
-        posZ += translationZ;
+        possiblePosX += translationX;
+        possiblePosZ += translationZ;
 
         translationX = (float) (Math.sin(Math.toRadians(rotationX + 90)) * transX);
         translationZ = -(float) (Math.cos(Math.toRadians(rotationX + 90)) * transX);
 
-        posX += translationX;
-        posZ += translationZ;
+        possiblePosX += translationX;
+        possiblePosZ += translationZ;
+
+        final float height = heightMap.getHeight(possiblePosX, possiblePosZ);
+        possiblePosY = height;
     }
 
     public void rotateX(float angle) {
@@ -56,8 +74,7 @@ public class Camera {
     public float getRotationX() {return rotationX;}
     public float getRotationY() {return rotationY;}
 
-    public void setY(HeightMap heightMap) {
-        final float height = heightMap.getHeight(posX, posZ);
-        this.posY = height + 1.5f;
-    }
+    public float getPossibleX() {return possiblePosX;}
+    public float getPossibleY() {return possiblePosY;}
+    public float getPossibleZ() {return possiblePosZ;}
 }
