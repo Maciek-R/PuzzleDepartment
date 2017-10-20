@@ -15,6 +15,7 @@ import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
 import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
+import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
@@ -47,11 +48,6 @@ public class MasterRenderer {
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
         this.light = light;
     }
-    public void render(List<Entity> entities) {
-        for(Entity entity:entities)
-            render(entity);
-    }
-
     public void renderNormalColoured(Entity entity) {
         normalColouredEntityRenderer.renderNormalColoured(entity, viewMatrix, projectionMatrix, light);
     }
@@ -66,6 +62,11 @@ public class MasterRenderer {
 
     public void renderLight(Light light) {
         simpleColorRenderer.render(light, viewProjectionMatrix, light.getLightColor().x, light.getLightColor().y, light.getLightColor().z);
+    }
+
+    public void render(List<Entity> entities) {
+        for(Entity entity:entities)
+            render(entity);
     }
 
     public void render(Entity entity) {
@@ -85,5 +86,9 @@ public class MasterRenderer {
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
         translateM(viewMatrix, 0, -camera.getPosX(), -camera.getPosY(), -camera.getPosZ());
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+    }
+
+    public void render(Room room) {
+        render(room.getEntities());
     }
 }

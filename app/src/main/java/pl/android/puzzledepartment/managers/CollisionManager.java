@@ -31,12 +31,8 @@ public class CollisionManager {
         final float scaleZ = e.getScale().z/2;
 
         final float possibleCamX = camera.getPossibleX();
-        final float possibleCamY = camera.getPossibleY();
+        final float possibleCamY = camera.getPosY()-1.5f;
         final float possibleCamZ = camera.getPossibleZ();
-
-    float tmpY1 = (e.getPos().y-scaleY);
-        float tmpY2 = (e.getPos().y+scaleY);
-
 
         if(possibleCamX >= (e.getPos().x-scaleX) && possibleCamX <= (e.getPos().x+scaleX) &&
                 possibleCamY >= (e.getPos().y-scaleY) && possibleCamY <= (e.getPos().y+scaleY) &&

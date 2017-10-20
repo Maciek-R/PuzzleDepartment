@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment;
 
 import android.opengl.GLSurfaceView;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,10 +14,11 @@ public class OnTouchListener implements View.OnTouchListener {
     private final GLSurfaceView glSurfaceView;
     private final MainGameRenderer mainGameRenderer;
 
-    private float previousMoveX, previousMoveY;
+    private float startX, startY;
     private int indexMove = -1;
     private float previousRotateX, previousRotateY;
     private int indexRotate = -1;
+    private long touchTime;
 
     public OnTouchListener(GLSurfaceView glSurfaceView, MainGameRenderer mainGameRenderer) {
         this.glSurfaceView = glSurfaceView;
@@ -55,11 +57,8 @@ public class OnTouchListener implements View.OnTouchListener {
             final float deltaRotateX;
             final float deltaRotateY;
             if (event.getPointerId(i) == indexMove) {
-                deltaMoveX = event.getX(i) - previousMoveX;
-                deltaMoveY = event.getY(i) - previousMoveY;
-
-                previousMoveX = event.getX(i);
-                previousMoveY = event.getY(i);
+                deltaMoveX = event.getX(i) - startX;
+                deltaMoveY = event.getY(i) - startY;
                 glSurfaceView.queueEvent(() ->  mainGameRenderer.handleMoveCamera(deltaMoveX, deltaMoveY));
             }
             else if (event.getPointerId(i) == indexRotate) {
@@ -76,8 +75,8 @@ public class OnTouchListener implements View.OnTouchListener {
     private void actionDown(MotionEvent event, final float normalizedX, final float normalizedY, final int pointerIndex) {
         if (normalizedX < 0) {
             if (indexMove == -1) {
-                previousMoveX = event.getX(pointerIndex);
-                previousMoveY = event.getY(pointerIndex);
+                startX = event.getX(pointerIndex);
+                startY = event.getY(pointerIndex);
                 Log.v("TAP1", String.valueOf(event.getPointerId(event.getActionIndex())));
                 indexMove = event.getPointerId(event.getActionIndex());
             }
@@ -87,6 +86,7 @@ public class OnTouchListener implements View.OnTouchListener {
                 previousRotateY = event.getY(pointerIndex);
                 Log.v("TAP2", String.valueOf(event.getPointerId(event.getActionIndex())));
                 indexRotate = event.getPointerId(event.getActionIndex());
+                touchTime = SystemClock.elapsedRealtime();
             }
         }
         glSurfaceView.queueEvent(() -> mainGameRenderer.handleTouchPress(normalizedX, normalizedY));
@@ -96,8 +96,11 @@ public class OnTouchListener implements View.OnTouchListener {
         Log.v("UP", String.valueOf(event.getPointerId(event.getActionIndex())));
         if (event.getPointerId(event.getActionIndex()) == indexMove) {
             indexMove = -1;
+            glSurfaceView.queueEvent(() ->  mainGameRenderer.handleMoveCamera(0, 0));
         } else if (event.getPointerId(event.getActionIndex()) == indexRotate) {
             indexRotate = -1;
+            if((SystemClock.elapsedRealtime() - touchTime)/1000f < 0.3)
+                glSurfaceView.queueEvent(() -> mainGameRenderer.handleJumpCamera());
         }
     }
 }

@@ -9,6 +9,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.android.puzzledepartment.managers.CollisionManager;
+import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
@@ -85,6 +86,7 @@ public class MainGameRenderer implements Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        TimeManager.update();
 
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
@@ -96,6 +98,7 @@ public class MainGameRenderer implements Renderer {
         //masterRenderer.renderNormalUnColoured(dragon);
 
         light.move2();
+        camera.update(heightMap, collisionManager);
        // cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
         //dragon.rotate(2.0f);
@@ -103,9 +106,10 @@ public class MainGameRenderer implements Renderer {
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {
-        camera.countNextPossiblePosition(deltaMoveY/32f, deltaMoveX/32f, heightMap);
-        if(!collisionManager.checkCollision(camera))
-            camera.move();
+      //  camera.countNextPossiblePosition(deltaMoveY/32f, deltaMoveX/32f, heightMap);
+     //   if(!collisionManager.checkCollision(camera))
+       //     camera.move();
+        camera.setDirection(deltaMoveX/1024f, deltaMoveY/1024f);
     }
 
     public void handleRotationCamera(float deltaRotateX, float deltaRotateY) {
@@ -116,5 +120,9 @@ public class MainGameRenderer implements Renderer {
     public void handleTouchPress(float normalizedX, float normalizedY){
         if(Logger.ON)
             Log.v("RENDERER", "Touch Press");
+    }
+
+    public void handleJumpCamera() {
+        camera.jump();
     }
 }
