@@ -5,10 +5,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.android.puzzledepartment.managers.CollisionManager;
+import pl.android.puzzledepartment.managers.EntityManager;
 import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
@@ -43,7 +47,7 @@ public class MainGameRenderer implements Renderer {
     private Cube cube;
     private ShaderCube shaderCube;
     private Cylinder cylinder;
-    private Dragon dragon;
+    private List<Dragon> dragons;
     private Light light;
     private HeightMap heightMap;
     private Room room;
@@ -51,6 +55,7 @@ public class MainGameRenderer implements Renderer {
 
     private MasterRenderer masterRenderer;
     private CollisionManager collisionManager;
+    private EntityManager entityManager;
 
     public MainGameRenderer(Context context){
         this.context = context;
@@ -62,12 +67,16 @@ public class MainGameRenderer implements Renderer {
 //        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
 
+        entityManager = new EntityManager(context);
+
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
         cylinder = new Cylinder(new Point(0.0f, 1.0f, 0.0f));
         //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
-        //dragon = new Dragon(new Point(-2.5f, 3.0f, -2), context);
+        dragons = new ArrayList<Dragon>();
+        for(int i=-5; i<5; i+=2)
+            dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         room = new Room(new Point(0f, 0.5f, 10f));
         camera = new Camera();
@@ -95,7 +104,8 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(shaderCube);
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
-        //masterRenderer.renderNormalUnColoured(dragon);
+        for(Dragon d:dragons)
+            masterRenderer.renderNormalUnColoured(d);
 
         light.move2();
         camera.update(heightMap, collisionManager);

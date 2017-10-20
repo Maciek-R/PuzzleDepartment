@@ -33,16 +33,13 @@ public class Dragon extends Entity{
 
     private final VertexArray vertexArray;
     private final IntBuffer indexArray;
-    private int indicesLength;
+    private final int indicesLength;
 
-    public Dragon(Point pos, Context context) {
+    public Dragon(Point pos, EntityModel entityModel) {
         super(pos, 0.0f, new Vector3f(0.25f, 0.25f, 0.25f));
 
-        EntityModel entityModel = OBJLoader.loadObjModel(context, R.raw.dragon);
-
         vertexArray = entityModel.getNormalVertexArray();
-        indexArray = IntBuffer.allocate(entityModel.indicesArray.length).put(entityModel.indicesArray);
-        indexArray.position(0);
+        indexArray = entityModel.getIndexArray();
         indicesLength = entityModel.indicesArray.length;
 
        // drawList.add(() -> glDrawElements(GL_TRIANGLES, entityModel.indicesArray.length, GL_UNSIGNED_BYTE, indexArray));

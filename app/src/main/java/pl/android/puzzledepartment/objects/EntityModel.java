@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
+import java.nio.IntBuffer;
+
 import pl.android.puzzledepartment.data.VertexArray;
 
 /**
@@ -13,6 +15,7 @@ public class EntityModel {
     final int[] indicesArray;
 
     private VertexArray vertexArray = null;
+    private IntBuffer indexArray = null;
 
     public EntityModel(float[] verticesArray, float[] texturesArray, float[] normalsArray, int[] indicesArray) {
         this.verticesArray = verticesArray;
@@ -47,6 +50,16 @@ public class EntityModel {
         }
         vertexArray = new VertexArray(vertexData);
         return vertexArray;
+    }
+
+    public IntBuffer getIndexArray() {
+        if(indexArray!=null)
+            return indexArray;
+
+        indexArray = IntBuffer.allocate(indicesArray.length).put(indicesArray);
+        indexArray.position(0);
+
+        return indexArray;
     }
 
 }
