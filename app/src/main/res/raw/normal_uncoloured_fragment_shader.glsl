@@ -13,5 +13,5 @@ void main()
     float diff = max(dot(v_Normal, lightDir), 0.0);
     vec3 diffuse = diff * u_LightColor;
 
-    gl_FragColor = v_Color * vec4(diffuse, 1.0);
+    gl_FragColor = v_Color * vec4(diffuse + vec3(0.3f, 0.3f, 0.3f), 1.0);
 }
