@@ -18,14 +18,16 @@ public class Room {
     private static final float SPACE = 1.0f;
     private List<Entity> entities;
 
-    public Room(Point center) {
+    public Room(Point center, float size) {
         this.center = center;
         entities = new ArrayList<Entity>();
 
-        createWall(new Point(-3.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 5.0f));
-        createWall(new Point(3.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 5.0f));
-        createWall(new Point(0.0f, 0.0f, 3.0f), new Vector3f(7.0f, 1.0f, 1.0f));
-        createWall(new Point(0.0f, 0.0f, -3.0f), new Vector3f(7.0f, 1.0f, 1.0f));
+        createWall(new Point(0.0f, -0.5f, 0.0f), new Vector3f(size*2+1f, 0.5f, size*2+1f));
+
+        createWall(new Point(-size, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, size*2-1f));
+        createWall(new Point(size, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, size*2-1f));
+        createWall(new Point(0.0f, 0.0f, size), new Vector3f(size*2+1f, 1.0f, 1.0f));
+        createWall(new Point(0.0f, 0.0f, -size), new Vector3f(size*2+1f, 1.0f, 1.0f));
     }
 
     private void createWall(Point point, Vector3f scale) {

@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
@@ -46,11 +47,11 @@ public abstract class Entity {
     public void move2() {
 
         long time = SystemClock.currentThreadTimeMillis();
-        float x = 3*(float) Math.sin((float)time / 500);
+        float x = 3*(float) Math.sin((float)time/1000f);
         this.pos = new Point(x, pos.y, pos.z);
     }
-    public void rotate(float angle) {
-        this.verAngle+=angle;
+    public void rotate(float angleInSeconds) {
+        this.verAngle+= TimeManager.getDeltaTimeInSeconds() * angleInSeconds;
     }
     abstract public void bindData(ShaderProgram shaderProgram);
     abstract public void draw();

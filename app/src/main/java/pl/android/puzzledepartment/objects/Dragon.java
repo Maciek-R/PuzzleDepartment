@@ -45,7 +45,6 @@ public class Dragon extends Entity{
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
         indicesLength = entityModel.indicesArray.length;
-
        // drawList.add(() -> glDrawElements(GL_TRIANGLES, entityModel.indicesArray.length, GL_UNSIGNED_BYTE, indexArray));
     }
 

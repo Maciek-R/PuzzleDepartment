@@ -2,11 +2,16 @@ package pl.android.puzzledepartment.render_engine;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cylinder;
+import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.Entity;
+import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
@@ -15,12 +20,14 @@ import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
 import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
+import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
+import static android.opengl.Matrix.setRotateEulerM;
 import static android.opengl.Matrix.translateM;
 
 /**
@@ -38,6 +45,8 @@ public class MasterRenderer {
     private final float[] projectionMatrix = new float[16];
     private final float[] viewProjectionMatrix = new float[16];
 
+    private List<Dragon> entities;
+
     private Light light;
 
     public MasterRenderer(Context context, Light light) {
@@ -47,6 +56,7 @@ public class MasterRenderer {
         simpleColorRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
         this.light = light;
+        entities = new ArrayList<Dragon>();
     }
     public void renderNormalColoured(Entity entity) {
         normalColouredEntityRenderer.renderNormalColoured(entity, viewMatrix, projectionMatrix, light);
@@ -84,11 +94,16 @@ public class MasterRenderer {
         setIdentityM(viewMatrix, 0);
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
-        translateM(viewMatrix, 0, -camera.getPosX(), -camera.getPosY(), -camera.getPosZ());
+        translateM(viewMatrix, 0, -camera.getPosX(), -camera.getLookPosY(), -camera.getPosZ());
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
     }
 
     public void render(Room room) {
         render(room.getEntities());
+    }
+    public void render(TeleportPuzzle teleportPuzzle) {
+        render(teleportPuzzle.getTeleports());
+        for(Room r:teleportPuzzle.getRooms())
+            render(r);
     }
 }

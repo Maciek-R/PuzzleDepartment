@@ -21,6 +21,7 @@ import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.Logger;
@@ -57,6 +58,8 @@ public class MainGameRenderer implements Renderer {
     private CollisionManager collisionManager;
     private EntityManager entityManager;
 
+    private TeleportPuzzle teleportPuzzle;
+
     public MainGameRenderer(Context context){
         this.context = context;
     }
@@ -69,21 +72,25 @@ public class MainGameRenderer implements Renderer {
 
         entityManager = new EntityManager(context);
 
+        teleportPuzzle = new TeleportPuzzle(new Point(0, 1f, 0), context);
+
         cube = new Cube(new Point(-0.5f, 0.5f, -2));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
-        cylinder = new Cylinder(new Point(0.0f, 1.0f, 0.0f));
+        cylinder = new Cylinder(new Point(0.0f, 1.0f, -5.0f));
         //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
         dragons = new ArrayList<Dragon>();
-        for(int i=-10; i<10; i+=2)
-            dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
+       // for(int i=-5; i<5; i+=2)
+       //          dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
-        room = new Room(new Point(0f, 0.5f, 10f));
-        camera = new Camera();
+        room = new Room(new Point(0f, 0.5f, 10f), 3f);
+        camera = new Camera(0f, 15f, 0f);
         masterRenderer = new MasterRenderer(context, light);
         collisionManager = new CollisionManager();
         collisionManager.add(cube);
         collisionManager.add(room);
+        collisionManager.add(teleportPuzzle);
+
     }
 
     @Override
@@ -104,13 +111,14 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(shaderCube);
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
-        for(Dragon d:dragons)
-            masterRenderer.renderNormalUnColoured(d);
+        masterRenderer.render(teleportPuzzle);
+       // for(Dragon d:dragons)
+       //     masterRenderer.renderNormalUnColoured(d);
 
         light.move2();
         camera.update(heightMap, collisionManager);
-        for(Dragon d:dragons)
-            d.rotate(1f);
+       // for(Dragon d:dragons)
+       //     d.rotate(60f);
        // cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
         //dragon.rotate(2.0f);

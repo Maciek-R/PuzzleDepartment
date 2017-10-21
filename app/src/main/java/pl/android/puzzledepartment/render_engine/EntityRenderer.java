@@ -1,6 +1,11 @@
 package pl.android.puzzledepartment.render_engine;
 
+import java.util.HashMap;
+import java.util.List;
+
+import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.Entity;
+import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.programs.ShaderProgram;

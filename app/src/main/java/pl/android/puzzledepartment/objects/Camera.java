@@ -17,6 +17,7 @@ public class Camera {
 
     private float posX;
     private float posY;
+    private float lookPosY;
     private float posZ;
 
     private float rotationX;
@@ -32,6 +33,8 @@ public class Camera {
     private float deltaX = 0;
     private float deltaZ = 0;
 
+    private CollisionManager.CollisionDescription collisionDescription;
+
     public Camera() {
         this(0, 0, 0);
     }
@@ -40,6 +43,7 @@ public class Camera {
         this.posX = x;
         this.posY = y;
         this.posZ = z;
+        this.lookPosY = posY + 1.5f;
     }
 
     public void move() {
@@ -56,17 +60,37 @@ public class Camera {
 
     public void update(HeightMap heightMap, CollisionManager collisionManager) {
         countNextPossiblePosition(heightMap);
-        if(!collisionManager.checkCollision(this))
+
+        if(collisionManager.checkTeleportCollision(this)){
+            isInAir = false;
+            flySpeed = 0;
+            return;
+        }
+
+        collisionDescription = collisionManager.checkCollision(this);
+        //if(!collisionDescription.isCollision())
             move();
+
+
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.posY += flySpeed * TimeManager.getDeltaTimeInSeconds();
+        this.lookPosY = posY + 1.5f;
 
-        float heightY = heightMap.getHeight(posX, posZ)+1.5f;
+        if (collisionDescription.isCollision() && flySpeed < 0) {
+            posY = collisionDescription.getCollisionPosY();
+            lookPosY = posY + 1.5f;
+            isInAir = false;
+            flySpeed = 0;
+            return;
+        }
+
+        float heightY = heightMap.getHeight(posX, posZ);
         if (posY < heightY) {
             isInAir = false;
             flySpeed = 0;
             posY = heightY;
+            lookPosY = posY + 1.5f;
         }
     }
 
@@ -109,6 +133,8 @@ public class Camera {
     public float getRotationX() {return rotationX;}
     public float getRotationY() {return rotationY;}
 
+    public float getLookPosY() {return lookPosY;}
+
     public float getPossibleX() {return possiblePosX;}
   //  public float getPossibleY() {return possiblePosY;}
     public float getPossibleZ() {return possiblePosZ;}
@@ -116,5 +142,12 @@ public class Camera {
     public void setDirection(float deltaX, float deltaZ) {
         this.deltaX = deltaX;
         this.deltaZ = deltaZ;
+    }
+
+    public void goTo(Vector3f positionOnCurrentFloor) {
+        this.posX = positionOnCurrentFloor.x;
+        this.posY = positionOnCurrentFloor.y;
+        this.posZ = positionOnCurrentFloor.z;
+        this.lookPosY = posY + 1.5f;
     }
 }
