@@ -100,11 +100,13 @@ public class EntityRenderer {
 
     public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, final float[] viewProjectionMatrix, float currentTime) {
         glEnable(GL_BLEND);
+        glDepthMask(false);
         glBlendFunc(GL_ONE, GL_ONE);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(viewProjectionMatrix, currentTime, particleSystem.getTexture());
         particleSystem.bindData(shaderProgram);
         particleSystem.draw();
+        glDepthMask(true);
         glDisable(GL_BLEND);
     }
 }
