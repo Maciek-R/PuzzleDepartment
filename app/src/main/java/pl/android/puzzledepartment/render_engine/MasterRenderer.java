@@ -15,10 +15,13 @@ import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.particles.ParticleShooter;
+import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
 import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
+import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.rooms.Room;
@@ -40,6 +43,7 @@ public class MasterRenderer {
     private final EntityRenderer normalUnColouredEntityRenderer;
     private final EntityRenderer simpleColorRenderer;
     private final HeightmapRenderer heightmapRenderer;
+    private final EntityRenderer particleRenderer;
 
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
@@ -55,6 +59,7 @@ public class MasterRenderer {
         normalUnColouredEntityRenderer = new EntityRenderer(new NormalUncolouredShaderProgram(context));
         simpleColorRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
+        particleRenderer = new EntityRenderer(new ParticleShaderProgram(context));
         this.light = light;
         entities = new ArrayList<Dragon>();
     }
@@ -105,5 +110,9 @@ public class MasterRenderer {
         render(teleportPuzzle.getTeleports());
         for(Room r:teleportPuzzle.getRooms())
             render(r);
+    }
+
+    public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, float currentTime) {
+        particleRenderer.renderParticles(particleSystem, particleShooter, viewProjectionMatrix, currentTime);
     }
 }

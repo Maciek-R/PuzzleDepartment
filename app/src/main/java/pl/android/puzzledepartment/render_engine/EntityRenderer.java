@@ -8,8 +8,16 @@ import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.particles.ParticleShooter;
+import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 
+import static android.opengl.GLES20.GL_BLEND;
+import static android.opengl.GLES20.GL_ONE;
+import static android.opengl.GLES20.glBlendFunc;
+import static android.opengl.GLES20.glDepthMask;
+import static android.opengl.GLES20.glDisable;
+import static android.opengl.GLES20.glEnable;
 import static android.opengl.Matrix.invertM;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
@@ -88,5 +96,15 @@ public class EntityRenderer {
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b);
         bindDataAndDraw(entity, shaderProgram);
+    }
+
+    public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, final float[] viewProjectionMatrix, float currentTime) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE);
+        shaderProgram.useProgram();
+        shaderProgram.setUniforms(viewProjectionMatrix, currentTime, particleSystem.getTexture());
+        particleSystem.bindData(shaderProgram);
+        particleSystem.draw();
+        glDisable(GL_BLEND);
     }
 }

@@ -28,4 +28,10 @@ public class VertexArray {
         glEnableVertexAttribArray(attributeLocation);
         floatBuffer.position(0);
     }
+
+    public void updateBuffer(float[] particles, int particleOffset, int totalComponentCount) {
+        floatBuffer.position(particleOffset);
+        floatBuffer.put(particles, particleOffset, totalComponentCount);
+        floatBuffer.position(0);
+    }
 }

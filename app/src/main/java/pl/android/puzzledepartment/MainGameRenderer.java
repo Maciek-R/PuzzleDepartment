@@ -1,12 +1,14 @@
 package pl.android.puzzledepartment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -21,21 +23,33 @@ import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.particles.ParticleShooter;
+import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.Logger;
+import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
+import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_TEST;
+import static android.opengl.GLES20.GL_ONE;
+import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDisable;
 import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
+import static android.opengl.Matrix.invertM;
+import static android.opengl.Matrix.multiplyMM;
+import static android.opengl.Matrix.rotateM;
+import static android.opengl.Matrix.setIdentityM;
+import static android.opengl.Matrix.translateM;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-06.
@@ -44,6 +58,11 @@ import static android.opengl.GLES20.glViewport;
 public class MainGameRenderer implements Renderer {
 
     private final Context context;
+
+    private ParticleSystem particleSystem;
+    private ParticleShooter redParticleShooter;
+    private ParticleShooter blueParticleShooter;
+    private int particleTexture;
 
     private Cube cube;
     private ShaderCube shaderCube;
@@ -59,6 +78,9 @@ public class MainGameRenderer implements Renderer {
     private EntityManager entityManager;
 
     private TeleportPuzzle teleportPuzzle;
+    private final Random random = new Random();
+
+    private long globalStartTime;
 
     public MainGameRenderer(Context context){
         this.context = context;
@@ -69,6 +91,13 @@ public class MainGameRenderer implements Renderer {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 //        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
+
+        particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
+        particleSystem = new ParticleSystem(10000, particleTexture);
+        globalStartTime = System.nanoTime();
+        final Vector3f particleDirection = new Vector3f(0f, 0.5f, 0f);
+        redParticleShooter = new ParticleShooter(new Point(0f, 3.0f, 0f), particleDirection, Color.rgb(255, 50, 5), 360f, 0.5f);
+        blueParticleShooter = new ParticleShooter(new Point(-3f, 3.0f, 0f), particleDirection, Color.rgb(10, 10, 255), 360f, 0.5f);
 
         entityManager = new EntityManager(context);
 
@@ -117,6 +146,8 @@ public class MainGameRenderer implements Renderer {
 
         light.move2();
         camera.update(heightMap, collisionManager);
+
+        drawParticles();
        // for(Dragon d:dragons)
        //     d.rotate(60f);
        // cube.rotate(0.5f);
@@ -124,6 +155,15 @@ public class MainGameRenderer implements Renderer {
         //dragon.rotate(2.0f);
         //cylinder.rotate(1f);
     }
+    private void drawParticles() {
+        float currentTime = (System.nanoTime() - globalStartTime) / 1000000000f;
+        redParticleShooter.addParticles(particleSystem, currentTime, 5);
+        blueParticleShooter.addParticles(particleSystem, currentTime, 5);
+
+        masterRenderer.renderParticles(particleSystem, redParticleShooter, currentTime);
+        masterRenderer.renderParticles(particleSystem, blueParticleShooter, currentTime);
+    }
+
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {
       //  camera.countNextPossiblePosition(deltaMoveY/32f, deltaMoveX/32f, heightMap);
