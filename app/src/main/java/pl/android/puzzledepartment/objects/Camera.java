@@ -24,7 +24,7 @@ public class Camera {
     private float rotationY;
 
     private float possiblePosX;
-    //private float possiblePosY;
+    private float possiblePosY;
     private float possiblePosZ;
 
     private boolean isInAir = false;
@@ -49,6 +49,7 @@ public class Camera {
     public void move() {
         this.posX = possiblePosX;
         this.posZ = possiblePosZ;
+
     }
 
     public void jump() {
@@ -67,23 +68,39 @@ public class Camera {
             return;
         }
 
-        collisionDescription = collisionManager.checkCollision(this);
-        //if(!collisionDescription.isCollision())
-            move();
-
-
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
-        this.posY += flySpeed * TimeManager.getDeltaTimeInSeconds();
-        this.lookPosY = posY + 1.5f;
+        this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
+        //this.posY += flySpeed * TimeManager.getDeltaTimeInSeconds();
+        //this.lookPosY = posY + 1.5f;
 
-        if (collisionDescription.isCollision() && flySpeed < 0) {
+        collisionDescription = collisionManager.checkCollision(this);
+        if (!collisionDescription.isCollision()) {
+            move();
+            this.posY = possiblePosY;
+            this.lookPosY = posY + 1.5f;
+        }
+        else{
+            if (collisionDescription.isOverEntity()) {
+                move();
+                this.posY = collisionDescription.getCollisionPosY();
+                this.lookPosY = posY + 1.5f;
+            }
+            isInAir = false;
+            flySpeed = 0;
+        }
+
+
+
+
+
+      /*  if (collisionDescription.isCollision() && flySpeed < 0) {
             posY = collisionDescription.getCollisionPosY();
             lookPosY = posY + 1.5f;
             isInAir = false;
             flySpeed = 0;
             return;
-        }
+        }*/
 
         float heightY = heightMap.getHeight(posX, posZ);
         if (posY < heightY) {
@@ -136,7 +153,7 @@ public class Camera {
     public float getLookPosY() {return lookPosY;}
 
     public float getPossibleX() {return possiblePosX;}
-  //  public float getPossibleY() {return possiblePosY;}
+    public float getPossibleY() {return possiblePosY;}
     public float getPossibleZ() {return possiblePosZ;}
 
     public void setDirection(float deltaX, float deltaZ) {

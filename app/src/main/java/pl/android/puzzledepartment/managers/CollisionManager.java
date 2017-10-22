@@ -41,7 +41,8 @@ public class CollisionManager {
         final float scaleZ = e.getScale().z/2;
 
         final float possibleCamX = camera.getPossibleX();
-        final float possibleCamY = camera.getPosY();//-1.5f;
+      //  final float possibleCamY = camera.getPosY();
+        final float possibleCamY = camera.getPossibleY();
         final float possibleCamZ = camera.getPossibleZ();
 
         if (possibleCamX >= (e.getPos().x - scaleX) && possibleCamX <= (e.getPos().x + scaleX) &&
@@ -50,6 +51,11 @@ public class CollisionManager {
 
             collisionDescription.setIsCollision(true);
             collisionDescription.setCollisionPosY(e.getPos().y + scaleY);
+            if(camera.getPosY() >= (e.getPos().y + scaleY))
+                collisionDescription.setIsOverEntity(true);
+            else
+                collisionDescription.setIsOverEntity(false);
+
             return true;
         } else {
             collisionDescription.setIsCollision(false);
@@ -76,14 +82,17 @@ public class CollisionManager {
 
     public static class CollisionDescription {
         private boolean isCollision;
+        private boolean overEntity;
         private float collisionPosY;
 
         public boolean isCollision() {
             return isCollision;
         }
+        public boolean isOverEntity() {return overEntity; }
         public float getCollisionPosY() {
             return collisionPosY;
         }
+        public void setIsOverEntity(boolean overEntity) {this.overEntity = overEntity; }
         public void setIsCollision(boolean isCollision) {
             this.isCollision = isCollision;
         }

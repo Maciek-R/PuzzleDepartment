@@ -68,6 +68,7 @@ public class MainGameRenderer implements Renderer {
     private ShaderCube shaderCube;
     private Cylinder cylinder;
     private List<Dragon> dragons;
+    private Dragon dragon;
     private Light light;
     private HeightMap heightMap;
     private Room room;
@@ -108,11 +109,12 @@ public class MainGameRenderer implements Renderer {
         cylinder = new Cylinder(new Point(0.0f, 1.0f, -5.0f));
         //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
-        dragons = new ArrayList<Dragon>();
-       // for(int i=-5; i<5; i+=2)
-       //          dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
+        dragon = new Dragon(new Point(-2f, 2f, -2f), entityManager.getEntityModel(R.raw.dragon));
+       // dragons = new ArrayList<Dragon>();
+        //for(int i=-5; i<5; i+=2)
+         //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
-        room = new Room(new Point(0f, 0.5f, 10f), 3f);
+        room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
         camera = new Camera(0f, 15f, 0f);
         masterRenderer = new MasterRenderer(context, light);
         collisionManager = new CollisionManager();
@@ -141,8 +143,9 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
+        masterRenderer.renderNormalUnColoured(dragon);
        // for(Dragon d:dragons)
-       //     masterRenderer.renderNormalUnColoured(d);
+        //    masterRenderer.renderNormalUnColoured(d);
 
         light.move2();
         camera.update(heightMap, collisionManager);

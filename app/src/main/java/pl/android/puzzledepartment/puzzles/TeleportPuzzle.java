@@ -62,7 +62,7 @@ public class TeleportPuzzle {
             for (Vector2f teleportPosition : teleportPositions) {
                 teleports.add(new Cylinder(new Point(teleportPosition.x + pos.x, i*10 + pos.y, teleportPosition.y + pos.z)));
             }
-            rooms.add(new Room(new Point(0 + pos.x, i*10 + pos.y, 0 + pos.z), 5f));
+            rooms.add(new Room(new Point(0 + pos.x, i*10 + pos.y, 0 + pos.z), 5f, 1f));
         }
     }
 
