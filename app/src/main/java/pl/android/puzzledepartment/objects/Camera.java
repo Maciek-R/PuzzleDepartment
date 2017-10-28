@@ -71,47 +71,31 @@ public class Camera {
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
-        //this.posY += flySpeed * TimeManager.getDeltaTimeInSeconds();
-        //this.lookPosY = posY + 1.5f;
 
         collisionDescription = collisionManager.checkCollision(this);
         if (!collisionDescription.isCollision()) {
             moveXZ();
-          //  moveY();
             this.posY = possiblePosY;
             this.lookPosY = posY + 1.5f;
         }
         else{
-            if (collisionDescription.isCollisionOverEntity && collisionDescription.isCollisionSideEntity) {
+            if (collisionDescription.isCollisionOverEntity() && collisionDescription.isCollisionSideEntity()) {
                 this.posY = collisionDescription.getCollisionPosY();
                 this.lookPosY = posY + 1.5f;
                 isInAir = false;
                 flySpeed = 0;
             }
-            else if (collisionDescription.isCollisionOverEntity) {
+            else if (collisionDescription.isCollisionOverEntity()) {
                 moveXZ();
                 this.posY = collisionDescription.getCollisionPosY();
                 this.lookPosY = posY + 1.5f;
                 isInAir = false;
                 flySpeed = 0;
-            } else if (collisionDescription.isCollisionSideEntity) {
+            } else if (collisionDescription.isCollisionSideEntity()) {
                 this.posY = possiblePosY;
                 this.lookPosY = posY + 1.5f;
             }
-
         }
-
-
-
-
-
-      /*  if (collisionDescription.isCollision() && flySpeed < 0) {
-            posY = collisionDescription.getCollisionPosY();
-            lookPosY = posY + 1.5f;
-            isInAir = false;
-            flySpeed = 0;
-            return;
-        }*/
 
         float heightY = heightMap.getHeight(posX, posZ);
         if (posY < heightY) {
