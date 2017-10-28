@@ -22,6 +22,7 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
+import pl.android.puzzledepartment.objects.DragonStatue;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
@@ -67,6 +68,7 @@ public class MainGameRenderer implements Renderer {
     private Light light;
     private HeightMap heightMap;
     private Room room;
+    private DragonStatue dragonStatue;
     private Camera camera;
 
     private MasterRenderer masterRenderer;
@@ -116,6 +118,7 @@ public class MainGameRenderer implements Renderer {
          //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
+        dragonStatue = new DragonStatue(new Point(10.0f, 0.5f, 10.0f));
 
         masterRenderer = new MasterRenderer(context, light);
         collisionManager = new CollisionManager();
@@ -124,6 +127,7 @@ public class MainGameRenderer implements Renderer {
         collisionManager.add(teleportPuzzle);
 
         actionManager = new ActionManager();
+        actionManager.add(dragonStatue);
     }
 
     @Override
@@ -145,6 +149,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
+        masterRenderer.render(dragonStatue);
 
       //  masterRenderer.renderNormalUnColoured(dragon);
        // for(Dragon d:dragons)

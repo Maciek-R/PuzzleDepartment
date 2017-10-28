@@ -19,6 +19,10 @@ public class ActionManager {
         actionables = new ArrayList<Actionable>();
     }
 
+    public void add(Actionable actionable) {
+        actionables.add(actionable);
+    }
+
     public boolean isNearAnyActionableObject(Camera camera) {
         for (Actionable a : actionables)
             if (extendedCollide(a, camera)) {
