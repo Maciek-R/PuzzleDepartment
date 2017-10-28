@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.objects;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -16,7 +17,7 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
-public class Cube extends Entity{
+public class Cube extends Entity {
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT) * BYTES_PER_FLOAT;

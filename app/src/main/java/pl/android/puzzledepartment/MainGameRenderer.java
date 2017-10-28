@@ -14,6 +14,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import pl.android.puzzledepartment.gui.GuiEntity;
+import pl.android.puzzledepartment.managers.ActionManager;
 import pl.android.puzzledepartment.managers.CollisionManager;
 import pl.android.puzzledepartment.managers.EntityManager;
 import pl.android.puzzledepartment.managers.TimeManager;
@@ -70,6 +71,7 @@ public class MainGameRenderer implements Renderer {
 
     private MasterRenderer masterRenderer;
     private CollisionManager collisionManager;
+    private ActionManager actionManager;
     private EntityManager entityManager;
 
     private TeleportPuzzle teleportPuzzle;
@@ -121,6 +123,7 @@ public class MainGameRenderer implements Renderer {
         collisionManager.add(room);
         collisionManager.add(teleportPuzzle);
 
+        actionManager = new ActionManager();
     }
 
     @Override
@@ -149,9 +152,10 @@ public class MainGameRenderer implements Renderer {
 
         light.move2();
         camera.update(heightMap, collisionManager);
-
+        if(actionManager.isNearAnyActionableObject(camera))
+            masterRenderer.renderGuis(guiEntities);
         drawParticles();
-        masterRenderer.renderGuis(guiEntities);
+
        // for(Dragon d:dragons)
        //     d.rotate(60f);
        // cube.rotate(0.5f);

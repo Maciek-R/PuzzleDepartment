@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -14,7 +15,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-08.
  */
 
-public abstract class Entity {
+public abstract class Entity{
     protected Point pos;
     protected float verAngle;
     protected Vector3f scale;
