@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.gui;
 
-import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 /**

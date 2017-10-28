@@ -3,20 +3,15 @@ package pl.android.puzzledepartment.render_engine;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
-import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.Entity;
-import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
-import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
@@ -33,7 +28,6 @@ import pl.android.puzzledepartment.util.MatrixHelper;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
-import static android.opengl.Matrix.setRotateEulerM;
 import static android.opengl.Matrix.translateM;
 
 /**

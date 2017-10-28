@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.objects;
 
-import android.os.SystemClock;
 
 import pl.android.puzzledepartment.managers.CollisionManager;
 import pl.android.puzzledepartment.managers.TimeManager;

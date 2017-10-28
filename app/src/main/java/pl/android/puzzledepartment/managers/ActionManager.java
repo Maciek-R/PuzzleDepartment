@@ -5,7 +5,6 @@ import java.util.List;
 
 import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.objects.Camera;
-import pl.android.puzzledepartment.objects.Entity;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-28.

@@ -9,7 +9,6 @@ import static android.opengl.GLES20.GL_STATIC_DRAW;
 import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glBufferData;
 import static android.opengl.GLES20.glGenBuffers;
-import static android.opengl.GLES20.glVertexAttribPointer;
 import static pl.android.puzzledepartment.util.Constants.BYTES_PER_SHORT;
 
 /**

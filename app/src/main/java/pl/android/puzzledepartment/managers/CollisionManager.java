@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.managers;
 
-import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

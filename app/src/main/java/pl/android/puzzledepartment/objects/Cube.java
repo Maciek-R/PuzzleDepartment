@@ -1,9 +1,6 @@
 package pl.android.puzzledepartment.objects;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-
-import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;

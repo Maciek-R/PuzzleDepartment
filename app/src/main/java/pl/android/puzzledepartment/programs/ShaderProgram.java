@@ -6,7 +6,6 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.util.ShaderHelper;
 import pl.android.puzzledepartment.util.TextResourceReader;
 
-import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 
 /**
