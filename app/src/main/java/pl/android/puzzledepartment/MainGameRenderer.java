@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.managers.CollisionManager;
 import pl.android.puzzledepartment.managers.EntityManager;
 import pl.android.puzzledepartment.managers.TimeManager;
@@ -31,6 +32,7 @@ import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
@@ -73,6 +75,9 @@ public class MainGameRenderer implements Renderer {
     private TeleportPuzzle teleportPuzzle;
     private final Random random = new Random();
 
+    private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
+    private int guiTexture;
+
     private long globalStartTime;
 
     public MainGameRenderer(Context context){
@@ -85,6 +90,8 @@ public class MainGameRenderer implements Renderer {
 //        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         camera = new Camera(-6f, 15f, 0f);
+        guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
+        guiEntities.add(new GuiEntity(guiTexture, new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f)));
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
         particleSystem = new ParticleSystem(10000, particleTexture);
         globalStartTime = System.nanoTime();
@@ -135,6 +142,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
+
       //  masterRenderer.renderNormalUnColoured(dragon);
        // for(Dragon d:dragons)
         //    masterRenderer.renderNormalUnColoured(d);
@@ -143,6 +151,7 @@ public class MainGameRenderer implements Renderer {
         camera.update(heightMap, collisionManager);
 
         drawParticles();
+        masterRenderer.renderGuis(guiEntities);
        // for(Dragon d:dragons)
        //     d.rotate(60f);
        // cube.rotate(0.5f);

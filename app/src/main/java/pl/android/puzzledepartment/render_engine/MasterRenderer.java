@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.android.puzzledepartment.gui.GuiEntity;
+import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
@@ -18,6 +20,7 @@ import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
+import pl.android.puzzledepartment.programs.GuiShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
 import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
@@ -44,6 +47,7 @@ public class MasterRenderer {
     private final EntityRenderer simpleColorRenderer;
     private final HeightmapRenderer heightmapRenderer;
     private final EntityRenderer particleRenderer;
+    private final GuiRenderer guiRenderer;
 
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
@@ -60,6 +64,7 @@ public class MasterRenderer {
         simpleColorRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
         particleRenderer = new EntityRenderer(new ParticleShaderProgram(context));
+        guiRenderer = new GuiRenderer(new GuiShaderProgram(context));
         this.light = light;
         entities = new ArrayList<Dragon>();
     }
@@ -114,5 +119,9 @@ public class MasterRenderer {
 
     public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, float currentTime) {
         particleRenderer.renderParticles(particleSystem, particleShooter, viewProjectionMatrix, currentTime);
+    }
+
+    public void renderGuis(List<GuiEntity> guiEntities) {
+        guiRenderer.render(guiEntities);
     }
 }
