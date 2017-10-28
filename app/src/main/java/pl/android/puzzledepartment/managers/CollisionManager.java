@@ -29,39 +29,76 @@ public class CollisionManager {
     }
 
     public CollisionDescription checkCollision(Camera camera) {
+        collisionDescription.setIsCollision(false);
+        collisionDescription.isCollisionOverEntity = false;
+        collisionDescription.isCollisionSideEntity = false;
         for (Entity e : entities)
-             if(isCollision(e, camera))
-                 return collisionDescription;
+            if (isCollision(e, camera)) {
+                //if (collisionDescription.isOverEntity())
+               //     continue;
+               // else
+                //    return collisionDescription;
+            }
+
+        if(collisionDescription.isCollision())
+            return collisionDescription;
+
+       // collisionDescription.setIsCollision(false);
         return collisionDescription;
     }
 
     private boolean isCollision(Entity e, Camera camera) {
+
+        final float scaleY = e.getScale().y/2;
+
+        if (collide(e, camera)) {
+
+            collisionDescription.setIsCollision(true);
+            if (camera.getPosY() >= (e.getPos().y + scaleY)) {
+                collisionDescription.setCollisionPosY(e.getPos().y + scaleY);
+                collisionDescription.isCollisionOverEntity = true;
+            } else {
+                collisionDescription.isCollisionSideEntity = true;
+               // collisionDescription.setIsOverEntity(false);
+            }
+
+            return true;
+        } else
+            return false;
+    }
+
+    private boolean collide(Entity e, Camera camera) {
         final float scaleX = e.getScale().x/2;
         final float scaleY = e.getScale().y/2;
         final float scaleZ = e.getScale().z/2;
 
-        final float possibleCamX = camera.getPossibleX();
-      //  final float possibleCamY = camera.getPosY();
-        final float possibleCamY = camera.getPossibleY();
-        final float possibleCamZ = camera.getPossibleZ();
+        final float entityLeftPosX = e.getPos().x - scaleX;
+        final float entityRightPosX = e.getPos().x + scaleX;
+        final float entityBottomPosY = e.getPos().y - scaleY;
+        final float entityTopPosY = e.getPos().y + scaleY;
+        final float entityLeftPosZ = e.getPos().z - scaleZ;
+        final float entityRightPosZ = e.getPos().z + scaleZ;
 
-        if (possibleCamX >= (e.getPos().x - scaleX) && possibleCamX <= (e.getPos().x + scaleX) &&
-                possibleCamY >= (e.getPos().y - scaleY) && possibleCamY <= (e.getPos().y + scaleY) &&
-                possibleCamZ >= (e.getPos().z - scaleZ) && possibleCamZ <= (e.getPos().z + scaleZ)) {
+        final float possibleCamLeftX = camera.getPossibleX() - camera.WIDTH/2;
+        final float possibleCamRightX = camera.getPossibleX() + camera.WIDTH/2;
+        final float possibleCamBottomY = camera.getPossibleY();
+        final float possibleCamTopY = camera.getPossibleY() + camera.WIDTH;
+        final float possibleCamLeftZ = camera.getPossibleZ() - camera.WIDTH/2;
+        final float possibleCamRightZ = camera.getPossibleZ() + camera.WIDTH/2;
 
-            collisionDescription.setIsCollision(true);
-            collisionDescription.setCollisionPosY(e.getPos().y + scaleY);
-            if(camera.getPosY() >= (e.getPos().y + scaleY))
-                collisionDescription.setIsOverEntity(true);
-            else
-                collisionDescription.setIsOverEntity(false);
-
-            return true;
-        } else {
-            collisionDescription.setIsCollision(false);
+        if(possibleCamLeftX > entityRightPosX || possibleCamRightX < entityLeftPosX ||
+                possibleCamBottomY > entityTopPosY || possibleCamTopY < entityBottomPosY ||
+                possibleCamLeftZ > entityRightPosZ || possibleCamRightZ < entityLeftPosZ)
             return false;
-        }
+        else
+            return true;
+
+        //possibleCamX >= (e.getPos().x - scaleX) && possibleCamX <= (e.getPos().x + scaleX) &&
+        //        possibleCamY >= (e.getPos().y - scaleY) && possibleCamY <= (e.getPos().y + scaleY) &&
+        //        possibleCamZ >= (e.getPos().z - scaleZ) && possibleCamZ <= (e.getPos().z + scaleZ))
+
     }
+
     public void add(Entity entity) {
         entities.add(entity);
     }
@@ -82,17 +119,18 @@ public class CollisionManager {
 
     public static class CollisionDescription {
         private boolean isCollision;
-        private boolean overEntity;
+        public boolean isCollisionOverEntity;
+        public boolean isCollisionSideEntity;
         private float collisionPosY;
 
         public boolean isCollision() {
             return isCollision;
         }
-        public boolean isOverEntity() {return overEntity; }
+      //  public boolean isOverEntity() {return overEntity; }
         public float getCollisionPosY() {
             return collisionPosY;
         }
-        public void setIsOverEntity(boolean overEntity) {this.overEntity = overEntity; }
+        //public void setIsOverEntity(boolean overEntity) {this.overEntity = overEntity; }
         public void setIsCollision(boolean isCollision) {
             this.isCollision = isCollision;
         }

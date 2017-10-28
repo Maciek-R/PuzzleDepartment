@@ -30,26 +30,18 @@ import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.Logger;
 import pl.android.puzzledepartment.util.TextureHelper;
-import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
-import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_TEST;
-import static android.opengl.GLES20.GL_ONE;
-import static android.opengl.GLES20.glBlendFunc;
+
 import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
-import static android.opengl.GLES20.glDisable;
 import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
-import static android.opengl.Matrix.invertM;
-import static android.opengl.Matrix.multiplyMM;
-import static android.opengl.Matrix.rotateM;
-import static android.opengl.Matrix.setIdentityM;
-import static android.opengl.Matrix.translateM;
+
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-06.
@@ -68,7 +60,7 @@ public class MainGameRenderer implements Renderer {
     private ShaderCube shaderCube;
     private Cylinder cylinder;
     private List<Dragon> dragons;
-    private Dragon dragon;
+   // private Dragon dragon;
     private Light light;
     private HeightMap heightMap;
     private Room room;
@@ -92,7 +84,7 @@ public class MainGameRenderer implements Renderer {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 //        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
-
+        camera = new Camera(-6f, 15f, 0f);
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
         particleSystem = new ParticleSystem(10000, particleTexture);
         globalStartTime = System.nanoTime();
@@ -104,18 +96,18 @@ public class MainGameRenderer implements Renderer {
 
         teleportPuzzle = new TeleportPuzzle(new Point(0, 1f, 0), context);
 
-        cube = new Cube(new Point(-0.5f, 0.5f, -2));
+        cube = new Cube(new Point(-15f, 0.5f, 20f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
         cylinder = new Cylinder(new Point(0.0f, 1.0f, -5.0f));
         //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
-        dragon = new Dragon(new Point(-2f, 2f, -2f), entityManager.getEntityModel(R.raw.dragon));
+        //dragon = new Dragon(new Point(-2f, 2f, -2f), entityManager.getEntityModel(R.raw.dragon));
        // dragons = new ArrayList<Dragon>();
         //for(int i=-5; i<5; i+=2)
          //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
         room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
-        camera = new Camera(0f, 15f, 0f);
+
         masterRenderer = new MasterRenderer(context, light);
         collisionManager = new CollisionManager();
         collisionManager.add(cube);
@@ -143,7 +135,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderNormalColoured(cylinder);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
-        masterRenderer.renderNormalUnColoured(dragon);
+      //  masterRenderer.renderNormalUnColoured(dragon);
        // for(Dragon d:dragons)
         //    masterRenderer.renderNormalUnColoured(d);
 

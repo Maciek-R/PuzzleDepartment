@@ -12,6 +12,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public class Camera {
 
+    public static final float WIDTH = 0.7f;
     private static final float JUMP_POWER = 20;
     private static final float GRAVITY = -50;
 
@@ -46,7 +47,7 @@ public class Camera {
         this.lookPosY = posY + 1.5f;
     }
 
-    public void move() {
+    public void moveXZ() {
         this.posX = possiblePosX;
         this.posZ = possiblePosZ;
 
@@ -68,7 +69,6 @@ public class Camera {
             return;
         }
 
-
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
         //this.posY += flySpeed * TimeManager.getDeltaTimeInSeconds();
@@ -76,18 +76,29 @@ public class Camera {
 
         collisionDescription = collisionManager.checkCollision(this);
         if (!collisionDescription.isCollision()) {
-            move();
+            moveXZ();
+          //  moveY();
             this.posY = possiblePosY;
             this.lookPosY = posY + 1.5f;
         }
         else{
-            if (collisionDescription.isOverEntity()) {
-                move();
+            if (collisionDescription.isCollisionOverEntity && collisionDescription.isCollisionSideEntity) {
                 this.posY = collisionDescription.getCollisionPosY();
                 this.lookPosY = posY + 1.5f;
+                isInAir = false;
+                flySpeed = 0;
             }
-            isInAir = false;
-            flySpeed = 0;
+            else if (collisionDescription.isCollisionOverEntity) {
+                moveXZ();
+                this.posY = collisionDescription.getCollisionPosY();
+                this.lookPosY = posY + 1.5f;
+                isInAir = false;
+                flySpeed = 0;
+            } else if (collisionDescription.isCollisionSideEntity) {
+                this.posY = possiblePosY;
+                this.lookPosY = posY + 1.5f;
+            }
+
         }
 
 
