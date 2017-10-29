@@ -7,6 +7,6 @@ varying vec2 v_PassTextureCoordinates;
 
 void main()
 {
-    v_PassTextureCoordinates = a_TextureCoordinates * 64.0;
+    v_PassTextureCoordinates = a_TextureCoordinates;
     gl_Position = u_Matrix * vec4(a_Position, 1.0);
 }

@@ -20,6 +20,12 @@ public class ShaderProgram {
     protected static final String U_IT_MODEL_VIEW_MATRIX = "u_IT_ModelMatrix";
 
     protected static final String U_TEXTURE_UNIT = "u_TextureUnit";
+    protected static final String U_BACKGROUND_TEXTURE_UNIT = "u_BackgroundTextureUnit";
+    protected static final String U_RED_TEXTURE_UNIT = "u_RedTextureUnit";
+    protected static final String U_GREEN_TEXTURE_UNIT = "u_GreenTextureUnit";
+    protected static final String U_BLUE_TEXTURE_UNIT = "u_BlueTextureUnit";
+    protected static final String U_BLENDMAP_TEXTURE_UNIT = "u_BlendMapTextureUnit";
+
     protected static final String U_COLOR = "u_Color";
     protected static final String U_CAMERA_POS = "u_CameraPos";
     protected static final String U_LIGHT_POS = "u_LightPos";

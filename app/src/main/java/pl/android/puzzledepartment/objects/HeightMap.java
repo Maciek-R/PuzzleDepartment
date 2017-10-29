@@ -32,10 +32,12 @@ public class HeightMap {
     private final IndexBuffer indexBuffer;
     private float[][] heights;
     private final Vector3f scale;
-    private final int textureId;
+    private final TerrainTexturePack terrainTexturePack;
+    private final TerrainTexture blendMap;
 
-    public HeightMap(Bitmap bitmap, Vector3f scale, int textureId) {
-        this.textureId = textureId;
+    public HeightMap(Bitmap bitmap, Vector3f scale, TerrainTexturePack terrainTexturePack, TerrainTexture blendMap) {
+        this.terrainTexturePack = terrainTexturePack;
+        this.blendMap = blendMap;
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         this.scale = scale;
@@ -155,7 +157,11 @@ public class HeightMap {
         return scale;
     }
 
-    public int getTexture() {
-        return textureId;
+    public TerrainTexturePack getTerrainTexturePack() {
+        return terrainTexturePack;
+    }
+
+    public TerrainTexture getBlendMap() {
+        return blendMap;
     }
 }
