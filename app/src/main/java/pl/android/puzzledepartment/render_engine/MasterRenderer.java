@@ -137,4 +137,8 @@ public class MasterRenderer {
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
         skyboxRenderer.render(skybox, viewProjectionMatrix);
     }
+
+    public void renderNormalSpecularUnColoured(Entity entity, Camera camera) {
+        normalUnColouredEntityRenderer.renderNormalSpecularUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f, camera,  entity.getDamper(), entity.getReflectivity());
+    }
 }

@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.render_engine;
 
 
+import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
@@ -103,5 +104,16 @@ public class EntityRenderer {
         particleSystem.draw();
         glDepthMask(true);
         glDisable(GL_BLEND);
+    }
+
+    public void renderNormalSpecularUnColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light, float r, float g, float b, Camera camera, float damper, float reflectivity) {
+        prepareModelMatrix(entity);
+        multiplyMM(modelViewMatrix, 0, viewMatrix, 0, modelMatrix, 0);
+        invertM(tempMatrix, 0, modelMatrix, 0);
+        transposeM(invertedModelMatrix, 0, tempMatrix, 0);
+        multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
+        shaderProgram.useProgram();
+        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b, camera, damper, reflectivity);
+        bindDataAndDraw(entity, shaderProgram);
     }
 }

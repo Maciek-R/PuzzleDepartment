@@ -21,6 +21,9 @@ public abstract class Entity{
     protected Vector3f scale;
     protected List<ObjectBuilder.DrawCommand> drawList;
 
+    protected float damper = 10;
+    protected float reflectivity = 1;
+
     protected Entity(Point pos) {
         this(pos, 0f, new Vector3f(1f, 1f, 1f));
     }
@@ -62,4 +65,12 @@ public abstract class Entity{
     }
     public float getRotation() { return verAngle; }
     public Vector3f getScale() { return scale; }
+
+    public float getDamper() {
+        return damper;
+    }
+
+    public float getReflectivity() {
+        return reflectivity;
+    }
 }
