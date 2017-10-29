@@ -8,9 +8,12 @@ import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 
+import static android.opengl.GLES20.GL_BACK;
 import static android.opengl.GLES20.GL_BLEND;
+import static android.opengl.GLES20.GL_CULL_FACE;
 import static android.opengl.GLES20.GL_ONE;
 import static android.opengl.GLES20.glBlendFunc;
+import static android.opengl.GLES20.glCullFace;
 import static android.opengl.GLES20.glDepthMask;
 import static android.opengl.GLES20.glDisable;
 import static android.opengl.GLES20.glEnable;
@@ -112,8 +115,11 @@ public class EntityRenderer {
         invertM(tempMatrix, 0, modelMatrix, 0);
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b, camera, damper, reflectivity);
         bindDataAndDraw(entity, shaderProgram);
+        glDisable(GL_CULL_FACE);
     }
 }
