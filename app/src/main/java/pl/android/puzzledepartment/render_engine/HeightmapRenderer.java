@@ -25,7 +25,7 @@ public class HeightmapRenderer {
         scaleM(modelMatrix, 0, heightMap.getScale().x, heightMap.getScale().y, heightMap.getScale().z);
         multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
         heightmapShaderProgram.useProgram();
-        heightmapShaderProgram.setUniforms(modelViewProjectionMatrix);
+        heightmapShaderProgram.setUniforms(modelViewProjectionMatrix, heightMap.getTexture());
         heightMap.bindData(heightmapShaderProgram);
         heightMap.draw();
     }

@@ -57,6 +57,7 @@ public class ShaderProgram {
     }
     public int getColorAttributeLocation() { return -1;}
     public int getNormalAttributeLocation() { return -1; }
+    public int getTextureCoordsAttributeLocation() { return -1; }
     public int getDirectionVectorAttributeLocation() { return -1; }
     public int getParticleStartTimeAttributeLocation() {
         return -1;

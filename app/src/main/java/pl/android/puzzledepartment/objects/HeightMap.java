@@ -22,16 +22,20 @@ import static android.opengl.GLES20.glDrawElements;
 
 public class HeightMap {
     private static final int POSITION_COMPONENT_COUNT = 3;
+    private static final int TEXTURE_COMPONENT_COUNT = 2;
 
     private final int width;
     private final int height;
     private final int numElements;
     private final VertexBuffer vertexBuffer;
+    private final VertexBuffer vertexTextureBuffer;
     private final IndexBuffer indexBuffer;
     private float[][] heights;
     private final Vector3f scale;
+    private final int textureId;
 
-    public HeightMap(Bitmap bitmap, Vector3f scale) {
+    public HeightMap(Bitmap bitmap, Vector3f scale, int textureId) {
+        this.textureId = textureId;
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         this.scale = scale;
@@ -42,11 +46,13 @@ public class HeightMap {
         heights = new float[height][width];
         numElements = calculateNumElements();
         vertexBuffer = new VertexBuffer(loadBitmapData(bitmap));
+        vertexTextureBuffer = new VertexBuffer(loadTextureData());
         indexBuffer = new IndexBuffer(createIndexData());
     }
 
     public void bindData(HeightmapShaderProgram heightmapShaderProgram) {
         vertexBuffer.setVertexAttribPointer(0, heightmapShaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, 0);
+        vertexTextureBuffer.setVertexAttribPointer(0, heightmapShaderProgram.getTextureCoordsAttributeLocation(), TEXTURE_COMPONENT_COUNT, 0);
     }
 
     public void draw() {
@@ -104,6 +110,19 @@ public class HeightMap {
         return heightMapVertices;
     }
 
+    private float[] loadTextureData() {
+        final float[] textureCoords = new float[width * height * TEXTURE_COMPONENT_COUNT];
+        int offset = 0;
+
+        for(int row = 0; row < height; ++row) {
+            for(int col = 0; col < width; ++col) {
+                textureCoords[offset++] = (float)col/((float)width - 1);
+                textureCoords[offset++] = (float)row/((float)height - 1);
+            }
+        }
+        return textureCoords;
+    }
+
     public float getHeight(float worldX, float worldZ){
         float gridXSquareSize = scale.x / ((float)width-1);
         float gridZSquareSize = scale.z / ((float)height-1);
@@ -134,5 +153,9 @@ public class HeightMap {
     }
     public Vector3f getScale() {
         return scale;
+    }
+
+    public int getTexture() {
+        return textureId;
     }
 }

@@ -119,7 +119,7 @@ public class MainGameRenderer implements Renderer {
        // dragons = new ArrayList<Dragon>();
         //for(int i=-5; i<5; i+=2)
          //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
-        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f));
+        heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap(), new Vector3f(50f, 10f, 50f), TextureHelper.loadTexture(context, R.drawable.grass));
         room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
         dragonStatue = new DragonStatue(new Point(10.0f, 0.5f, 10.0f));
 
