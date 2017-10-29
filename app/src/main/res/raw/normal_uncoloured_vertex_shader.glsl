@@ -3,24 +3,24 @@ uniform mat4 u_ModelMatrix;
 uniform mat4 u_IT_ModelMatrix;
 uniform vec4 u_Color;
 uniform vec3 u_LightPos;
-uniform vec3 u_LightColor;
+uniform vec3 u_CameraPos;
 
 attribute vec4 a_Position;
 attribute vec4 a_Normal;
 
 varying vec4 v_Color;
 varying vec3 v_Normal;
-varying vec3 v_FragPos;
-
-
-vec3 normal;
-
+varying vec3 v_ToLightDir;
+varying vec3 v_ToCameraDir;
 
 
 void main()
 {
-    v_FragPos = vec3(u_ModelMatrix * a_Position);
-    v_Normal = normalize(vec3(u_IT_ModelMatrix * a_Normal));
+    vec3 worldPosition = vec3(u_ModelMatrix * a_Position);
+    v_Normal = vec3(u_IT_ModelMatrix * a_Normal);
+    v_ToLightDir = u_LightPos - worldPosition;
+    v_ToCameraDir = u_CameraPos - worldPosition;
+
     gl_Position = u_Matrix * a_Position;
     v_Color = u_Color;
 }
