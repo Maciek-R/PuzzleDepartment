@@ -12,6 +12,7 @@ import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
+import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.ColorShaderProgram;
@@ -21,6 +22,7 @@ import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
 import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
 import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
+import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
@@ -41,11 +43,16 @@ public class MasterRenderer {
     private final EntityRenderer simpleColorRenderer;
     private final HeightmapRenderer heightmapRenderer;
     private final EntityRenderer particleRenderer;
+    private final SkyboxRenderer skyboxRenderer;
     private final GuiRenderer guiRenderer;
 
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
     private final float[] viewProjectionMatrix = new float[16];
+
+    private final float[] tmp = new float[16];
+    private final float[] out = new float[16];
+
 
     private List<Dragon> entities;
 
@@ -59,6 +66,8 @@ public class MasterRenderer {
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
         particleRenderer = new EntityRenderer(new ParticleShaderProgram(context));
         guiRenderer = new GuiRenderer(new GuiShaderProgram(context));
+        skyboxRenderer = new SkyboxRenderer(new SkyboxShaderProgram(context));
+
         this.light = light;
         entities = new ArrayList<Dragon>();
     }
@@ -117,5 +126,13 @@ public class MasterRenderer {
 
     public void renderGuis(List<GuiEntity> guiEntities) {
         guiRenderer.render(guiEntities);
+    }
+
+    public void renderSkybox(Skybox skybox, Camera camera) {
+        setIdentityM(viewMatrix, 0);
+        rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
+        rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
+        multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+        skyboxRenderer.render(skybox, viewProjectionMatrix);
     }
 }

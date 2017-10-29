@@ -26,6 +26,7 @@ import pl.android.puzzledepartment.objects.DragonStatue;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -82,6 +83,7 @@ public class MainGameRenderer implements Renderer {
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
     private int guiTexture;
 
+    private Skybox skybox;
     private long globalStartTime;
 
     public MainGameRenderer(Context context){
@@ -93,7 +95,8 @@ public class MainGameRenderer implements Renderer {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 //        glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
-        camera = new Camera(-6f, 15f, 0f);
+        camera = new Camera(0f, 0f, 0f);
+        skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
         guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
         guiEntities.add(new GuiEntity(guiTexture, new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f)));
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
@@ -141,6 +144,7 @@ public class MainGameRenderer implements Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         TimeManager.update();
 
+        masterRenderer.renderSkybox(skybox, camera);
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
         masterRenderer.renderLight(light);
