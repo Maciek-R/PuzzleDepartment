@@ -130,8 +130,10 @@ public class MasterRenderer {
 
     public void renderSkybox(Skybox skybox, Camera camera) {
         setIdentityM(viewMatrix, 0);
+        skybox.rotate();
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
+        rotateM(viewMatrix, 0, skybox.getRotation(), 0f, 1f, 0f);
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
         skyboxRenderer.render(skybox, viewProjectionMatrix);
     }

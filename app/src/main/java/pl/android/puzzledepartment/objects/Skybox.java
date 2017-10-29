@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.objects;
 import java.nio.ByteBuffer;
 
 import pl.android.puzzledepartment.data.VertexArray;
+import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 
 import static android.opengl.GLES20.GL_TRIANGLES;
@@ -18,6 +19,7 @@ public class Skybox {
     private final VertexArray vertexArray;
     private final ByteBuffer indexArray;
     private final int textureId;
+    private float rotation = 0;
 
     public Skybox(int textureId) {
         this.textureId = textureId;
@@ -59,4 +61,10 @@ public class Skybox {
     public int getTextureId() {
         return textureId;
     }
+
+    public void rotate() {
+        this.rotation += TimeManager.getDeltaTimeInSeconds();
+    }
+
+    public float getRotation(){return rotation;}
 }
