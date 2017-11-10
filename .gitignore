@@ -11,3 +11,4 @@ gradle/
 .externalNativeBuild
 gradlew
 gradlew.bat
+Scripts/*.cs.meta
