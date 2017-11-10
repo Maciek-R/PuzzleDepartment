@@ -126,6 +126,9 @@ public class HeightMap {
     }
 
     public float getHeight(float worldX, float worldZ){
+        float terrainX = worldX + scale.x;
+        float terrainZ = worldZ + scale.z;
+
         float gridXSquareSize = scale.x / ((float)width-1);
         float gridZSquareSize = scale.z / ((float)height-1);
 
@@ -136,11 +139,12 @@ public class HeightMap {
             return 0;
         }
 
-        float xCoord = (worldX % gridXSquareSize) / gridXSquareSize;
-        float zCoord = (worldZ % gridZSquareSize) / gridZSquareSize;
+        float xCoord = (terrainX % gridXSquareSize) / gridXSquareSize;
+        float zCoord = (terrainZ % gridZSquareSize) / gridZSquareSize;
 
         float height;
         if (xCoord <= (1-zCoord)) {
+           // System.out.println("x:" + xCoord + " z: "+zCoord);
             height = Maths
                     .barryCentric(new Vector3f(0, heights[gridZ][gridX], 0), new Vector3f(1,
                             heights[gridZ][gridX + 1], 0), new Vector3f(0,
@@ -148,7 +152,7 @@ public class HeightMap {
         } else {
             height = Maths
                     .barryCentric(new Vector3f(1, heights[gridZ][gridX + 1], 0), new Vector3f(1,
-                            heights[gridZ][gridX], 1), new Vector3f(0,
+                            heights[gridZ + 1][gridX + 1], 1), new Vector3f(0,
                             heights[gridZ + 1][gridX], 1), new Vector2f(xCoord, zCoord));
         }
         return height*scale.y;
