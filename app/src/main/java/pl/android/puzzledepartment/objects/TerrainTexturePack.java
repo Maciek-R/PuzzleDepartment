@@ -11,11 +11,11 @@ public class TerrainTexturePack {
     private TerrainTexture blueTexture;
     private TerrainTexture greenTexture;
 
-    public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture redTexture, TerrainTexture blueTexture, TerrainTexture greenTexture) {
+    public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture redTexture, TerrainTexture greenTexture, TerrainTexture blueTexture) {
         this.backgroundTexture = backgroundTexture;
         this.redTexture = redTexture;
-        this.blueTexture = blueTexture;
         this.greenTexture = greenTexture;
+        this.blueTexture = blueTexture;
     }
 
     public TerrainTexture getBackgroundTexture() {

@@ -122,12 +122,12 @@ public class MainGameRenderer implements Renderer {
         //for(int i=-5; i<5; i+=2)
          //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
-                    , new Vector3f(50f, 10f, 50f)
-                    , new TerrainTexturePack(new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.grassy2))
+                    , new Vector3f(200f, 10f, 200f)
+                    , new TerrainTexturePack(new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.mountain))
                                             , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.mud))
-                                            , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.grassflowers))
-                                            , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.path)))
-                    , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.blendmap)));
+                                            , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.grassy2))
+                                            , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.water)))
+                    , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.bluredcolourmap)));
         room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
         dragonStatue = new DragonStatue(new Point(10.0f, 0.5f, 10.0f));
 
