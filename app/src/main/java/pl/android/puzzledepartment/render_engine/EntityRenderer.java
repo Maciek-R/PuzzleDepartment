@@ -116,11 +116,11 @@ public class EntityRenderer {
         invertM(tempMatrix, 0, modelMatrix, 0);
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+       // glEnable(GL_CULL_FACE);
+       // glCullFace(GL_BACK);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b, camera, damper, reflectivity);
         bindDataAndDraw(entity, shaderProgram);
-        glDisable(GL_CULL_FACE);
+       // glDisable(GL_CULL_FACE);
     }
 }

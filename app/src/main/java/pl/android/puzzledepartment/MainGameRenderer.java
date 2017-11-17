@@ -99,8 +99,8 @@ public class MainGameRenderer implements Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-      //  glEnable(GL_CULL_FACE);
-       // glCullFace(GL_FRONT);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         glEnable(GL_DEPTH_TEST);
         camera = new Camera(0f, 0f, 0f);
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
@@ -119,7 +119,7 @@ public class MainGameRenderer implements Renderer {
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
-        cylinder = new Cylinder(new Point(0.0f, 1.0f, -5.0f));
+        cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 4.5f, 3f), new Vector3f(1f, 1f, 1f));
         dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));

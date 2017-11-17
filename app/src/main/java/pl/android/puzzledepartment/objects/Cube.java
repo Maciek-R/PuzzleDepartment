@@ -32,23 +32,23 @@ public class Cube extends Entity {
     };
     private final static byte[] INDEX_DATA = {
             // Front
-            1, 3, 0,
-            0, 3, 2,
+            0, 2, 1,
+            1, 2, 3,
             // Back
-            4, 6, 5,
-            5, 6, 7,
+            5, 7, 4,
+            4, 7, 6,
             // Left
-            0, 2, 4,
-            4, 2, 6,
+            4, 6, 0,
+            0, 6, 2,
             // Right
-            5, 7, 1,
-            1, 7, 3,
+            1, 3, 5,
+            5, 3, 7,
             // Top
-            0, 4, 1,
-            1, 4, 5,
+            4, 0, 5,
+            5, 0, 1,
             // Bottom
-            6, 2, 7,
-            7, 2, 3
+            2, 6, 3,
+            3, 6, 7
     };
 
     private final VertexArray vertexArray;

@@ -90,10 +90,16 @@ public class ObjectBuilder {
 
         for(int i=0; i<=numPoints; ++i){
             float angleInRadians = ((float)i / (float)numPoints) * ((float) Math.PI * 2f);
+            float ccwAngleInRadians = ((float)(numPoints - i) / (float)numPoints) * ((float) Math.PI * 2f);
+            float angleRad;
 
-            vertexData[offset++] = (float)Math.cos(angleInRadians);
+            if(isTop)
+                angleRad = ccwAngleInRadians;
+            else
+                angleRad = angleInRadians;
+            vertexData[offset++] = (float)Math.cos(angleRad);
             vertexData[offset++] = posY;
-            vertexData[offset++] = (float)Math.sin(angleInRadians);
+            vertexData[offset++] = (float)Math.sin(angleRad);
 
             vertexData[offset++] = normX;
             vertexData[offset++] = normY;
