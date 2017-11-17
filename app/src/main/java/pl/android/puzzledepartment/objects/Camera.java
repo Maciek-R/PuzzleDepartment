@@ -60,6 +60,7 @@ public class Camera {
     }
 
     public void update(HeightMap heightMap, CollisionManager collisionManager) {
+        System.out.println("X: " + this.posX + "Z:  " + this.posZ);
         countNextPossiblePosition(heightMap);
 
         if(collisionManager.checkTeleportCollision(this)){

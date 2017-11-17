@@ -105,19 +105,19 @@ public class MainGameRenderer implements Renderer {
         particleSystem = new ParticleSystem(10000, particleTexture);
         globalStartTime = System.nanoTime();
         final Vector3f particleDirection = new Vector3f(0f, 0.5f, 0f);
-        redParticleShooter = new ParticleShooter(new Point(0f, 3.0f, 0f), particleDirection, Color.rgb(255, 50, 5), 360f, 0.5f);
-        blueParticleShooter = new ParticleShooter(new Point(-3f, 3.0f, 0f), particleDirection, Color.rgb(10, 10, 255), 360f, 0.5f);
+        redParticleShooter = new ParticleShooter(new Point(2f, 4.0f, -20f), particleDirection, Color.rgb(255, 50, 5), 60f, 0.5f);
+        blueParticleShooter = new ParticleShooter(new Point(30f, 4.0f, -20f), particleDirection, Color.rgb(10, 10, 255), 360f, 0.5f);
 
         entityManager = new EntityManager(context);
 
-        teleportPuzzle = new TeleportPuzzle(new Point(0, 1f, 0), context);
+        teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
 
-        cube = new Cube(new Point(-15f, 0.5f, 20f), new Vector3f(5f, 5f, 5f));
+        cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
         cylinder = new Cylinder(new Point(0.0f, 1.0f, -5.0f));
-        //light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
-        light = new Light(new Point(2f, 2.5f, 0f), new Vector3f(1f, 1f, 1f));
-        dragon = new Dragon(new Point(-2f, 2f, -2f), entityManager.getEntityModel(R.raw.dragon));
+        light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
+        light = new Light(new Point(2f, 4.5f, 3f), new Vector3f(1f, 1f, 1f));
+        dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));
        // dragons = new ArrayList<Dragon>();
         //for(int i=-5; i<5; i+=2)
          //        dragons.add(new Dragon(new Point(i, 3.0f, 0.0f), entityManager.getEntityModel(R.raw.dragon)));
@@ -128,7 +128,7 @@ public class MainGameRenderer implements Renderer {
                                             , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.grassy2))
                                             , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.water)))
                     , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.bluredcolourmap)));
-        room = new Room(new Point(0f, 0.5f, 10f), 3f, 20f);
+        room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
         dragonStatue = new DragonStatue(new Point(10.0f, 0.5f, 10.0f));
 
         masterRenderer = new MasterRenderer(context, light);
@@ -163,7 +163,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(teleportPuzzle);
         masterRenderer.render(dragonStatue);
 
-        //masterRenderer.renderNormalUnColoured(dragon);
+        masterRenderer.renderNormalUnColoured(dragon);
         masterRenderer.renderNormalSpecularUnColoured(dragon, camera);
        // for(Dragon d:dragons)
         //    masterRenderer.renderNormalUnColoured(d);
@@ -178,7 +178,7 @@ public class MainGameRenderer implements Renderer {
        //     d.rotate(60f);
        // cube.rotate(0.5f);
         //shaderCube.rotate(-1.0f);
-        //dragon.rotate(2.0f);
+        dragon.rotate(60.0f);
         //cylinder.rotate(1f);
     }
     private void drawParticles() {

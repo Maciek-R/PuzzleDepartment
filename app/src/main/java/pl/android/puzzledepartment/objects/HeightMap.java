@@ -144,7 +144,6 @@ public class HeightMap {
 
         float height;
         if (xCoord <= (1-zCoord)) {
-           // System.out.println("x:" + xCoord + " z: "+zCoord);
             height = Maths
                     .barryCentric(new Vector3f(0, heights[gridZ][gridX], 0), new Vector3f(1,
                             heights[gridZ][gridX + 1], 0), new Vector3f(0,
