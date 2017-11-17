@@ -118,7 +118,7 @@ public class MainGameRenderer implements Renderer {
         teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
-        shaderCube = new ShaderCube(new Point(-0.5f, 4.5f, -2));
+        shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
         cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(3f, 4.5f, -2), new Vector3f(1f, 1f, 1f));
         light = new Light(new Point(2f, 4.5f, 3f), new Vector3f(1f, 1f, 1f));
