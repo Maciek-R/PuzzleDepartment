@@ -14,19 +14,24 @@ import static android.opengl.Matrix.setIdentityM;
 public class HeightmapRenderer {
     private final HeightmapShaderProgram heightmapShaderProgram;
     private final float[] modelMatrix = new float[16];
-    private final float[] modelViewProjectionMatrix = new float[16];
 
     public HeightmapRenderer(HeightmapShaderProgram heightmapShaderProgram) {
         this.heightmapShaderProgram = heightmapShaderProgram;
+        heightmapShaderProgram.useProgram();
+        heightmapShaderProgram.loadTextureUnits();
+        heightmapShaderProgram.stopProgram();
     }
 
-    public void render(HeightMap heightMap, final float[] viewProjectionMatrix) {
+    public void render(HeightMap heightMap, final float[] viewMatrix, final float[] projectionMatrix) {
         setIdentityM(modelMatrix, 0);
         scaleM(modelMatrix, 0, heightMap.getScale().x, heightMap.getScale().y, heightMap.getScale().z);
-        multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
         heightmapShaderProgram.useProgram();
-        heightmapShaderProgram.setUniforms(modelViewProjectionMatrix, heightMap);
+        heightmapShaderProgram.loadModelMatrix(modelMatrix);
+        heightmapShaderProgram.loadViewMatrix(viewMatrix);
+        heightmapShaderProgram.loadProjectionMatrix(projectionMatrix);
+        heightmapShaderProgram.setUniforms(heightMap);
         heightMap.bindData(heightmapShaderProgram);
         heightMap.draw();
+        heightmapShaderProgram.stopProgram();
     }
 }

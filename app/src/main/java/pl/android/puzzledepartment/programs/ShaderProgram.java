@@ -7,16 +7,19 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.util.ShaderHelper;
 import pl.android.puzzledepartment.util.TextResourceReader;
 
+import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
-public class ShaderProgram {
+public abstract class ShaderProgram {
     //Uniform
     protected static final String U_MATRIX = "u_Matrix";
     protected static final String U_MODEL_MATRIX = "u_ModelMatrix";
+    protected static final String U_VIEW_MATRIX = "u_ViewMatrix";
+    protected static final String U_PROJECTION_MATRIX = "u_ProjectionMatrix";
     protected static final String U_IT_MODEL_VIEW_MATRIX = "u_IT_ModelMatrix";
 
     protected static final String U_TEXTURE_UNIT = "u_TextureUnit";
@@ -50,6 +53,7 @@ public class ShaderProgram {
     public void useProgram() {
         glUseProgram(program);
     }
+    public void stopProgram() {glUseProgram(0);}
 
     public void setUniforms(float[] matrix){}
     public void setUniforms(float[] matrix, float r, float g, float b){}

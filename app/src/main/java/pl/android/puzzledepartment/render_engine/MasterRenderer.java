@@ -97,7 +97,7 @@ public class MasterRenderer {
     }
 
     public void render(HeightMap heightMap) {
-        heightmapRenderer.render(heightMap, viewProjectionMatrix);
+        heightmapRenderer.render(heightMap, viewMatrix, projectionMatrix);
     }
 
     public void createProjectionMatrix(int width, int height) {

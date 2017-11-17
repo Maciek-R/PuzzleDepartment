@@ -11,6 +11,7 @@ import pl.android.puzzledepartment.programs.ShaderProgram;
 import static android.opengl.GLES20.GL_BACK;
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_CULL_FACE;
+import static android.opengl.GLES20.GL_FRONT;
 import static android.opengl.GLES20.GL_ONE;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glCullFace;

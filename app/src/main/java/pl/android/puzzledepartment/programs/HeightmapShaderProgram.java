@@ -25,7 +25,9 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  */
 
 public class HeightmapShaderProgram extends ShaderProgram{
-    private final int uMatrixLocation;
+    private final int uModelMatrixLocation;
+    private final int uViewMatrixLocation;
+    private final int uProjectionMatrixLocation;
     private final int aPositionLocation;
     private final int aTextureCoordsLocation;
     private final int uBackgroundTextureUnitLocation;
@@ -37,7 +39,9 @@ public class HeightmapShaderProgram extends ShaderProgram{
     public HeightmapShaderProgram(Context context) {
         super(context, R.raw.heightmap_vertex_shader, R.raw.heightmap_fragment_shader);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+        uModelMatrixLocation = glGetUniformLocation(program, U_MODEL_MATRIX);
+        uViewMatrixLocation = glGetUniformLocation(program, U_VIEW_MATRIX);
+        uProjectionMatrixLocation = glGetUniformLocation(program, U_PROJECTION_MATRIX);
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         aTextureCoordsLocation = glGetAttribLocation(program, A_TEXTURE_COORDINATES);
         uBackgroundTextureUnitLocation = glGetUniformLocation(program, U_BACKGROUND_TEXTURE_UNIT);
@@ -47,14 +51,29 @@ public class HeightmapShaderProgram extends ShaderProgram{
         uBlendMapTextureUnitLocation = glGetUniformLocation(program, U_BLENDMAP_TEXTURE_UNIT);
     }
 
-    public void setUniforms(float[] matrix, HeightMap heightMap){
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    public void loadModelMatrix(final float[] matrix)
+    {
+        glUniformMatrix4fv(uModelMatrixLocation, 1, false, matrix, 0);
+    }
+    public void loadViewMatrix(final float[] matrix)
+    {
+        glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
+    }
+    public void loadProjectionMatrix(final float[] matrix)
+    {
+        glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadTextureUnits()
+    {
         glUniform1i(uBackgroundTextureUnitLocation, 0);
         glUniform1i(uRedTextureUnitLocation, 1);
         glUniform1i(uGreenTextureUnitLocation, 2);
         glUniform1i(uBlueTextureUnitLocation, 3);
         glUniform1i(uBlendMapTextureUnitLocation, 4);
+    }
 
+    public void setUniforms(HeightMap heightMap){
         TerrainTexturePack terrainTexturePack = heightMap.getTerrainTexturePack();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, terrainTexturePack.getBackgroundTexture().getTextureId());
