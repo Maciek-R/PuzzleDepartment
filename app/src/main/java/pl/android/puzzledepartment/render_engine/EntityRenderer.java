@@ -46,14 +46,14 @@ public class EntityRenderer {
         prepareMatrix(entity, viewProjectionMatrix);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelViewProjectionMatrix);
-        bindDataAndDraw(entity, shaderProgram);
+        bindDataAndDraw(entity);
     }
 
     public void render(Entity entity, final float[] viewProjectionMatrix, float r, float g, float b) {
         prepareMatrix(entity, viewProjectionMatrix);
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelViewProjectionMatrix, r, g, b);
-        bindDataAndDraw(entity, shaderProgram);
+        bindDataAndDraw(entity);
     }
 
     private void prepareMatrix(Entity entity,  final float[] viewProjectionMatrix) {
@@ -71,12 +71,12 @@ public class EntityRenderer {
         scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
     }
 
-    private void bindDataAndDraw(Entity entity, ShaderProgram shaderProgram) {
+    private void bindDataAndDraw(Entity entity) {
         entity.bindData(shaderProgram);
         entity.draw();
     }
 
-    public void renderNormalColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light) {
+    /*public void renderNormalColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light) {
         prepareModelMatrix(entity);
         multiplyMM(modelViewMatrix, 0, viewMatrix, 0, modelMatrix, 0);
         invertM(tempMatrix, 0, modelMatrix, 0);
@@ -96,7 +96,7 @@ public class EntityRenderer {
         shaderProgram.useProgram();
         shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b);
         bindDataAndDraw(entity, shaderProgram);
-    }
+    }*/
 
     public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, final float[] viewProjectionMatrix, float currentTime) {
         glEnable(GL_BLEND);
@@ -111,16 +111,23 @@ public class EntityRenderer {
     }
 
     public void renderNormalSpecularUnColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light, float r, float g, float b, Camera camera, float damper, float reflectivity) {
+        prepareMatricesForNormalVectors(entity, viewMatrix, projectionMatrix);
+        shaderProgram.useProgram();
+        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b, camera, damper, reflectivity);
+        bindDataAndDraw(entity);
+    }
+    public void renderNormalSpecularColoured(Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light, Camera camera, float damper, float reflectivity) {
+        prepareMatricesForNormalVectors(entity, viewMatrix, projectionMatrix);
+        shaderProgram.useProgram();
+        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, camera, damper, reflectivity);
+        bindDataAndDraw(entity);
+    }
+
+    private void prepareMatricesForNormalVectors(Entity entity, float[] viewMatrix, float[] projectionMatrix) {
         prepareModelMatrix(entity);
         multiplyMM(modelViewMatrix, 0, viewMatrix, 0, modelMatrix, 0);
         invertM(tempMatrix, 0, modelMatrix, 0);
         transposeM(invertedModelMatrix, 0, tempMatrix, 0);
         multiplyMM(modelViewProjectionMatrix, 0, projectionMatrix, 0, modelViewMatrix, 0);
-       // glEnable(GL_CULL_FACE);
-       // glCullFace(GL_BACK);
-        shaderProgram.useProgram();
-        shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, r, g, b, camera, damper, reflectivity);
-        bindDataAndDraw(entity, shaderProgram);
-       // glDisable(GL_CULL_FACE);
     }
 }

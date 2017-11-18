@@ -30,10 +30,12 @@ public class Cylinder extends Entity{
 
     public Cylinder(Point point){
         super(point);
+        type = Type.COLOURED;
         ObjectBuilder.GeneratedVertexData data = ObjectBuilder.createCylinder(numberOfVertices);
 
         vertexArray = new VertexArray(data.vertexData);
         drawList = data.drawList;
+
 
         this.bottomCircle = bottomCircle;
         this.topCircle = topCircle;

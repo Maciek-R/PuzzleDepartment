@@ -41,6 +41,7 @@ public class Dragon extends Entity{
 
     public Dragon(Point pos, EntityModel entityModel) {
         super(pos, 0.0f, new Vector3f(0.25f, 0.25f, 0.25f));
+        type = Type.UNCOLOURED;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();

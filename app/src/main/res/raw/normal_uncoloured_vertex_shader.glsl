@@ -13,7 +13,6 @@ varying vec3 v_Normal;
 varying vec3 v_ToLightDir;
 varying vec3 v_ToCameraDir;
 
-
 void main()
 {
     vec3 worldPosition = vec3(u_ModelMatrix * a_Position);

@@ -72,7 +72,10 @@ public class ShaderCube extends Entity {
 
     public ShaderCube(Point pos) {
         super(pos, 0, new Vector3f(1f, 1f, 1f));
+        type = Type.COLOURED;
         vertexArray = new VertexArray(VERTEX_DATA);
+        isShining = false;
+
         //normalsArray = new VertexArray(NORMAL_DATA);
 
        // drawList.add(() -> glDrawArrays(GL_TRIANGLES, 0, 36));

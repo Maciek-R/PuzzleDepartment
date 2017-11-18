@@ -21,8 +21,11 @@ public abstract class Entity{
     protected Vector3f scale;
     protected List<ObjectBuilder.DrawCommand> drawList;
 
+    protected boolean isShining = false;
     protected float damper = 10;
     protected float reflectivity = 1;
+    public enum Type{UNCOLOURED, COLOURED, TEXTURED};
+    protected Type type = Type.UNCOLOURED;
 
     protected Entity(Point pos) {
         this(pos, 0f, new Vector3f(1f, 1f, 1f));
@@ -66,11 +69,35 @@ public abstract class Entity{
     public float getRotation() { return verAngle; }
     public Vector3f getScale() { return scale; }
 
+
+    public void setShining(boolean shining) {
+        isShining = shining;
+    }
+
+    public void setDamper(float damper) {
+        this.damper = damper;
+    }
+
+    public void setReflectivity(float reflectivity) {
+        this.reflectivity = reflectivity;
+    }
+
+    public boolean isShining() {
+        return isShining;
+    }
     public float getDamper() {
         return damper;
     }
-
     public float getReflectivity() {
         return reflectivity;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Type getType() {
+
+        return type;
     }
 }

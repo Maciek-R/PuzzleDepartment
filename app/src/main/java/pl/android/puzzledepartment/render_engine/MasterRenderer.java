@@ -71,13 +71,13 @@ public class MasterRenderer {
         this.light = light;
         entities = new ArrayList<Dragon>();
     }
-    public void renderNormalColoured(Entity entity) {
+   /* public void renderNormalColoured(Entity entity) {
         normalColouredEntityRenderer.renderNormalColoured(entity, viewMatrix, projectionMatrix, light);
     }
 
     public void renderNormalUnColoured(Entity entity) {
         normalUnColouredEntityRenderer.renderNormalUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f);
-    }
+    }*/
 
     public void renderSimpleColor(Entity entity) {
         simpleColorRenderer.render(entity, viewProjectionMatrix, 1.0f, 0.0f, 0.0f);
@@ -138,7 +138,17 @@ public class MasterRenderer {
         skyboxRenderer.render(skybox, viewProjectionMatrix);
     }
 
-    public void renderNormalSpecularUnColoured(Entity entity, Camera camera) {
-        normalUnColouredEntityRenderer.renderNormalSpecularUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f, camera,  entity.getDamper(), entity.getReflectivity());
+    public void renderWithNormals(Entity entity, Camera camera) {
+        switch(entity.getType())
+        {
+            case UNCOLOURED:
+                normalUnColouredEntityRenderer.renderNormalSpecularUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f, camera,  entity.getDamper(), entity.getReflectivity());
+                break;
+            case COLOURED:
+                normalColouredEntityRenderer.renderNormalSpecularColoured(entity, viewMatrix, projectionMatrix, light, camera, entity.getDamper(), entity.getReflectivity());
+                break;
+            case TEXTURED:
+                break;
+        }
     }
 }

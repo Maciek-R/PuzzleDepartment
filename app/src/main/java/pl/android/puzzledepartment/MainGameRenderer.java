@@ -162,14 +162,14 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(heightMap);
         masterRenderer.renderLight(light);
         masterRenderer.render(cube);
-        masterRenderer.renderNormalColoured(shaderCube);
-        masterRenderer.renderNormalColoured(cylinder);
+        masterRenderer.renderWithNormals(shaderCube, camera);
+        masterRenderer.renderWithNormals(cylinder, camera);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
         masterRenderer.render(dragonStatue);
 
-        masterRenderer.renderNormalUnColoured(dragon);
-        masterRenderer.renderNormalSpecularUnColoured(dragon, camera);
+        //masterRenderer.renderNormalUnColoured(dragon);
+        masterRenderer.renderWithNormals(dragon, camera);
        // for(Dragon d:dragons)
         //    masterRenderer.renderNormalUnColoured(d);
 

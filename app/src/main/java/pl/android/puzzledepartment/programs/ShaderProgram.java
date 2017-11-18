@@ -36,6 +36,8 @@ public abstract class ShaderProgram {
     protected static final String U_TIME = "u_Time";
     protected static final String U_DAMPER = "u_Damper";
     protected static final String U_REFLECTIVITY = "u_Reflectivity";
+    protected static final String U_IS_SHINING = "u_IsShining";
+
     //Attribute
     protected static final String A_POSITION = "a_Position";
     protected static final String A_COLOR = "a_Color";
@@ -60,6 +62,7 @@ public abstract class ShaderProgram {
     public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light) {}
     public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue) {}
     public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue, Camera camera, float damper, float reflectivity) {}
+    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, Camera camera, float damper, float reflectivity) {}
     public void setUniforms(float[] matrix, int textureId){}
     public void setUniforms(float[] viewProjectionMatrix, float elapsedTime, int textureId){}
     public int getPositionAttributeLocation() {
