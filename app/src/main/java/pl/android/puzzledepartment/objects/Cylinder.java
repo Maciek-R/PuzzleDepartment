@@ -5,7 +5,7 @@ package pl.android.puzzledepartment.objects;
 import pl.android.puzzledepartment.data.VertexArray;
 
 import pl.android.puzzledepartment.programs.ShaderProgram;
-import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
+import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
 
@@ -30,7 +30,6 @@ public class Cylinder extends Entity{
 
     public Cylinder(Point point){
         super(point);
-        type = Type.COLOURED;
         ObjectBuilder.GeneratedVertexData data = ObjectBuilder.createCylinder(numberOfVertices);
 
         vertexArray = new VertexArray(data.vertexData);
@@ -39,6 +38,12 @@ public class Cylinder extends Entity{
 
         this.bottomCircle = bottomCircle;
         this.topCircle = topCircle;
+    }
+
+    @Override
+    protected void initObjectProperties() {
+        type = Type.COLOURED;
+        this.isShining = true;
     }
 
     public void bindData(SimpleColorShaderProgram simpleColorShaderProgram) {

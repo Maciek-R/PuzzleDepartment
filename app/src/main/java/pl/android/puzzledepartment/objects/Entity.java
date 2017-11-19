@@ -24,8 +24,10 @@ public abstract class Entity{
     protected boolean isShining = false;
     protected float damper = 10;
     protected float reflectivity = 1;
-    public enum Type{UNCOLOURED, COLOURED, TEXTURED};
+    public enum Type{UNCOLOURED, COLOURED, TEXTURED, COMPLEX};
     protected Type type = Type.UNCOLOURED;
+
+    protected int color;
 
     protected Entity(Point pos) {
         this(pos, 0f, new Vector3f(1f, 1f, 1f));
@@ -41,7 +43,11 @@ public abstract class Entity{
         this.verAngle = angle;
         this.scale = scale;
         drawList = new ArrayList<>();
+        initObjectProperties();
     }
+
+    protected abstract void initObjectProperties();
+
     public void move() {
 
         long time = SystemClock.currentThreadTimeMillis();
@@ -99,5 +105,8 @@ public abstract class Entity{
     public Type getType() {
 
         return type;
+    }
+    public int getColor() {
+        return color;
     }
 }

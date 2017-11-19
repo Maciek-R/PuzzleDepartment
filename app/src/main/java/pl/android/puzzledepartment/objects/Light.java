@@ -10,13 +10,13 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public class Light extends Cube
 {
-    private final Vector3f lightColor;
-
-    public Light(Point pos, Vector3f lightColor) {
+    public Light(Point pos, int lightColor) {
         super(pos);
-        this.lightColor = lightColor;
+        this.color = lightColor;
     }
-    public Vector3f getLightColor() {
-        return lightColor;
+
+    @Override
+    protected void initObjectProperties() {
+        this.type = Type.UNCOLOURED;
     }
 }

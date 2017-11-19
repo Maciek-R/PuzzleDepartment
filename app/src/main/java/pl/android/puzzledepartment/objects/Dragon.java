@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -41,12 +42,18 @@ public class Dragon extends Entity{
 
     public Dragon(Point pos, EntityModel entityModel) {
         super(pos, 0.0f, new Vector3f(0.25f, 0.25f, 0.25f));
-        type = Type.UNCOLOURED;
+        this.color = Color.rgb(255, 0, 0);
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
         indicesLength = entityModel.indicesArray.length;
        // drawList.add(() -> glDrawElements(GL_TRIANGLES, entityModel.indicesArray.length, GL_UNSIGNED_BYTE, indexArray));
+    }
+
+    @Override
+    protected void initObjectProperties(){
+        type = Type.UNCOLOURED;
+        isShining = true;
     }
 
     @Override
@@ -56,7 +63,6 @@ public class Dragon extends Entity{
         glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
-
 
     @Override
     public void bindData(ShaderProgram shaderProgram) {

@@ -9,23 +9,20 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-28.
  */
 
-public class DragonStatue extends Entity implements Actionable{
+public class DragonStatue implements Actionable{
+    private Point pos;
+    private Vector3f scale;
 
     private Cube cube;
 
     public DragonStatue(Point pos) {
-        super(pos);
+        this.pos = pos;
+        this.scale = new Vector3f(1.0f, 1.0f, 1.0f);
         this.cube = new Cube(pos);
     }
 
-    @Override
-    public void bindData(ShaderProgram shaderProgram) {
-        cube.bindData(shaderProgram);
-    }
-
-    @Override
-    public void draw() {
-        cube.draw();
+    public Cube getCube(){
+        return cube;
     }
 
     @Override

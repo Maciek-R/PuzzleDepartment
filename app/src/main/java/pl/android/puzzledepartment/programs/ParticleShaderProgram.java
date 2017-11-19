@@ -3,7 +3,7 @@ package pl.android.puzzledepartment.programs;
 import android.content.Context;
 
 import pl.android.puzzledepartment.R;
-import pl.android.puzzledepartment.objects.particles.ParticleSystem;
+import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
 import static android.opengl.GLES20.GL_TEXTURE0;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
@@ -19,7 +19,7 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  * Created by Maciek Ruszczyk on 2017-10-21.
  */
 
-public class ParticleShaderProgram extends ShaderProgram{
+public class ParticleShaderProgram extends EntityShaderProgram {
 
     private final int uMatrixLocation;
     private final int uTimeLocation;

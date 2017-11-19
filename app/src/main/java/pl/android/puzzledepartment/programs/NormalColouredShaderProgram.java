@@ -5,19 +5,19 @@ import android.content.Context;
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Light;
+import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform1f;
 import static android.opengl.GLES20.glUniform3f;
-import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-13.
  */
 
-public class NormalColouredShaderProgram extends ShaderProgram {
+public class NormalColouredShaderProgram extends EntityShaderProgram {
 
     private final int uMatrixLocation;
     private final int uModelMatrixLocation;
@@ -52,7 +52,7 @@ public class NormalColouredShaderProgram extends ShaderProgram {
     }
 
 
-    @Override
+    /*@Override
     public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light){
         glUniformMatrix4fv(uModelMatrixLocation, 1, false, modelMatrix, 0);
         glUniformMatrix4fv(uIT_ModelMatrixLocation, 1, false, invertedModelMatrix, 0);
@@ -72,7 +72,7 @@ public class NormalColouredShaderProgram extends ShaderProgram {
         glUniform3f(uCameraPos, camera.getPosX(), camera.getLookPosY(), camera.getPosZ());
         glUniform1f(uDamper, damper);
         glUniform1f(uReflectivity, reflectivity);
-    }
+    }*/
 
     @Override
     public int getPositionAttributeLocation() {

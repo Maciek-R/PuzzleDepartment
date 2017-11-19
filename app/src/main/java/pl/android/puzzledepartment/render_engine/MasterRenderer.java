@@ -9,20 +9,25 @@ import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Dragon;
+import pl.android.puzzledepartment.objects.DragonStatue;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
-import pl.android.puzzledepartment.programs.ColorShaderProgram;
+import pl.android.puzzledepartment.programs.color_programs.AttributeColorShaderProgram;
+import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityColouredNotShiningShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityColouredShiningShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 import pl.android.puzzledepartment.programs.GuiShaderProgram;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
-import pl.android.puzzledepartment.programs.NormalColouredShaderProgram;
-import pl.android.puzzledepartment.programs.NormalUncolouredShaderProgram;
 import pl.android.puzzledepartment.programs.ParticleShaderProgram;
-import pl.android.puzzledepartment.programs.SimpleColorShaderProgram;
+import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.rooms.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
@@ -37,12 +42,24 @@ import static android.opengl.Matrix.translateM;
  */
 
 public class MasterRenderer {
+
     private final EntityRenderer entityRenderer;
-    private final EntityRenderer normalColouredEntityRenderer;
-    private final EntityRenderer normalUnColouredEntityRenderer;
+    private final EntityShaderProgram entityUnColouredNotShiningShaderProgram;
+    private final EntityShaderProgram entityColouredNotShiningShaderProgram;
+    private final EntityShaderProgram entityUnColouredShiningShaderProgram;
+    private final EntityShaderProgram entityColouredShiningShaderProgram;
+
+    private final EntityRenderer colorRenderer;
+    private final ColorShaderProgram attributeColorShaderProgram;
+
     private final EntityRenderer simpleColorRenderer;
-    private final HeightmapRenderer heightmapRenderer;
+    private final ColorShaderProgram simpleColorShaderProgram;
+
     private final EntityRenderer particleRenderer;
+    private final ParticleShaderProgram particleShaderProgram;
+
+    private final HeightmapRenderer heightmapRenderer;
+
     private final SkyboxRenderer skyboxRenderer;
     private final GuiRenderer guiRenderer;
 
@@ -50,41 +67,32 @@ public class MasterRenderer {
     private final float[] projectionMatrix = new float[16];
     private final float[] viewProjectionMatrix = new float[16];
 
-    private final float[] tmp = new float[16];
-    private final float[] out = new float[16];
-
-
     private List<Dragon> entities;
 
     private Light light;
 
     public MasterRenderer(Context context, Light light) {
-        entityRenderer = new EntityRenderer(new ColorShaderProgram(context));
-        normalColouredEntityRenderer = new EntityRenderer(new NormalColouredShaderProgram(context));
-        normalUnColouredEntityRenderer = new EntityRenderer(new NormalUncolouredShaderProgram(context));
-        simpleColorRenderer = new EntityRenderer(new SimpleColorShaderProgram(context));
+        entityRenderer = new EntityRenderer();
+        entityUnColouredNotShiningShaderProgram = new EntityUncolouredNotShiningShaderProgram(context);
+        entityColouredNotShiningShaderProgram = new EntityColouredNotShiningShaderProgram(context);
+        entityUnColouredShiningShaderProgram = new EntityUncolouredShiningShaderProgram(context);
+        entityColouredShiningShaderProgram = new EntityColouredShiningShaderProgram(context);
+
+        colorRenderer = new EntityRenderer();
+        attributeColorShaderProgram = new AttributeColorShaderProgram(context);
+        simpleColorRenderer = new EntityRenderer();
+        simpleColorShaderProgram = new SimpleColorShaderProgram(context);
+
+        particleRenderer = new EntityRenderer();
+        particleShaderProgram = new ParticleShaderProgram(context);
+
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
-        particleRenderer = new EntityRenderer(new ParticleShaderProgram(context));
+
         guiRenderer = new GuiRenderer(new GuiShaderProgram(context));
         skyboxRenderer = new SkyboxRenderer(new SkyboxShaderProgram(context));
 
         this.light = light;
         entities = new ArrayList<Dragon>();
-    }
-   /* public void renderNormalColoured(Entity entity) {
-        normalColouredEntityRenderer.renderNormalColoured(entity, viewMatrix, projectionMatrix, light);
-    }
-
-    public void renderNormalUnColoured(Entity entity) {
-        normalUnColouredEntityRenderer.renderNormalUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f);
-    }*/
-
-    public void renderSimpleColor(Entity entity) {
-        simpleColorRenderer.render(entity, viewProjectionMatrix, 1.0f, 0.0f, 0.0f);
-    }
-
-    public void renderLight(Light light) {
-        simpleColorRenderer.render(light, viewProjectionMatrix, light.getLightColor().x, light.getLightColor().y, light.getLightColor().z);
     }
 
     public void render(List<Entity> entities) {
@@ -93,7 +101,14 @@ public class MasterRenderer {
     }
 
     public void render(Entity entity) {
-        entityRenderer.render(entity, viewProjectionMatrix);
+        ColorShaderProgram colorShaderProgram = null;
+        if(Entity.Type.UNCOLOURED.equals(entity.getType()))
+            colorShaderProgram = simpleColorShaderProgram;
+
+        else if(Entity.Type.COLOURED.equals(entity.getType()))
+            colorShaderProgram = attributeColorShaderProgram;
+
+        colorRenderer.render(colorShaderProgram, entity, viewProjectionMatrix);
     }
 
     public void render(HeightMap heightMap) {
@@ -111,6 +126,9 @@ public class MasterRenderer {
         multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
     }
 
+    public void render(DragonStatue dragonStatue){
+        render(dragonStatue.getCube());
+    }
     public void render(Room room) {
         render(room.getEntities());
     }
@@ -121,7 +139,7 @@ public class MasterRenderer {
     }
 
     public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, float currentTime) {
-        particleRenderer.renderParticles(particleSystem, particleShooter, viewProjectionMatrix, currentTime);
+        particleRenderer.renderParticles(particleShaderProgram, particleSystem, particleShooter, viewProjectionMatrix, currentTime);
     }
 
     public void renderGuis(List<GuiEntity> guiEntities) {
@@ -139,16 +157,35 @@ public class MasterRenderer {
     }
 
     public void renderWithNormals(Entity entity, Camera camera) {
+        EntityShaderProgram entityShaderProgram = null;
         switch(entity.getType())
         {
             case UNCOLOURED:
-                normalUnColouredEntityRenderer.renderNormalSpecularUnColoured(entity, viewMatrix, projectionMatrix, light, 1.0f, 0.0f, 0.0f, camera,  entity.getDamper(), entity.getReflectivity());
-                break;
+                if(entity.isShining()) {
+                    entityShaderProgram = entityUnColouredShiningShaderProgram;
+                    break;
+                }
+                else {
+                    entityShaderProgram = entityUnColouredNotShiningShaderProgram;
+                    break;
+                }
             case COLOURED:
-                normalColouredEntityRenderer.renderNormalSpecularColoured(entity, viewMatrix, projectionMatrix, light, camera, entity.getDamper(), entity.getReflectivity());
-                break;
+                if(entity.isShining()) {
+                    entityShaderProgram = entityColouredShiningShaderProgram;
+                    break;
+                }
+                else {
+                    entityShaderProgram = entityColouredNotShiningShaderProgram;
+                    break;
+                }
             case TEXTURED:
-                break;
+                if(entity.isShining()) {
+                    break;
+                }
+                else {
+                    break;
+                }
         }
+        entityRenderer.renderWithNormals(entityShaderProgram, entity, viewMatrix, projectionMatrix, light, camera);
     }
 }

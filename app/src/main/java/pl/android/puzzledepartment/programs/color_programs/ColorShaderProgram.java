@@ -1,36 +1,37 @@
-package pl.android.puzzledepartment.programs;
+package pl.android.puzzledepartment.programs.color_programs;
 
 import android.content.Context;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
-public class SimpleColorShaderProgram extends ShaderProgram {
+public abstract class ColorShaderProgram extends EntityShaderProgram {
     private final int uMatrixLocation;
     private final int aPositionLocation;
-    private final int uColorLocation;
 
-    public SimpleColorShaderProgram(Context context) {
-        super(context, R.raw.simple_color_vertex_shader, R.raw.simple_color_fragment_shader);
+    public ColorShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId){
+        super(context, vertexShaderResourceId, fragmentShaderResourceId);
 
         uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
-        uColorLocation = glGetUniformLocation(program, U_COLOR);
     }
 
-    public void setUniforms(float[] matrix, float r, float g, float b){
+    public void loadMatrix(float[] matrix)
+    {
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
-        glUniform4f(uColorLocation, r, g, b, 1.0f);
     }
 
+    public abstract void loadColour(int color);
+
+    @Override
     public int getPositionAttributeLocation() {
         return aPositionLocation;
     }

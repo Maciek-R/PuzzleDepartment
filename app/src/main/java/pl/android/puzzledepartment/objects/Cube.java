@@ -70,6 +70,11 @@ public class Cube extends Entity {
         indexArray.position(0);
     }
 
+    @Override
+    protected void initObjectProperties() {
+        this.type = Type.COLOURED;
+    }
+
     public void bindData(ShaderProgram shaderProgram) {
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         vertexArray.setVertexAttribPointer(POSITION_COMPONENT_COUNT, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
