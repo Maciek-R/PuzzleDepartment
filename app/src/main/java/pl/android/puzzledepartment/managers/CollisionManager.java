@@ -7,7 +7,7 @@ import java.util.List;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
-import pl.android.puzzledepartment.rooms.Room;
+import pl.android.puzzledepartment.objects.complex_objects.Room;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-20.

@@ -59,8 +59,6 @@ public class Cube extends Entity {
         vertexArray = new VertexArray(VERTEX_DATA);
         indexArray = ByteBuffer.allocateDirect(6*6).put(INDEX_DATA);
         indexArray.position(0);
-
-     //   drawList.add(() -> glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indexArray));
     }
 
     public Cube(Point pos, Vector3f scale) {
@@ -82,8 +80,6 @@ public class Cube extends Entity {
 
     @Override
     public void draw() {
-       // for(ObjectBuilder.DrawCommand d:drawList)
-          //  d.draw();
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indexArray);
     }
 }

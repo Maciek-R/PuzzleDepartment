@@ -3,9 +3,9 @@ package pl.android.puzzledepartment.programs;
 import android.content.Context;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.objects.Skybox;
 
 import static android.opengl.GLES20.GL_TEXTURE0;
-import static android.opengl.GLES20.GL_TEXTURE_2D;
 import static android.opengl.GLES20.GL_TEXTURE_CUBE_MAP;
 import static android.opengl.GLES20.glActiveTexture;
 import static android.opengl.GLES20.glBindTexture;
@@ -31,12 +31,18 @@ public class SkyboxShaderProgram extends ShaderProgram{
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
     }
-    @Override
-    public void setUniforms(float[] matrix, int textureId){
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
+
+    public void loadTextureUnits(){
         glUniform1i(uTextureUnitLocation, 0);
+    }
+
+    public void loadMatrix(float[] matrix) {
+        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void bindTextures(Skybox skybox) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getTextureId());
     }
 
     @Override

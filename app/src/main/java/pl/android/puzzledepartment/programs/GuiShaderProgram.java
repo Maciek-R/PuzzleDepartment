@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.programs;
 import android.content.Context;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.gui.GuiEntity;
 
 import static android.opengl.GLES20.GL_TEXTURE0;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
@@ -30,12 +31,18 @@ public class GuiShaderProgram extends ShaderProgram{
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
     }
-    @Override
-    public void setUniforms(float[] matrix, int textureId){
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
+
+    public void loadTextureUnits(){
         glUniform1i(uTextureUnitLocation, 0);
+    }
+
+    public void loadMatrix(float[] matrix) {
+        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void bindTextures(GuiEntity gui) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, gui.getTextureId());
     }
 
     @Override

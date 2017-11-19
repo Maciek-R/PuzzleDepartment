@@ -1,7 +1,7 @@
-package pl.android.puzzledepartment.objects;
+package pl.android.puzzledepartment.objects.complex_objects;
 
 import pl.android.puzzledepartment.action.Actionable;
-import pl.android.puzzledepartment.programs.ShaderProgram;
+import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 

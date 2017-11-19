@@ -13,7 +13,7 @@ import java.util.Random;
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
-import pl.android.puzzledepartment.rooms.Room;
+import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;

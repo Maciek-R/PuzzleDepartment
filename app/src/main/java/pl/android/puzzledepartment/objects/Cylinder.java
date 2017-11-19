@@ -1,12 +1,9 @@
 package pl.android.puzzledepartment.objects;
 
-
-
 import pl.android.puzzledepartment.data.VertexArray;
 
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProgram;
-import pl.android.puzzledepartment.util.geometry.Circle;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 
@@ -25,8 +22,6 @@ public class Cylinder extends Entity{
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
 
     private final VertexArray vertexArray;
-    private Circle bottomCircle;
-    private Circle topCircle;
 
     public Cylinder(Point point){
         super(point);
@@ -34,10 +29,6 @@ public class Cylinder extends Entity{
 
         vertexArray = new VertexArray(data.vertexData);
         drawList = data.drawList;
-
-
-        this.bottomCircle = bottomCircle;
-        this.topCircle = topCircle;
     }
 
     @Override

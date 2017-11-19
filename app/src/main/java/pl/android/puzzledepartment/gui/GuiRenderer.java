@@ -3,7 +3,7 @@ package pl.android.puzzledepartment.gui;
 import java.util.List;
 
 import pl.android.puzzledepartment.data.VertexArray;
-import pl.android.puzzledepartment.programs.ShaderProgram;
+import pl.android.puzzledepartment.programs.GuiShaderProgram;
 
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_DEPTH_TEST;
@@ -31,14 +31,17 @@ public class GuiRenderer {
     private final static float vertexData[] ={
             -1f, 1f, -1f, -1f, 1f, 1f, 1f, -1f
     };
-    private final ShaderProgram shaderProgram;
+    private final GuiShaderProgram shaderProgram;
 
-    public GuiRenderer(ShaderProgram shaderProgram) {
+    public GuiRenderer(GuiShaderProgram shaderProgram) {
         this.vertexArray = new VertexArray(vertexData);
         this.shaderProgram = shaderProgram;
+        shaderProgram.useProgram();
+        shaderProgram.loadTextureUnits();
+        shaderProgram.stopProgram();
     }
 
-    public void bindData(ShaderProgram shaderProgram) {
+    public void bindData() {
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, 0);
     }
 
@@ -47,14 +50,16 @@ public class GuiRenderer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_DEPTH_TEST);
-        for (GuiEntity gui : guiEntities) {
+        for(GuiEntity gui : guiEntities) {
             prepareModelMatrix(gui);
-            shaderProgram.setUniforms(modelMatrix, gui.getTextureId());
-            bindData(shaderProgram);
+            shaderProgram.loadMatrix(modelMatrix);
+            shaderProgram.bindTextures(gui);
+            bindData();
             glDrawArrays(GL_TRIANGLE_STRIP, 0, vertexData.length/2);
         }
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
+        shaderProgram.stopProgram();
     }
 
     private void prepareModelMatrix(GuiEntity gui) {

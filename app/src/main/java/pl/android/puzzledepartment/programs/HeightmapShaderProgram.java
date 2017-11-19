@@ -16,7 +16,6 @@ import static android.opengl.GLES20.glActiveTexture;
 import static android.opengl.GLES20.glBindTexture;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glUniform1f;
 import static android.opengl.GLES20.glUniform1i;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
@@ -73,7 +72,7 @@ public class HeightmapShaderProgram extends ShaderProgram{
         glUniform1i(uBlendMapTextureUnitLocation, 4);
     }
 
-    public void setUniforms(HeightMap heightMap){
+    public void bindTextures(HeightMap heightMap){
         TerrainTexturePack terrainTexturePack = heightMap.getTerrainTexturePack();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, terrainTexturePack.getBackgroundTexture().getTextureId());

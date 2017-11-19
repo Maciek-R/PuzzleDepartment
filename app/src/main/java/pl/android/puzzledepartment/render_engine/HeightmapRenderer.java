@@ -3,7 +3,6 @@ package pl.android.puzzledepartment.render_engine;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 
-import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.scaleM;
 import static android.opengl.Matrix.setIdentityM;
 
@@ -29,7 +28,7 @@ public class HeightmapRenderer {
         heightmapShaderProgram.loadModelMatrix(modelMatrix);
         heightmapShaderProgram.loadViewMatrix(viewMatrix);
         heightmapShaderProgram.loadProjectionMatrix(projectionMatrix);
-        heightmapShaderProgram.setUniforms(heightMap);
+        heightmapShaderProgram.bindTextures(heightMap);
         heightMap.bindData(heightmapShaderProgram);
         heightMap.draw();
         heightmapShaderProgram.stopProgram();

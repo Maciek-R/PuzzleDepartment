@@ -1,4 +1,4 @@
-package pl.android.puzzledepartment.rooms;
+package pl.android.puzzledepartment.objects.complex_objects;
 
 import java.util.ArrayList;
 import java.util.List;

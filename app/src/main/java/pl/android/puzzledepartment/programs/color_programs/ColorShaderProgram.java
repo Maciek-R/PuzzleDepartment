@@ -2,7 +2,6 @@ package pl.android.puzzledepartment.programs.color_programs;
 
 import android.content.Context;
 
-import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
 import static android.opengl.GLES20.glGetAttribLocation;

@@ -74,9 +74,6 @@ public class ShaderCube extends Entity {
         super(pos, 0, new Vector3f(1f, 1f, 1f));
         vertexArray = new VertexArray(VERTEX_DATA);
 
-        //normalsArray = new VertexArray(NORMAL_DATA);
-
-       // drawList.add(() -> glDrawArrays(GL_TRIANGLES, 0, 36));
     }
 
     @Override
@@ -105,7 +102,5 @@ public class ShaderCube extends Entity {
     @Override
     public void draw() {
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        //for(ObjectBuilder.DrawCommand d:drawList)
-         //   d.draw();
     }
 }

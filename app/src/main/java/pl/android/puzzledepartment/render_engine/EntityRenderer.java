@@ -4,20 +4,10 @@ package pl.android.puzzledepartment.render_engine;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Light;
-import pl.android.puzzledepartment.objects.particles.ParticleShooter;
-import pl.android.puzzledepartment.objects.particles.ParticleSystem;
-import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
-import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
-import static android.opengl.GLES20.GL_BLEND;
-import static android.opengl.GLES20.GL_ONE;
-import static android.opengl.GLES20.glBlendFunc;
-import static android.opengl.GLES20.glDepthMask;
-import static android.opengl.GLES20.glDisable;
-import static android.opengl.GLES20.glEnable;
 import static android.opengl.Matrix.invertM;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
@@ -46,26 +36,6 @@ public class EntityRenderer {
         bindDataAndDraw(shaderProgram, entity);
     }
 
-    private void prepareMatrix(Entity entity,  final float[] viewProjectionMatrix) {
-        setIdentityM(modelMatrix, 0);
-        translateM(modelMatrix, 0, entity.getPos().x, entity.getPos().y, entity.getPos().z);
-        rotateM(modelMatrix, 0, entity.getRotation(), 0f, 1f, 0f);
-        scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
-        multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
-    }
-
-    public void renderParticles(ParticleShaderProgram shaderProgram, ParticleSystem particleSystem, ParticleShooter particleShooter, final float[] viewProjectionMatrix, float currentTime) {
-        glEnable(GL_BLEND);
-        glDepthMask(false);
-        glBlendFunc(GL_ONE, GL_ONE);
-        shaderProgram.useProgram();
-        shaderProgram.setUniforms(viewProjectionMatrix, currentTime, particleSystem.getTexture());
-        particleSystem.bindData(shaderProgram);
-        particleSystem.draw();
-        glDepthMask(true);
-        glDisable(GL_BLEND);
-    }
-
     public void renderWithNormals(EntityShaderProgram shaderProgram, Entity entity, float[] viewMatrix, float[] projectionMatrix, Light light, Camera camera) {
         prepareMatricesForNormalVectors(entity, viewMatrix, projectionMatrix);
         shaderProgram.useProgram();
@@ -82,10 +52,8 @@ public class EntityRenderer {
             shaderProgram.loadReflectivity(entity.getReflectivity());
         }
         if(Entity.Type.UNCOLOURED.equals(entity.getType()))
-        {
             shaderProgram.loadColor(entity.getColor());
-        }
-        //shaderProgram.setUniforms(modelMatrix, invertedModelMatrix, modelViewProjectionMatrix, light, camera, damper, reflectivity);
+
         bindDataAndDraw(shaderProgram, entity);
     }
 
@@ -94,6 +62,14 @@ public class EntityRenderer {
         translateM(modelMatrix, 0, entity.getPos().x, entity.getPos().y, entity.getPos().z);
         rotateM(modelMatrix, 0, entity.getRotation(), 0f, 1f, 0f);
         scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
+    }
+
+    private void prepareMatrix(Entity entity,  final float[] viewProjectionMatrix) {
+        setIdentityM(modelMatrix, 0);
+        translateM(modelMatrix, 0, entity.getPos().x, entity.getPos().y, entity.getPos().z);
+        rotateM(modelMatrix, 0, entity.getRotation(), 0f, 1f, 0f);
+        scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
+        multiplyMM(modelViewProjectionMatrix, 0, viewProjectionMatrix, 0, modelMatrix, 0);
     }
 
     private void prepareMatricesForNormalVectors(Entity entity, float[] viewMatrix, float[] projectionMatrix) {

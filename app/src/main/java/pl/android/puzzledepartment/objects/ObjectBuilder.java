@@ -3,7 +3,6 @@ package pl.android.puzzledepartment.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.android.puzzledepartment.util.geometry.*;
 
 import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 import static android.opengl.GLES20.GL_TRIANGLE_STRIP;

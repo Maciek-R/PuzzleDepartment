@@ -9,12 +9,11 @@ import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Dragon;
-import pl.android.puzzledepartment.objects.DragonStatue;
+import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
-import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.color_programs.AttributeColorShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
@@ -29,7 +28,7 @@ import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
-import pl.android.puzzledepartment.rooms.Room;
+import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
 import static android.opengl.Matrix.multiplyMM;
@@ -49,18 +48,13 @@ public class MasterRenderer {
     private final EntityShaderProgram entityUnColouredShiningShaderProgram;
     private final EntityShaderProgram entityColouredShiningShaderProgram;
 
-    private final EntityRenderer colorRenderer;
     private final ColorShaderProgram attributeColorShaderProgram;
-
-    private final EntityRenderer simpleColorRenderer;
     private final ColorShaderProgram simpleColorShaderProgram;
 
-    private final EntityRenderer particleRenderer;
-    private final ParticleShaderProgram particleShaderProgram;
-
+    private final ParticleRenderer particleRenderer;
     private final HeightmapRenderer heightmapRenderer;
-
     private final SkyboxRenderer skyboxRenderer;
+
     private final GuiRenderer guiRenderer;
 
     private final float[] viewMatrix = new float[16];
@@ -78,18 +72,14 @@ public class MasterRenderer {
         entityUnColouredShiningShaderProgram = new EntityUncolouredShiningShaderProgram(context);
         entityColouredShiningShaderProgram = new EntityColouredShiningShaderProgram(context);
 
-        colorRenderer = new EntityRenderer();
         attributeColorShaderProgram = new AttributeColorShaderProgram(context);
-        simpleColorRenderer = new EntityRenderer();
         simpleColorShaderProgram = new SimpleColorShaderProgram(context);
 
-        particleRenderer = new EntityRenderer();
-        particleShaderProgram = new ParticleShaderProgram(context);
-
+        particleRenderer = new ParticleRenderer(new ParticleShaderProgram(context));
         heightmapRenderer = new HeightmapRenderer(new HeightmapShaderProgram(context));
+        skyboxRenderer = new SkyboxRenderer(new SkyboxShaderProgram(context));
 
         guiRenderer = new GuiRenderer(new GuiShaderProgram(context));
-        skyboxRenderer = new SkyboxRenderer(new SkyboxShaderProgram(context));
 
         this.light = light;
         entities = new ArrayList<Dragon>();
@@ -108,7 +98,7 @@ public class MasterRenderer {
         else if(Entity.Type.COLOURED.equals(entity.getType()))
             colorShaderProgram = attributeColorShaderProgram;
 
-        colorRenderer.render(colorShaderProgram, entity, viewProjectionMatrix);
+        entityRenderer.render(colorShaderProgram, entity, viewProjectionMatrix);
     }
 
     public void render(HeightMap heightMap) {
@@ -138,15 +128,15 @@ public class MasterRenderer {
             render(r);
     }
 
-    public void renderParticles(ParticleSystem particleSystem, ParticleShooter particleShooter, float currentTime) {
-        particleRenderer.renderParticles(particleShaderProgram, particleSystem, particleShooter, viewProjectionMatrix, currentTime);
+    public void render(ParticleSystem particleSystem, float currentTime) {
+        particleRenderer.render(particleSystem, viewProjectionMatrix, currentTime);
     }
 
     public void renderGuis(List<GuiEntity> guiEntities) {
         guiRenderer.render(guiEntities);
     }
 
-    public void renderSkybox(Skybox skybox, Camera camera) {
+    public void render(Skybox skybox, Camera camera) {
         setIdentityM(viewMatrix, 0);
         skybox.rotate();
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);

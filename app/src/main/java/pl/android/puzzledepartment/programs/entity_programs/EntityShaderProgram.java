@@ -3,7 +3,6 @@ package pl.android.puzzledepartment.programs.entity_programs;
 import android.content.Context;
 import android.graphics.Color;
 
-import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Light;
@@ -103,29 +102,6 @@ public abstract class EntityShaderProgram extends ShaderProgram {
         glUniform1f(uDamper, damper);
     }
     public void loadReflectivity(float reflectivity) {
-        glUniform1f(uReflectivity, reflectivity);
-    }
-
-    @Override
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue){
-        glUniformMatrix4fv(uModelMatrixLocation, 1, false, modelMatrix, 0);
-        glUniformMatrix4fv(uIT_ModelMatrixLocation, 1, false, invertedModelMatrix, 0);
-        glUniformMatrix4fv(uMatrixLocation, 1, false, modelViewProjectionMatrix, 0);
-        glUniform4f(uColorLocation, red, green, blue, 1.0f);
-        glUniform3f(uLightPos, light.getPos().x, light.getPos().y, light.getPos().z);
-        glUniform3f(uLightColor, Color.red(light.getColor()) / 255f, Color.green(light.getColor()) / 255f, Color.blue(light.getColor()) / 255f);
-    }
-
-    @Override
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue, Camera camera, float damper, float reflectivity){
-        glUniformMatrix4fv(uModelMatrixLocation, 1, false, modelMatrix, 0);
-        glUniformMatrix4fv(uIT_ModelMatrixLocation, 1, false, invertedModelMatrix, 0);
-        glUniformMatrix4fv(uMatrixLocation, 1, false, modelViewProjectionMatrix, 0);
-        glUniform4f(uColorLocation, red, green, blue, 1.0f);
-        glUniform3f(uLightPos, light.getPos().x, light.getPos().y, light.getPos().z);
-        glUniform3f(uLightColor, Color.red(light.getColor()) / 255f, Color.green(light.getColor()) / 255f, Color.blue(light.getColor()) / 255f);
-        glUniform3f(uCameraPos, camera.getPosX(), camera.getLookPosY(), camera.getPosZ());
-        glUniform1f(uDamper, damper);
         glUniform1f(uReflectivity, reflectivity);
     }
 

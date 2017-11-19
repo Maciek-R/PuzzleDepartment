@@ -1,7 +1,6 @@
 package pl.android.puzzledepartment.render_engine;
 
 import pl.android.puzzledepartment.objects.Skybox;
-import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 
 /**
@@ -14,12 +13,15 @@ public class SkyboxRenderer {
 
     public SkyboxRenderer(SkyboxShaderProgram skyboxShaderProgram) {
         this.skyboxShaderProgram = skyboxShaderProgram;
+        skyboxShaderProgram.useProgram();
+        skyboxShaderProgram.loadTextureUnits();
+        skyboxShaderProgram.stopProgram();
     }
-
 
     public void render(Skybox skybox, float[] viewProjectionMatrix) {
         skyboxShaderProgram.useProgram();
-        skyboxShaderProgram.setUniforms(viewProjectionMatrix, skybox.getTextureId());
+        skyboxShaderProgram.loadMatrix(viewProjectionMatrix);
+        skyboxShaderProgram.bindTextures(skybox);
         skybox.bindData(skyboxShaderProgram);
         skybox.draw();
     }

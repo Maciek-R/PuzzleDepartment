@@ -1,23 +1,26 @@
 package pl.android.puzzledepartment.managers;
 
-import android.os.SystemClock;
-
 /**
  * Created by Maciek Ruszczyk on 2017-10-20.
  */
 
 public class TimeManager {
 
-    private static long lastFrameTime = SystemClock.elapsedRealtime();
+    private static long timeFromBeginningInSeconds = System.nanoTime();
+    private static long lastFrameTime = System.nanoTime();
     private static float deltaInSeconds;
 
     public static float getDeltaTimeInSeconds() {
         return deltaInSeconds;
     }
 
+    public static float getElapsedTimeFromBeginningInSeconds() {
+        return (System.nanoTime() - timeFromBeginningInSeconds) / 1000000000f;
+    }
+
     public static void update() {
-        long currentFrameTime = SystemClock.elapsedRealtime();
-        deltaInSeconds = (currentFrameTime - lastFrameTime)/1000f;
+        long currentFrameTime =  System.nanoTime();
+        deltaInSeconds = (currentFrameTime - lastFrameTime) / 1000000000f;
         lastFrameTime = currentFrameTime;
     }
 }

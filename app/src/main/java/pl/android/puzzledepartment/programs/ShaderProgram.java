@@ -2,12 +2,9 @@ package pl.android.puzzledepartment.programs;
 
 import android.content.Context;
 
-import pl.android.puzzledepartment.objects.Camera;
-import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.util.ShaderHelper;
 import pl.android.puzzledepartment.util.TextResourceReader;
 
-import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 
 /**
@@ -58,14 +55,6 @@ public abstract class ShaderProgram {
     }
     public void stopProgram() {glUseProgram(0);}
 
-    public void setUniforms(float[] matrix){}
-    public void setUniforms(float[] matrix, float r, float g, float b){}
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light) {}
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue) {}
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, float red, float green, float blue, Camera camera, float damper, float reflectivity) {}
-    public void setUniforms(float[] modelMatrix, float[] invertedModelMatrix, float[] modelViewProjectionMatrix, Light light, Camera camera, float damper, float reflectivity) {}
-    public void setUniforms(float[] matrix, int textureId){}
-    public void setUniforms(float[] viewProjectionMatrix, float elapsedTime, int textureId){}
     public int getPositionAttributeLocation() {
        return -1;
     }

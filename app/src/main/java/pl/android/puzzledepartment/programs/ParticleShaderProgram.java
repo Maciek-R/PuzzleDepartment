@@ -3,7 +3,7 @@ package pl.android.puzzledepartment.programs;
 import android.content.Context;
 
 import pl.android.puzzledepartment.R;
-import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
+import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 
 import static android.opengl.GLES20.GL_TEXTURE0;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
@@ -19,7 +19,7 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  * Created by Maciek Ruszczyk on 2017-10-21.
  */
 
-public class ParticleShaderProgram extends EntityShaderProgram {
+public class ParticleShaderProgram extends ShaderProgram{
 
     private final int uMatrixLocation;
     private final int uTimeLocation;
@@ -42,14 +42,22 @@ public class ParticleShaderProgram extends EntityShaderProgram {
         aDirectionVectorLocation = glGetAttribLocation(program, A_DIRECTION_VECTOR);
         aParticleStartTimeLocation = glGetAttribLocation(program, A_PARTICLE_START_TIME);
     }
-    @Override
-    public void setUniforms(float[] matrix, float elapsedTime, int textureId) {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
-        glUniform1f(uTimeLocation, elapsedTime);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
+    public void loadTextureUnits(){
         glUniform1i(uTextureUnitLocation, 0);
+    }
+
+    public void loadMatrix(float[] matrix) {
+        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void bindTextures(ParticleSystem particleSystem) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, particleSystem.getTexture());
+    }
+
+    public void loadTime(float elapsedTime){
+        glUniform1f(uTimeLocation, elapsedTime);
     }
 
     @Override

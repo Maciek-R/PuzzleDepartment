@@ -2,9 +2,7 @@ package pl.android.puzzledepartment.objects;
 
 import java.nio.IntBuffer;
 
-import pl.android.puzzledepartment.data.IndexBuffer;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
-import pl.android.puzzledepartment.data.VertexArray;
 import pl.android.puzzledepartment.data.VertexBuffer;
 
 /**
@@ -19,8 +17,6 @@ public class EntityModel {
 
     private VertexBuffer vertexBuffer = null;
     private IntegerIndexBuffer intIndexBuffer = null;
-   // private VertexArray vertexArray = null;
-  //  private IntBuffer indexArray = null;
 
     public EntityModel(float[] verticesArray, float[] texturesArray, float[] normalsArray, int[] indicesArray) {
         this.verticesArray = verticesArray;
@@ -29,7 +25,6 @@ public class EntityModel {
         this.indicesArray = indicesArray;
     }
 
-   // indexBuffer = new IndexBuffer(createIndexData());
     /**
      * Order: x, y, z, nx, ny, nz
      *
