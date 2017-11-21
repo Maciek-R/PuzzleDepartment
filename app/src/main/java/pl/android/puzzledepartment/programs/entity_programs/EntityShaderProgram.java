@@ -21,8 +21,9 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
 
 public abstract class EntityShaderProgram extends ShaderProgram {
 
-    private final int uMatrixLocation;
     private final int uModelMatrixLocation;
+    private final int uViewMatrixLocation;
+    private final int uProjectionMatrixLocation;
     private final int uIT_ModelMatrixLocation;
     private final int uColorLocation;
     private final int uCameraPos;
@@ -40,8 +41,9 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     public EntityShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId) {
         super(context, vertexShaderResourceId, fragmentShaderResourceId);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
         uModelMatrixLocation = glGetUniformLocation(program, U_MODEL_MATRIX);
+        uViewMatrixLocation = glGetUniformLocation(program, U_VIEW_MATRIX);
+        uProjectionMatrixLocation = glGetUniformLocation(program, U_PROJECTION_MATRIX);
         uIT_ModelMatrixLocation = glGetUniformLocation(program, U_IT_MODEL_VIEW_MATRIX);
         uColorLocation = glGetUniformLocation(program, U_COLOR);
         uCameraPos = glGetUniformLocation(program, U_CAMERA_POS);
@@ -57,17 +59,21 @@ public abstract class EntityShaderProgram extends ShaderProgram {
         aNormalLocation = glGetAttribLocation(program, A_NORMAL);
     }
 
-    public void loadModelMatrix(final float[] matrix)
-    {
+    public void loadModelMatrix(final float[] matrix) {
         glUniformMatrix4fv(uModelMatrixLocation, 1, false, matrix, 0);
     }
+
+    public void loadViewMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadProjectionMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
+    }
+
     public void loadInvertedModelMatrix(final float[] matrix)
     {
         glUniformMatrix4fv(uIT_ModelMatrixLocation, 1, false, matrix, 0);
-    }
-    public void loadModelViewProjectionMatrix(final float[] matrix)
-    {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
     }
 
     public void loadColor(int color)

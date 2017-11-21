@@ -59,7 +59,6 @@ public class MasterRenderer {
 
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
-    private final float[] viewProjectionMatrix = new float[16];
 
     private List<Dragon> entities;
 
@@ -98,7 +97,7 @@ public class MasterRenderer {
         else if(Entity.Type.COLOURED.equals(entity.getType()))
             colorShaderProgram = attributeColorShaderProgram;
 
-        entityRenderer.render(colorShaderProgram, entity, viewProjectionMatrix);
+        entityRenderer.render(colorShaderProgram, entity, viewMatrix, projectionMatrix);
     }
 
     public void render(HeightMap heightMap) {
@@ -113,7 +112,6 @@ public class MasterRenderer {
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
         translateM(viewMatrix, 0, -camera.getPosX(), -camera.getLookPosY(), -camera.getPosZ());
-        multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
     }
 
     public void render(DragonStatue dragonStatue){
@@ -129,7 +127,7 @@ public class MasterRenderer {
     }
 
     public void render(ParticleSystem particleSystem, float currentTime) {
-        particleRenderer.render(particleSystem, viewProjectionMatrix, currentTime);
+        particleRenderer.render(particleSystem, viewMatrix, projectionMatrix, currentTime);
     }
 
     public void renderGuis(List<GuiEntity> guiEntities) {
@@ -142,8 +140,7 @@ public class MasterRenderer {
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
         rotateM(viewMatrix, 0, skybox.getRotation(), 0f, 1f, 0f);
-        multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
-        skyboxRenderer.render(skybox, viewProjectionMatrix);
+        skyboxRenderer.render(skybox, viewMatrix, projectionMatrix);
     }
 
     public void renderWithNormals(Entity entity, Camera camera) {

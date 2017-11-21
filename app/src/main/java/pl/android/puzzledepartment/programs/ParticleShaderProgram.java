@@ -21,7 +21,8 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
 
 public class ParticleShaderProgram extends ShaderProgram{
 
-    private final int uMatrixLocation;
+    private final int uViewMatrixLocation;
+    private final int uProjectionMatrixLocation;
     private final int uTimeLocation;
     private final int uTextureUnitLocation;
 
@@ -33,7 +34,8 @@ public class ParticleShaderProgram extends ShaderProgram{
     public ParticleShaderProgram(Context context) {
         super(context, R.raw.particle_vertex_shader, R.raw.particle_fragment_shader);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+        uViewMatrixLocation = glGetUniformLocation(program, U_VIEW_MATRIX);
+        uProjectionMatrixLocation = glGetUniformLocation(program, U_PROJECTION_MATRIX);
         uTimeLocation = glGetUniformLocation(program, U_TIME);
         uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
 
@@ -47,8 +49,12 @@ public class ParticleShaderProgram extends ShaderProgram{
         glUniform1i(uTextureUnitLocation, 0);
     }
 
-    public void loadMatrix(float[] matrix) {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    public void loadViewMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadProjectionMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
     }
 
     public void bindTextures(ParticleSystem particleSystem) {

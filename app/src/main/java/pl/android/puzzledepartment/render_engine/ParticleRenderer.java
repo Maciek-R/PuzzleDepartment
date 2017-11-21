@@ -24,12 +24,13 @@ public class ParticleRenderer {
         particleShaderProgram.stopProgram();
     }
 
-    public void render(ParticleSystem particleSystem, float[] viewProjectionMatrix, float currentTime) {
+    public void render(ParticleSystem particleSystem, final float[] viewMatrix, final float[] projectionMatrix, float currentTime) {
         glEnable(GL_BLEND);
         glDepthMask(false);
         glBlendFunc(GL_ONE, GL_ONE);
         particleShaderProgram.useProgram();
-        particleShaderProgram.loadMatrix(viewProjectionMatrix);
+        particleShaderProgram.loadViewMatrix(viewMatrix);
+        particleShaderProgram.loadProjectionMatrix(projectionMatrix);
         particleShaderProgram.loadTime(currentTime);
         particleShaderProgram.bindTextures(particleSystem);
         particleSystem.bindData(particleShaderProgram);

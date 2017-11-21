@@ -20,14 +20,16 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
 
 public class SkyboxShaderProgram extends ShaderProgram{
 
-    private final int uMatrixLocation;
+    private final int uViewMatrixLocation;
+    private final int uProjectionMatrixLocation;
     private final int uTextureUnitLocation;
     private final int aPositionLocation;
 
     public SkyboxShaderProgram(Context context) {
         super(context, R.raw.skybox_vertex_shader, R.raw.skybox_fragment_shader);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+        uViewMatrixLocation = glGetUniformLocation(program, U_VIEW_MATRIX);
+        uProjectionMatrixLocation = glGetUniformLocation(program, U_PROJECTION_MATRIX);
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
     }
@@ -36,8 +38,12 @@ public class SkyboxShaderProgram extends ShaderProgram{
         glUniform1i(uTextureUnitLocation, 0);
     }
 
-    public void loadMatrix(float[] matrix) {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    public void loadViewMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadProjectionMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
     }
 
     public void bindTextures(Skybox skybox) {

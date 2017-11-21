@@ -13,19 +13,30 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  */
 
 public abstract class ColorShaderProgram extends EntityShaderProgram {
-    private final int uMatrixLocation;
+    private final int uModelMatrixLocation;
+    private final int uViewMatrixLocation;
+    private final int uProjectionMatrixLocation;
     private final int aPositionLocation;
 
     public ColorShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId){
         super(context, vertexShaderResourceId, fragmentShaderResourceId);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+        uModelMatrixLocation = glGetUniformLocation(program, U_MODEL_MATRIX);
+        uViewMatrixLocation = glGetUniformLocation(program, U_VIEW_MATRIX);
+        uProjectionMatrixLocation = glGetUniformLocation(program, U_PROJECTION_MATRIX);
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
     }
 
-    public void loadMatrix(float[] matrix)
-    {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+    public void loadModelMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uModelMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadViewMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
+    }
+
+    public void loadProjectionMatrix(final float[] matrix) {
+        glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
     }
 
     public abstract void loadColour(int color);

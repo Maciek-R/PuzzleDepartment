@@ -1,4 +1,5 @@
-uniform mat4 u_Matrix;
+uniform mat4 u_ViewMatrix;
+uniform mat4 u_ProjectionMatrix;
 uniform float u_Time;
 
 attribute vec3 a_Position;
@@ -14,6 +15,6 @@ void main()
     v_Color = a_Color;
     v_ElapsedTime = u_Time - a_ParticleStartTime;
     vec3 currentPosition = a_Position + (a_DirectionVector * v_ElapsedTime);
-    gl_Position = u_Matrix * vec4(currentPosition, 1.0);
+    gl_Position = u_ProjectionMatrix * u_ViewMatrix * vec4(currentPosition, 1.0);
     gl_PointSize = 25.0;
 }

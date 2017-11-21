@@ -1,5 +1,6 @@
-uniform mat4 u_Matrix;
 uniform mat4 u_ModelMatrix;
+uniform mat4 u_ViewMatrix;
+uniform mat4 u_ProjectionMatrix;
 uniform mat4 u_IT_ModelMatrix;
 uniform vec4 u_Color;
 uniform vec3 u_LightPos;
@@ -22,6 +23,6 @@ void main()
     v_ToLightDir = u_LightPos - worldPosition;
     v_ToCameraDir = u_CameraPos - worldPosition;
 
-    gl_Position = u_Matrix * a_Position;
+    gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_ModelMatrix * a_Position;
     v_Color = u_Color;
 }

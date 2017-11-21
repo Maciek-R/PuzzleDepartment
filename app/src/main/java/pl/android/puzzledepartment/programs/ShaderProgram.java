@@ -13,7 +13,6 @@ import static android.opengl.GLES20.glUseProgram;
 
 public abstract class ShaderProgram {
     //Uniform
-    protected static final String U_MATRIX = "u_Matrix";
     protected static final String U_MODEL_MATRIX = "u_ModelMatrix";
     protected static final String U_VIEW_MATRIX = "u_ViewMatrix";
     protected static final String U_PROJECTION_MATRIX = "u_ProjectionMatrix";

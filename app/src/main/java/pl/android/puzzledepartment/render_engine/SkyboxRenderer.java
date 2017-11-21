@@ -18,9 +18,10 @@ public class SkyboxRenderer {
         skyboxShaderProgram.stopProgram();
     }
 
-    public void render(Skybox skybox, float[] viewProjectionMatrix) {
+    public void render(Skybox skybox, final float[] viewMatrix, final float[] projectionMatrix) {
         skyboxShaderProgram.useProgram();
-        skyboxShaderProgram.loadMatrix(viewProjectionMatrix);
+        skyboxShaderProgram.loadViewMatrix(viewMatrix);
+        skyboxShaderProgram.loadProjectionMatrix(projectionMatrix);
         skyboxShaderProgram.bindTextures(skybox);
         skybox.bindData(skyboxShaderProgram);
         skybox.draw();

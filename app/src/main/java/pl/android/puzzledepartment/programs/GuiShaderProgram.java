@@ -19,7 +19,7 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  */
 
 public class GuiShaderProgram extends ShaderProgram{
-    private final int uMatrixLocation;
+    private final int uModelMatrixLocation;
     private final int uTextureUnitLocation;
 
     private final int aPositionLocation;
@@ -27,7 +27,7 @@ public class GuiShaderProgram extends ShaderProgram{
     public GuiShaderProgram(Context context) {
         super(context, R.raw.gui_vertex_shader, R.raw.gui_fragment_shader);
 
-        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+        uModelMatrixLocation = glGetUniformLocation(program, U_MODEL_MATRIX);
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
     }
@@ -37,7 +37,7 @@ public class GuiShaderProgram extends ShaderProgram{
     }
 
     public void loadMatrix(float[] matrix) {
-        glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
+        glUniformMatrix4fv(uModelMatrixLocation, 1, false, matrix, 0);
     }
 
     public void bindTextures(GuiEntity gui) {
