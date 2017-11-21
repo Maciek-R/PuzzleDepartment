@@ -5,6 +5,8 @@ import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_ONE;
+import static android.opengl.GLES20.GL_ONE_MINUS_SRC_ALPHA;
+import static android.opengl.GLES20.GL_ONE_MINUS_SRC_COLOR;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glDepthMask;
 import static android.opengl.GLES20.glDisable;
@@ -27,7 +29,7 @@ public class ParticleRenderer {
     public void render(ParticleSystem particleSystem, final float[] viewMatrix, final float[] projectionMatrix, float currentTime) {
         glEnable(GL_BLEND);
         glDepthMask(false);
-        glBlendFunc(GL_ONE, GL_ONE);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
         particleShaderProgram.useProgram();
         particleShaderProgram.loadViewMatrix(viewMatrix);
         particleShaderProgram.loadProjectionMatrix(projectionMatrix);

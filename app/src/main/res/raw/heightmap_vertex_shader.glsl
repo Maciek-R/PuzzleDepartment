@@ -6,10 +6,10 @@ attribute vec2 a_TextureCoordinates;
 
 varying vec3 v_Color;
 varying vec2 v_PassTextureCoordinates;
-varying float v_Visibility;
 
-const float density = 0.01f;
-const float gradient = 10.0f;
+varying float v_Visibility;
+const float density = 0.02f;
+const float gradient = 6.5f;
 
 void main()
 {

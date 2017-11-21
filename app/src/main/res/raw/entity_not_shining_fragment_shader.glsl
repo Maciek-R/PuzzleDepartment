@@ -11,6 +11,7 @@ varying vec4 v_Color;
 varying vec3 v_Normal;
 varying vec3 v_ToLightDir;
 varying vec3 v_ToCameraDir;
+varying float v_Visibility;
 
 void main()
 {
@@ -21,5 +22,6 @@ void main()
     float diffuseFactor = max(dot(unitNormal, unitToLightDir), 0.0);
     vec3 diffuse = diffuseFactor * u_LightColor;
 
-    gl_FragColor = v_Color * vec4(diffuse + vec3(0.3f, 0.3f, 0.3f), 1.0);
+    vec4 totalColour = v_Color * vec4(diffuse + vec3(0.3f, 0.3f, 0.3f), 1.0);
+    gl_FragColor = mix(vec4(0.5f, 0.62f, 0.69f, 1.0), totalColour, v_Visibility);
 }
