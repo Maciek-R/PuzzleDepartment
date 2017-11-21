@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
+import android.graphics.Color;
+
 import java.nio.ByteBuffer;
 
 import pl.android.puzzledepartment.data.VertexArray;
@@ -19,6 +21,7 @@ public class Skybox {
     private final VertexArray vertexArray;
     private final ByteBuffer indexArray;
     private final int textureId;
+    private static int colour = Color.rgb(128, 158, 176);
     private float rotation = 0;
 
     public Skybox(int textureId) {
@@ -67,4 +70,6 @@ public class Skybox {
     }
 
     public float getRotation(){return rotation;}
+
+    public static int getColour(){return colour;}
 }

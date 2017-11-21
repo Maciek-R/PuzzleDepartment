@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.programs;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.HeightMap;
@@ -17,6 +18,8 @@ import static android.opengl.GLES20.glBindTexture;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform1i;
+import static android.opengl.GLES20.glUniform3f;
+import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
@@ -34,6 +37,7 @@ public class HeightmapShaderProgram extends ShaderProgram{
     private final int uGreenTextureUnitLocation;
     private final int uBlueTextureUnitLocation;
     private final int uBlendMapTextureUnitLocation;
+    private final int uSkyColourLocation;
 
     public HeightmapShaderProgram(Context context) {
         super(context, R.raw.heightmap_vertex_shader, R.raw.heightmap_fragment_shader);
@@ -48,19 +52,20 @@ public class HeightmapShaderProgram extends ShaderProgram{
         uGreenTextureUnitLocation = glGetUniformLocation(program, U_GREEN_TEXTURE_UNIT);
         uBlueTextureUnitLocation = glGetUniformLocation(program, U_BLUE_TEXTURE_UNIT);
         uBlendMapTextureUnitLocation = glGetUniformLocation(program, U_BLENDMAP_TEXTURE_UNIT);
+        uSkyColourLocation = glGetUniformLocation(program, U_SKY_COLOUR);
     }
 
-    public void loadModelMatrix(final float[] matrix)
-    {
+    public void loadModelMatrix(final float[] matrix) {
         glUniformMatrix4fv(uModelMatrixLocation, 1, false, matrix, 0);
     }
-    public void loadViewMatrix(final float[] matrix)
-    {
+    public void loadViewMatrix(final float[] matrix) {
         glUniformMatrix4fv(uViewMatrixLocation, 1, false, matrix, 0);
     }
-    public void loadProjectionMatrix(final float[] matrix)
-    {
+    public void loadProjectionMatrix(final float[] matrix) {
         glUniformMatrix4fv(uProjectionMatrixLocation, 1, false, matrix, 0);
+    }
+    public void loadSkyColour(int color) {
+        glUniform3f(uSkyColourLocation, Color.red(color) / 255f, Color.green(color) / 255f, Color.blue(color) / 255f);
     }
 
     public void loadTextureUnits()

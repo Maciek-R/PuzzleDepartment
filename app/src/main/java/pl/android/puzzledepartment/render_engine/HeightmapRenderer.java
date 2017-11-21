@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.render_engine;
 
 import pl.android.puzzledepartment.objects.HeightMap;
+import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 
 import static android.opengl.Matrix.scaleM;
@@ -18,6 +19,7 @@ public class HeightmapRenderer {
         this.heightmapShaderProgram = heightmapShaderProgram;
         heightmapShaderProgram.useProgram();
         heightmapShaderProgram.loadTextureUnits();
+        heightmapShaderProgram.loadSkyColour(Skybox.getColour());
         heightmapShaderProgram.stopProgram();
     }
 

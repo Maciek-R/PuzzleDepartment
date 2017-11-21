@@ -33,7 +33,7 @@ public abstract class ShaderProgram {
     protected static final String U_DAMPER = "u_Damper";
     protected static final String U_REFLECTIVITY = "u_Reflectivity";
     protected static final String U_IS_SHINING = "u_IsShining";
-    protected static final String U_TYPE = "u_Type";
+    protected static final String U_SKY_COLOUR = "u_SkyColour";
 
     //Attribute
     protected static final String A_POSITION = "a_Position";

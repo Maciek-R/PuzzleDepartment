@@ -5,6 +5,7 @@ uniform sampler2D u_RedTextureUnit;
 uniform sampler2D u_GreenTextureUnit;
 uniform sampler2D u_BlueTextureUnit;
 uniform sampler2D u_BlendMapTextureUnit;
+uniform vec3 u_SkyColour;
 
 varying vec3 v_Color;
 varying vec2 v_PassTextureCoordinates;
@@ -25,5 +26,5 @@ void main()
 
     vec4 totalColour = background + redTexture + greenTexture + blueTexture;
 
-    gl_FragColor = mix(vec4(0.5f, 0.62f, 0.69f, 1.0), totalColour, v_Visibility);
+    gl_FragColor = mix(vec4(u_SkyColour, 1.0), totalColour, v_Visibility);
 }

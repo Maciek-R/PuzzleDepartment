@@ -15,6 +15,7 @@ public class SkyboxRenderer {
         this.skyboxShaderProgram = skyboxShaderProgram;
         skyboxShaderProgram.useProgram();
         skyboxShaderProgram.loadTextureUnits();
+        skyboxShaderProgram.loadSkyColour(Skybox.getColour());
         skyboxShaderProgram.stopProgram();
     }
 

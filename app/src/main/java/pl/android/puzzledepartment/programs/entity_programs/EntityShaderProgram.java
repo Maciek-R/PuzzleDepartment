@@ -32,7 +32,7 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     private final int uDamper;
     private final int uReflectivity;
     private final int uIsShining;
-    private final int uType;
+    private final int uSkyColourLocation;
 
     private final int aPositionLocation;
     private final int aColorLocation;
@@ -52,7 +52,7 @@ public abstract class EntityShaderProgram extends ShaderProgram {
         uDamper = glGetUniformLocation(program, U_DAMPER);
         uReflectivity = glGetUniformLocation(program, U_REFLECTIVITY);
         uIsShining = glGetAttribLocation(program, U_IS_SHINING);
-        uType = glGetAttribLocation(program, U_TYPE);
+        uSkyColourLocation = glGetUniformLocation(program, U_SKY_COLOUR);
 
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         aColorLocation = glGetAttribLocation(program, A_COLOR);
@@ -89,21 +89,18 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     public void loadCamera(Camera camera) {
         glUniform3f(uCameraPos, camera.getPosX(), camera.getLookPosY(), camera.getPosZ());
     }
-    public void loadType(Entity.Type type) {
-        float value = 0.0f;
-        switch (type){
-            case UNCOLOURED: value = 0.0f; break;
-            case COLOURED: value = 1.0f; break;
-            case TEXTURED: value = 2.0f; break;
-        }
-        glUniform1f(uType, value);
-    }
+
     public void loadShining(boolean shining) {
         if(shining)
             glUniform1f(uIsShining, 1.0f);
         else
             glUniform1f(uIsShining, 0.0f);
     }
+
+    public void loadSkyColour(int color) {
+        glUniform3f(uSkyColourLocation, Color.red(color) / 255f, Color.green(color) / 255f, Color.blue(color) / 255f);
+    }
+
     public void loadDamper(float damper) {
         glUniform1f(uDamper, damper);
     }

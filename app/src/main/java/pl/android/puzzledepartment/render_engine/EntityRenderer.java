@@ -4,6 +4,7 @@ package pl.android.puzzledepartment.render_engine;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Light;
+import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
@@ -31,6 +32,7 @@ public class EntityRenderer {
         shaderProgram.loadModelMatrix(modelMatrix);
         shaderProgram.loadViewMatrix(viewMatrix);
         shaderProgram.loadProjectionMatrix(projectionMatrix);
+        shaderProgram.loadSkyColour(Skybox.getColour());
         if(Entity.Type.UNCOLOURED.equals(entity.getType()))
             shaderProgram.loadColour(entity.getColor());
         bindDataAndDraw(shaderProgram, entity);
@@ -45,7 +47,7 @@ public class EntityRenderer {
         shaderProgram.loadInvertedModelMatrix(invertedModelMatrix);
         shaderProgram.loadLight(light);
         shaderProgram.loadCamera(camera);
-        shaderProgram.loadType(entity.getType());
+        shaderProgram.loadSkyColour(Skybox.getColour());
         shaderProgram.loadShining(entity.isShining());
         if(entity.isShining())
         {

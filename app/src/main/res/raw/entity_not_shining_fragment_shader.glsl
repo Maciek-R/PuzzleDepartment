@@ -6,6 +6,7 @@ uniform vec3 u_LightColor;
 uniform float u_Damper;
 uniform float u_Reflectivity;
 uniform float u_IsShining;
+uniform vec3 u_SkyColour;
 
 varying vec4 v_Color;
 varying vec3 v_Normal;
@@ -23,5 +24,5 @@ void main()
     vec3 diffuse = diffuseFactor * u_LightColor;
 
     vec4 totalColour = v_Color * vec4(diffuse + vec3(0.3f, 0.3f, 0.3f), 1.0);
-    gl_FragColor = mix(vec4(0.5f, 0.62f, 0.69f, 1.0), totalColour, v_Visibility);
+    gl_FragColor = mix(vec4(u_SkyColour, 1.0), totalColour, v_Visibility);
 }
