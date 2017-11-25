@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.objects.particles;
 
+import android.graphics.Color;
+
 import java.util.Random;
 
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -13,8 +15,8 @@ import static android.opengl.Matrix.setRotateEulerM;
  */
 
 public class ParticleShooter {
-    private Point pos;
-    private final int color;
+    protected Point pos;
+    private int color;
 
     private final float angleVariance;
     private final float speedVariance;
@@ -49,5 +51,13 @@ public class ParticleShooter {
 
             particleSystem.addParticle(pos, color, particleDirection, currentTime);
         }
+    }
+
+    public void changeColorToGreen() {
+        this.color = Color.rgb(10, 255, 10);
+    }
+
+    public void changeColorToRed() {
+        this.color = Color.rgb(255, 50, 5);
     }
 }

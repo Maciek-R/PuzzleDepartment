@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.android.puzzledepartment.objects.Camera;
+import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
+import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
+import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 
@@ -19,6 +22,8 @@ public class CollisionManager {
 
     private TeleportPuzzle teleportPuzzle;
     private List<Entity> teleports;
+
+    private ParticlesOrderPuzzle particlesOrderPuzzle;
 
     public CollisionManager() {
         entities = new ArrayList<>();
@@ -37,15 +42,15 @@ public class CollisionManager {
         return collisionDescription;
     }
 
-    private boolean checkCollision(Entity e, Camera camera) {
+    private boolean checkCollision(Collisionable c, Camera camera) {
 
-        final float scaleY = e.getScale().y/2;
+        final float scaleY = c.getScale().y/2;
 
-        if (collide(e, camera)) {
+        if (collide(c, camera)) {
 
             collisionDescription.isCollision = true;
-            if (camera.getPosY() >= (e.getPos().y + scaleY)) {
-                collisionDescription.collisionPosY = e.getPos().y + scaleY;
+            if (camera.getPosY() >= (c.getPos().y + scaleY)) {
+                collisionDescription.collisionPosY = c.getPos().y + scaleY;
                 collisionDescription.isCollisionOverEntity = true;
             } else {
                 collisionDescription.isCollisionSideEntity = true;
@@ -55,7 +60,7 @@ public class CollisionManager {
             return false;
     }
 
-    private boolean collide(Entity e, Camera camera) {
+    private boolean collide(Collisionable e, Camera camera) {
         final float scaleX = e.getScale().x/2;
         final float scaleY = e.getScale().y/2;
         final float scaleZ = e.getScale().z/2;
@@ -96,6 +101,9 @@ public class CollisionManager {
         for(Entity e:teleportPuzzle.getTeleports())
             addTeleport(e);
     }
+    public void add(ParticlesOrderPuzzle particlesOrderPuzzle) {
+        this.particlesOrderPuzzle = particlesOrderPuzzle;
+    }
     public void addTeleport(Entity entity) {
         teleports.add(entity);
     }
@@ -130,5 +138,14 @@ public class CollisionManager {
                 return true;
             }
         return false;
+    }
+
+    public void checkParticlesCollision(Camera camera) {
+        for (ParticleCollideShooter particleCollideShooter : particlesOrderPuzzle.getParticleShooters()) {
+            if (checkCollision(particleCollideShooter, camera)) {
+                particlesOrderPuzzle.checkIfChoseCorrectParticle(particleCollideShooter);
+                return;
+            }
+        }
     }
 }

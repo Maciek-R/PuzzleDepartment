@@ -8,7 +8,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public interface Actionable {
-    public void action();
-    public Point getPosition();
-    public Vector3f getScale();
+    void action();
+    Point getPosition();
+    Vector3f getScale();
 }

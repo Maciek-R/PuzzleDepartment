@@ -31,6 +31,7 @@ import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
+import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -83,6 +84,7 @@ public class MainGameRenderer implements Renderer {
     private EntityManager entityManager;
 
     private TeleportPuzzle teleportPuzzle;
+    private ParticlesOrderPuzzle particlesOrderPuzzle;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -115,6 +117,7 @@ public class MainGameRenderer implements Renderer {
 
         entityManager = new EntityManager(context);
         teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
+        particlesOrderPuzzle = new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -136,6 +139,7 @@ public class MainGameRenderer implements Renderer {
         collisionManager.add(cube);
         collisionManager.add(room);
         collisionManager.add(teleportPuzzle);
+        collisionManager.add(particlesOrderPuzzle);
 
         actionManager = new ActionManager();
         actionManager.add(dragonStatue);
@@ -166,6 +170,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderWithNormals(dragon, camera);
 
         light.move2();
+
         camera.update(heightMap, collisionManager);
         if(actionManager.isNearAnyActionableObject(camera))
             masterRenderer.renderGuis(guiEntities);
@@ -180,6 +185,9 @@ public class MainGameRenderer implements Renderer {
 
         masterRenderer.render(particleSystem, elapsedTime);
         masterRenderer.render(particleSystem, elapsedTime);
+
+        particlesOrderPuzzle.update(elapsedTime);
+        masterRenderer.render(particlesOrderPuzzle, elapsedTime);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

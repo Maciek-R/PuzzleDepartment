@@ -63,6 +63,10 @@ public class Camera {
         //System.out.println("X: " + this.posX + "Z:  " + this.posZ);
         countNextPossiblePosition(heightMap);
 
+        collisionManager.checkParticlesCollision(this);
+
+
+
         if(collisionManager.checkTeleportCollision(this)){
             isInAir = false;
             flySpeed = 0;

@@ -27,11 +27,11 @@ import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProg
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
+import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
 
-import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
 import static android.opengl.Matrix.translateM;
@@ -124,6 +124,9 @@ public class MasterRenderer {
         render(teleportPuzzle.getTeleports());
         for(Room r:teleportPuzzle.getRooms())
             render(r);
+    }
+    public void render(ParticlesOrderPuzzle particlesOrderPuzzle, float currentTime){
+        render(particlesOrderPuzzle.getParticleSystem(), currentTime);
     }
 
     public void render(ParticleSystem particleSystem, float currentTime) {

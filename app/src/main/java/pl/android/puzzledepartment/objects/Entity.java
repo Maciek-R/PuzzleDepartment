@@ -14,7 +14,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-08.
  */
 
-public abstract class Entity{
+public abstract class Entity implements Collisionable{
     protected Point pos;
     protected float verAngle;
     protected Vector3f scale;
