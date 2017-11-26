@@ -20,6 +20,11 @@ public class ActionManager {
         activeActionable = null;
     }
 
+    public void add(List<? extends Actionable> actionables) {
+        for(Actionable a:actionables)
+            add(a);
+    }
+
     public void add(Actionable actionable) {
         actionables.add(actionable);
     }

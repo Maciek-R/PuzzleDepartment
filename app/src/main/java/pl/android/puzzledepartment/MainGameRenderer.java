@@ -22,7 +22,6 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
-import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
@@ -32,6 +31,7 @@ import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
+import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -77,7 +77,6 @@ public class MainGameRenderer implements Renderer {
     private Light light;
     private HeightMap heightMap;
     private Room room;
-    private DragonStatue dragonStatue;
     private Camera camera;
 
     private MasterRenderer masterRenderer;
@@ -89,6 +88,7 @@ public class MainGameRenderer implements Renderer {
     private ParticlesOrderPuzzle particlesOrderPuzzle;
     private ParticlesWalkPuzzle particlesWalkPuzzle;
     private ChessPuzzle chessPuzzle;
+    private DragonStatuePuzzle dragonStatuePuzzle;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -126,6 +126,7 @@ public class MainGameRenderer implements Renderer {
         particlesOrderPuzzle = new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture);
         particlesWalkPuzzle = new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture);
         chessPuzzle = new ChessPuzzle(new Point(20f, 5f, -60f));
+        dragonStatuePuzzle = new DragonStatuePuzzle(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon));
 
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
@@ -141,7 +142,6 @@ public class MainGameRenderer implements Renderer {
                                             , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.water)))
                     , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.bluredcolourmap)));
         room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
-        dragonStatue = new DragonStatue(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon));
 
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
@@ -152,7 +152,7 @@ public class MainGameRenderer implements Renderer {
         collisionManager.add(chessPuzzle);
 
         actionManager = new ActionManager();
-        actionManager.add(dragonStatue);
+        actionManager.add(dragonStatuePuzzle.getStatues());
     }
 
     @Override
@@ -174,22 +174,22 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
         masterRenderer.render(chessPuzzle);
-        masterRenderer.render(dragonStatue);
+        masterRenderer.render(dragonStatuePuzzle);
 
         masterRenderer.renderWithNormals(shaderCube);
         masterRenderer.renderWithNormals(cylinder);
         masterRenderer.renderWithNormals(dragon);
 
         light.move2();
-
         camera.update(heightMap, collisionManager);
+        dragonStatuePuzzle.update();
         actionManager.moveInActionObjects();
-        if(actionManager.isNearAnyActionableObject(camera)) {
-            masterRenderer.renderGuis(guiEntities);
+        if(actionManager.isNearAnyActionableObject(camera))
             actionGuiEntity.setIsVisible(true);
-        }
         else
             actionGuiEntity.setIsVisible(false);
+
+        masterRenderer.renderGuis(guiEntities);
         drawParticles();
 
         dragon.rotate(60.0f);

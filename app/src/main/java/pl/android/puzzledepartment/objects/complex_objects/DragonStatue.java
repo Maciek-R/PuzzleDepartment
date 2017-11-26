@@ -12,6 +12,10 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class DragonStatue implements Actionable{
+
+    public enum Direction{LEFT, BACKWARD, RIGHT, FORWARD};
+
+    private Direction direction = Direction.LEFT;
     private Point pos;
     private Vector3f scale;
 
@@ -41,6 +45,31 @@ public class DragonStatue implements Actionable{
         targetRotation = cube.getVerRotation() + 90f;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
+    public void updateAction() {
+        cube.rotate(30f);
+        dragon.rotate(30f);
+        if(cube.getVerRotation() > targetRotation){
+            cube.setVerRotation(targetRotation);
+            dragon.setVerRotation(targetRotation);
+            isInAction = false;
+            setNextDirection();
+        }
+    }
+
+    private void setNextDirection() {
+        switch(direction){
+            case RIGHT: direction = Direction.FORWARD; break;
+            case FORWARD: direction = Direction.LEFT; break;
+            case LEFT: direction = Direction.BACKWARD; break;
+            case BACKWARD: direction = Direction.RIGHT; break;
+        }
+    }
+
     @Override
     public Point getPosition() {
         return pos;
@@ -54,16 +83,5 @@ public class DragonStatue implements Actionable{
     @Override
     public boolean isInAction() {
         return isInAction;
-    }
-
-    @Override
-    public void updateAction() {
-        cube.rotate(30f);
-        dragon.rotate(30f);
-        if(cube.getVerRotation() > targetRotation){
-            cube.setVerRotation(targetRotation);
-            dragon.setVerRotation(targetRotation);
-            isInAction = false;
-        }
     }
 }

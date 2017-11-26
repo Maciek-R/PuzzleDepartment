@@ -51,6 +51,8 @@ public class GuiRenderer {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_DEPTH_TEST);
         for(GuiEntity gui : guiEntities) {
+            if(!gui.isVisible())
+                continue;
             prepareModelMatrix(gui);
             shaderProgram.loadMatrix(modelMatrix);
             shaderProgram.bindTextures(gui);

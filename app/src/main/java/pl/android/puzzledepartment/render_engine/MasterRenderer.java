@@ -28,6 +28,7 @@ import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
+import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -133,6 +134,11 @@ public class MasterRenderer {
 
     public void render(ChessPuzzle chessPuzzle) {
         render(chessPuzzle.getSelectedEntities());
+    }
+
+    public void render(DragonStatuePuzzle dragonStatuePuzzle) {
+        for(DragonStatue d:dragonStatuePuzzle.getStatues())
+            render(d);
     }
 
     public void render(ParticlesOrderPuzzle particlesOrderPuzzle, float currentTime){
