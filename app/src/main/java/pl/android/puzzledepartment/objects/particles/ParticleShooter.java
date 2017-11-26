@@ -18,6 +18,10 @@ public class ParticleShooter {
     protected Point pos;
     private int color;
 
+    private float speedMultiplier = 1f;
+    private final static float MIN_SPEED_MULTIPLIER = 0.25f;
+    private final static float MAX_SPEED_MULTIPLIER = 4.0f;
+
     private final float angleVariance;
     private final float speedVariance;
 
@@ -44,6 +48,7 @@ public class ParticleShooter {
             setRotateEulerM(rotationMatrix, 0, (random.nextFloat() - 0.5f) * angleVariance, (random.nextFloat() - 0.5f) * angleVariance, (random.nextFloat() - 0.5f) * angleVariance);
             multiplyMV(resultVec, 0, rotationMatrix, 0, directionVector, 0);
             float speed = random.nextFloat() * speedVariance + 1f;
+            speed *= speedMultiplier;
 
             Vector3f particleDirection = new Vector3f(resultVec[0] * speed,
                                                     resultVec[1] * speed,
@@ -59,5 +64,30 @@ public class ParticleShooter {
 
     public void changeColorToRed() {
         this.color = Color.rgb(255, 50, 5);
+    }
+
+    public void changeColor(int color) {
+        this.color = color;
+    }
+
+    public boolean areParticleCalm() {
+        return speedMultiplier < 0.5f;
+    }
+
+    public void increaseSpeedMultiplier() {
+        changeSpeedMultiplier(0.01f);
+    }
+
+    public void decreaseSpeedMultiplier() {
+        changeSpeedMultiplier(-0.01f);
+    }
+
+    private void changeSpeedMultiplier(float amount) {
+        speedMultiplier+=amount;
+        clampSpeedMultiplier();
+    }
+
+    private void clampSpeedMultiplier() {
+        speedMultiplier = Math.max(MIN_SPEED_MULTIPLIER, Math.min(MAX_SPEED_MULTIPLIER, speedMultiplier));
     }
 }

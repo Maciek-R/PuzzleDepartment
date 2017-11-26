@@ -32,6 +32,7 @@ import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
+import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.render_engine.MasterRenderer;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -85,6 +86,7 @@ public class MainGameRenderer implements Renderer {
 
     private TeleportPuzzle teleportPuzzle;
     private ParticlesOrderPuzzle particlesOrderPuzzle;
+    private ParticlesWalkPuzzle particlesWalkPuzzle;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -118,6 +120,7 @@ public class MainGameRenderer implements Renderer {
         entityManager = new EntityManager(context);
         teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
         particlesOrderPuzzle = new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture);
+        particlesWalkPuzzle = new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -182,12 +185,14 @@ public class MainGameRenderer implements Renderer {
         float elapsedTime = TimeManager.getElapsedTimeFromBeginningInSeconds();
         redParticleShooter.addParticles(particleSystem, elapsedTime, 5);
         blueParticleShooter.addParticles(particleSystem, elapsedTime, 5);
-
         masterRenderer.render(particleSystem, elapsedTime);
         masterRenderer.render(particleSystem, elapsedTime);
-
+        //
         particlesOrderPuzzle.update(elapsedTime);
         masterRenderer.render(particlesOrderPuzzle, elapsedTime);
+        //
+        particlesWalkPuzzle.update(elapsedTime, camera);
+        masterRenderer.render(particlesWalkPuzzle, elapsedTime);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

@@ -166,4 +166,11 @@ public class Camera {
         this.posZ = positionOnCurrentFloor.z;
         this.lookPosY = posY + 1.5f;
     }
+    public float getDeltaX() {
+        return deltaX;
+    }
+
+    public float getDeltaZ() {
+        return deltaZ;
+    }
 }
