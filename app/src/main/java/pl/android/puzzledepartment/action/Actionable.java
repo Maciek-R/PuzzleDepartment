@@ -11,4 +11,6 @@ public interface Actionable {
     void action();
     Point getPosition();
     Vector3f getScale();
+    boolean isInAction();
+    void updateAction();
 }

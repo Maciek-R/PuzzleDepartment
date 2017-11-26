@@ -65,8 +65,9 @@ public class MasterRenderer {
     private List<Dragon> entities;
 
     private Light light;
+    private Camera camera;
 
-    public MasterRenderer(Context context, Light light) {
+    public MasterRenderer(Context context, Light light, Camera camera) {
         entityRenderer = new EntityRenderer();
         entityUnColouredNotShiningShaderProgram = new EntityUncolouredNotShiningShaderProgram(context);
         entityColouredNotShiningShaderProgram = new EntityColouredNotShiningShaderProgram(context);
@@ -83,6 +84,7 @@ public class MasterRenderer {
         guiRenderer = new GuiRenderer(new GuiShaderProgram(context));
 
         this.light = light;
+        this.camera = camera;
         entities = new ArrayList<Dragon>();
     }
 
@@ -118,6 +120,7 @@ public class MasterRenderer {
 
     public void render(DragonStatue dragonStatue){
         render(dragonStatue.getCube());
+        renderWithNormals(dragonStatue.getDragon());
     }
     public void render(Room room) {
         render(room.getEntities());
@@ -148,7 +151,7 @@ public class MasterRenderer {
         guiRenderer.render(guiEntities);
     }
 
-    public void render(Skybox skybox, Camera camera) {
+    public void render(Skybox skybox) {
         setIdentityM(viewMatrix, 0);
         skybox.rotate();
         rotateM(viewMatrix, 0, camera.getRotationY(), 1f, 0f, 0f);
@@ -157,7 +160,7 @@ public class MasterRenderer {
         skyboxRenderer.render(skybox, viewMatrix, projectionMatrix);
     }
 
-    public void renderWithNormals(Entity entity, Camera camera) {
+    public void renderWithNormals(Entity entity) {
         EntityShaderProgram entityShaderProgram = null;
         switch(entity.getType())
         {

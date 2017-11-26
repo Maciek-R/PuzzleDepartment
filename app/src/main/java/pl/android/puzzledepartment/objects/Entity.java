@@ -78,6 +78,7 @@ public abstract class Entity implements Collisionable{
     }
     public float getVerRotation() { return verAngle; }
     public float getHorRotation() { return horAngle; }
+    public void setVerRotation(float rotation) { this.verAngle = rotation; }
     public Vector3f getScale() { return scale; }
 
 

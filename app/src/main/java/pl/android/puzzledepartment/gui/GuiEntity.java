@@ -11,6 +11,7 @@ public class GuiEntity {
     private final int textureId;
     private Vector2f position;
     private Vector2f scale;
+    boolean isVisible = false;
 
     public GuiEntity(int textureId, Vector2f position) {
         this(textureId, position, new Vector2f(1.0f, 1.0f));
@@ -24,6 +25,14 @@ public class GuiEntity {
         this.scale = scale;
     }
 
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
     public int getTextureId() {
         return textureId;
     }
@@ -34,5 +43,10 @@ public class GuiEntity {
 
     public Vector2f getScale() {
         return scale;
+    }
+
+    public boolean pressed(float normalizedX, float normalizedY) {
+        return normalizedX >= position.x-scale.x && normalizedX <= position.x+scale.x &&
+                normalizedY >= position.y-scale.y && normalizedY <= position.y+scale.y;
     }
 }

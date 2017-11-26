@@ -92,6 +92,7 @@ public class MainGameRenderer implements Renderer {
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
+    private GuiEntity actionGuiEntity;
     private int guiTexture;
 
     private Skybox skybox;
@@ -111,7 +112,8 @@ public class MainGameRenderer implements Renderer {
         camera = new Camera(0f, 0f, 0f);
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
         guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
-        guiEntities.add(new GuiEntity(guiTexture, new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f)));
+        actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
+        guiEntities.add(actionGuiEntity);
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
         particleSystem = new ParticleSystem(10000, particleTexture);
         globalStartTime = System.nanoTime();
@@ -139,9 +141,9 @@ public class MainGameRenderer implements Renderer {
                                             , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.water)))
                     , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.bluredcolourmap)));
         room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
-        dragonStatue = new DragonStatue(new Point(10.0f, 5.5f, 10.0f));
+        dragonStatue = new DragonStatue(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon));
 
-        masterRenderer = new MasterRenderer(context, light);
+        masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
         collisionManager.add(cube);
         collisionManager.add(room);
@@ -164,7 +166,7 @@ public class MainGameRenderer implements Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         TimeManager.update();
 
-        masterRenderer.render(skybox, camera);
+        masterRenderer.render(skybox);
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
         masterRenderer.render(light);
@@ -174,15 +176,20 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(chessPuzzle);
         masterRenderer.render(dragonStatue);
 
-        masterRenderer.renderWithNormals(shaderCube, camera);
-        masterRenderer.renderWithNormals(cylinder, camera);
-        masterRenderer.renderWithNormals(dragon, camera);
+        masterRenderer.renderWithNormals(shaderCube);
+        masterRenderer.renderWithNormals(cylinder);
+        masterRenderer.renderWithNormals(dragon);
 
         light.move2();
 
         camera.update(heightMap, collisionManager);
-        if(actionManager.isNearAnyActionableObject(camera))
+        actionManager.moveInActionObjects();
+        if(actionManager.isNearAnyActionableObject(camera)) {
             masterRenderer.renderGuis(guiEntities);
+            actionGuiEntity.setIsVisible(true);
+        }
+        else
+            actionGuiEntity.setIsVisible(false);
         drawParticles();
 
         dragon.rotate(60.0f);
@@ -212,7 +219,11 @@ public class MainGameRenderer implements Renderer {
 
     public void handleTouchPress(float normalizedX, float normalizedY){
         if(Logger.ON)
-            Log.v("RENDERER", "Touch Press");
+            Log.v("RENDERER", "Touch Press: X: "+normalizedX+" Y: "+normalizedY);
+
+        if (actionGuiEntity.pressed(normalizedX, normalizedY)) {
+            actionManager.activate();
+        }
     }
 
     public void handleJumpCamera() {

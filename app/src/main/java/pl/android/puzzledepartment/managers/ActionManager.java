@@ -13,9 +13,11 @@ import pl.android.puzzledepartment.objects.Camera;
 public class ActionManager {
 
     private List<Actionable> actionables;
+    private Actionable activeActionable;
 
     public ActionManager() {
         actionables = new ArrayList<Actionable>();
+        activeActionable = null;
     }
 
     public void add(Actionable actionable) {
@@ -24,10 +26,12 @@ public class ActionManager {
 
     public boolean isNearAnyActionableObject(Camera camera) {
         for (Actionable a : actionables)
-            if (extendedCollide(a, camera)) {
-                a.action();
+            if (!a.isInAction() && extendedCollide(a, camera)) {
+                activeActionable = a;
                 return true;
             }
+
+        activeActionable = null;
         return false;
     }
 
@@ -56,5 +60,17 @@ public class ActionManager {
             return false;
         else
             return true;
+    }
+
+    public void activate() {
+        if(activeActionable != null)
+            activeActionable.action();
+    }
+
+    public void moveInActionObjects() {
+        for (Actionable a : actionables) {
+            if(a.isInAction())
+                a.updateAction();
+        }
     }
 }

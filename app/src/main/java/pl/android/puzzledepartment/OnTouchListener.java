@@ -90,6 +90,13 @@ public class OnTouchListener implements View.OnTouchListener {
                 Log.v("TAP1", String.valueOf(event.getPointerId(event.getActionIndex())));
                 indexMove = event.getPointerId(event.getActionIndex());
             }
+
+            glSurfaceView.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    mainGameRenderer.handleTouchPress(normalizedX, normalizedY);
+                }
+            });
         } else {
             if (indexRotate == -1) {
                 previousRotateX = event.getX(pointerIndex);
@@ -99,12 +106,6 @@ public class OnTouchListener implements View.OnTouchListener {
                 touchTime = SystemClock.elapsedRealtime();
             }
         }
-        glSurfaceView.queueEvent(new Runnable() {
-            @Override
-            public void run() {
-                mainGameRenderer.handleTouchPress(normalizedX, normalizedY);
-            }
-        });
     }
 
     private void actionUp(MotionEvent event) {

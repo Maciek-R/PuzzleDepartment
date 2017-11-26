@@ -29,13 +29,16 @@ public class Dragon extends Entity{
     private final int indicesLength;
 
     public Dragon(Point pos, EntityModel entityModel) {
-        super(pos, 0.0f, new Vector3f(0.25f, 0.25f, 0.25f));
+        this(pos, entityModel, new Vector3f(1f, 1f, 1f));
+    }
+
+    public Dragon(Point pos, EntityModel entityModel, Vector3f scale) {
+        super(pos, 0.0f, new Vector3f(0.25f * scale.x, 0.25f * scale.y, 0.25f * scale.z));
         this.color = Color.rgb(255, 0, 0);
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
         indicesLength = entityModel.indicesArray.length;
-       // drawList.add(() -> glDrawElements(GL_TRIANGLES, entityModel.indicesArray.length, GL_UNSIGNED_BYTE, indexArray));
     }
 
     @Override
