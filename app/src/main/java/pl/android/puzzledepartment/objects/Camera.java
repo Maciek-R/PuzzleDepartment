@@ -73,6 +73,8 @@ public class Camera {
             return;
         }
 
+
+
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
 

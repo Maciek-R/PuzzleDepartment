@@ -8,6 +8,7 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
+import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -24,6 +25,7 @@ public class CollisionManager {
     private List<Entity> teleports;
 
     private ParticlesOrderPuzzle particlesOrderPuzzle;
+    private ChessPuzzle chessPuzzle;
 
     public CollisionManager() {
         entities = new ArrayList<>();
@@ -39,7 +41,11 @@ public class CollisionManager {
         for (Entity e : entities)
             checkCollision(e, camera);
 
-        return collisionDescription;
+        if(collisionDescription.isCollision())
+            return collisionDescription;
+
+        checkChessCollision(camera);
+            return collisionDescription;
     }
 
     private boolean checkCollision(Collisionable c, Camera camera) {
@@ -104,6 +110,9 @@ public class CollisionManager {
     public void add(ParticlesOrderPuzzle particlesOrderPuzzle) {
         this.particlesOrderPuzzle = particlesOrderPuzzle;
     }
+    public void add(ChessPuzzle chessPuzzle) {
+        this.chessPuzzle = chessPuzzle;
+    }
     public void addTeleport(Entity entity) {
         teleports.add(entity);
     }
@@ -147,5 +156,17 @@ public class CollisionManager {
                 return;
             }
         }
+    }
+
+    private boolean checkChessCollision(Camera camera) {
+        for (Entity e : chessPuzzle.getSelectedEntities()) {
+            if (checkCollision(e, camera)) {
+
+                if(e.equals(chessPuzzle.getNextCube()))
+                    chessPuzzle.selectNextCube();
+                return true;
+            }
+        }
+        return false;
     }
 }

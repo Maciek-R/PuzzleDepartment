@@ -63,7 +63,8 @@ public class EntityRenderer {
     private void prepareModelMatrix(Entity entity) {
         setIdentityM(modelMatrix, 0);
         translateM(modelMatrix, 0, entity.getPos().x, entity.getPos().y, entity.getPos().z);
-        rotateM(modelMatrix, 0, entity.getRotation(), 0f, 1f, 0f);
+        rotateM(modelMatrix, 0, entity.getVerRotation(), 0f, 1f, 0f);
+        rotateM(modelMatrix, 0, entity.getHorRotation(), 1f, 0f, 0f);
         scaleM(modelMatrix, 0, entity.getScale().x, entity.getScale().y, entity.getScale().z);
     }
 

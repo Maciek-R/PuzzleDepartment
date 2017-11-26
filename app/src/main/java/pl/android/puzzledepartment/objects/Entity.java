@@ -17,6 +17,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 public abstract class Entity implements Collisionable{
     protected Point pos;
     protected float verAngle;
+    protected float horAngle;
     protected Vector3f scale;
     protected List<ObjectBuilder.DrawCommand> drawList;
 
@@ -40,6 +41,7 @@ public abstract class Entity implements Collisionable{
     protected Entity(Point pos, float angle, Vector3f scale) {
         this.pos = pos;
         this.verAngle = angle;
+        this.horAngle = 0;
         this.scale = scale;
         drawList = new ArrayList<>();
         initObjectProperties();
@@ -65,13 +67,17 @@ public abstract class Entity implements Collisionable{
     public void rotate(float angleInSeconds) {
         this.verAngle+= TimeManager.getDeltaTimeInSeconds() * angleInSeconds;
     }
+    public void singleHorRotate(float angleInDeg) {
+        this.horAngle+=angleInDeg;
+    }
     abstract public void bindData(ShaderProgram shaderProgram);
     abstract public void draw();
 
     public Point getPos() {
         return pos;
     }
-    public float getRotation() { return verAngle; }
+    public float getVerRotation() { return verAngle; }
+    public float getHorRotation() { return horAngle; }
     public Vector3f getScale() { return scale; }
 
 

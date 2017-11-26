@@ -31,6 +31,7 @@ import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
+import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -87,6 +88,7 @@ public class MainGameRenderer implements Renderer {
     private TeleportPuzzle teleportPuzzle;
     private ParticlesOrderPuzzle particlesOrderPuzzle;
     private ParticlesWalkPuzzle particlesWalkPuzzle;
+    private ChessPuzzle chessPuzzle;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -121,6 +123,8 @@ public class MainGameRenderer implements Renderer {
         teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
         particlesOrderPuzzle = new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture);
         particlesWalkPuzzle = new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture);
+        chessPuzzle = new ChessPuzzle(new Point(20f, 5f, -60f));
+
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -143,6 +147,7 @@ public class MainGameRenderer implements Renderer {
         collisionManager.add(room);
         collisionManager.add(teleportPuzzle);
         collisionManager.add(particlesOrderPuzzle);
+        collisionManager.add(chessPuzzle);
 
         actionManager = new ActionManager();
         actionManager.add(dragonStatue);
@@ -166,6 +171,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(cube);
         masterRenderer.render(room);
         masterRenderer.render(teleportPuzzle);
+        masterRenderer.render(chessPuzzle);
         masterRenderer.render(dragonStatue);
 
         masterRenderer.renderWithNormals(shaderCube, camera);
