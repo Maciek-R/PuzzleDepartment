@@ -32,6 +32,7 @@ import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
+import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -89,6 +90,7 @@ public class MainGameRenderer implements Renderer {
     private ParticlesWalkPuzzle particlesWalkPuzzle;
     private ChessPuzzle chessPuzzle;
     private DragonStatuePuzzle dragonStatuePuzzle;
+    private MixColorPuzzle mixColorPuzzle;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -127,7 +129,7 @@ public class MainGameRenderer implements Renderer {
         particlesWalkPuzzle = new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture);
         chessPuzzle = new ChessPuzzle(new Point(20f, 5f, -60f));
         dragonStatuePuzzle = new DragonStatuePuzzle(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon));
-
+        mixColorPuzzle = new MixColorPuzzle(new Point(10.0f, 8f, 10.0f));
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -153,6 +155,7 @@ public class MainGameRenderer implements Renderer {
 
         actionManager = new ActionManager();
         actionManager.add(dragonStatuePuzzle.getStatues());
+        actionManager.add(mixColorPuzzle.getLevers());
     }
 
     @Override
@@ -175,6 +178,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(teleportPuzzle);
         masterRenderer.render(chessPuzzle);
         masterRenderer.render(dragonStatuePuzzle);
+        masterRenderer.render(mixColorPuzzle);
 
         masterRenderer.renderWithNormals(shaderCube);
         masterRenderer.renderWithNormals(cylinder);

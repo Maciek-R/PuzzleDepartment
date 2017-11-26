@@ -24,6 +24,7 @@ public abstract class Entity implements Collisionable{
     protected boolean isShining = false;
     protected float damper = 10;
     protected float reflectivity = 1;
+
     public enum Type{UNCOLOURED, COLOURED, TEXTURED, COMPLEX};
     protected Type type = Type.UNCOLOURED;
 
@@ -114,5 +115,8 @@ public abstract class Entity implements Collisionable{
     }
     public int getColor() {
         return color;
+    }
+    public void setColor(int color) {
+        this.color = color;
     }
 }

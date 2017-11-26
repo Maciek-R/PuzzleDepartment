@@ -9,11 +9,13 @@ import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Dragon;
+import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
+import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.color_programs.AttributeColorShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
@@ -29,6 +31,7 @@ import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotS
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
+import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -139,6 +142,13 @@ public class MasterRenderer {
     public void render(DragonStatuePuzzle dragonStatuePuzzle) {
         for(DragonStatue d:dragonStatuePuzzle.getStatues())
             render(d);
+    }
+
+    public void render(MixColorPuzzle mixColorPuzzle) {
+        for(SimpleColorShaderCube c:mixColorPuzzle.getCubes())
+            renderWithNormals(c);
+        for(Lever l:mixColorPuzzle.getLevers())
+            render(l);
     }
 
     public void render(ParticlesOrderPuzzle particlesOrderPuzzle, float currentTime){
