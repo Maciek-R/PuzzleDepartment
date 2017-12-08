@@ -23,6 +23,7 @@ import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.HeightMap;
+import pl.android.puzzledepartment.objects.Key;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.Skybox;
@@ -75,6 +76,7 @@ public class MainGameRenderer implements Renderer {
     private Cylinder cylinder;
     private List<Dragon> dragons;
     private Dragon dragon;
+    private Key key;
     private Light light;
     private HeightMap heightMap;
     private Room room;
@@ -136,6 +138,7 @@ public class MainGameRenderer implements Renderer {
         cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
         dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));
+        key = new Key(new Point(-2f, 6f, -2f), entityManager.getEntityModel(R.raw.key));
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
                     , new Vector3f(200f, 10f, 200f)
                     , new TerrainTexturePack(new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.mountain))
@@ -183,6 +186,7 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.renderWithNormals(shaderCube);
         masterRenderer.renderWithNormals(cylinder);
         masterRenderer.renderWithNormals(dragon);
+        masterRenderer.renderWithNormals(key);
 
         light.move2();
         camera.update(heightMap, collisionManager);
@@ -197,6 +201,7 @@ public class MainGameRenderer implements Renderer {
         drawParticles();
 
         dragon.rotate(60.0f);
+        key.rotate(30.0f);
     }
     private void drawParticles() {
         float elapsedTime = TimeManager.getElapsedTimeFromBeginningInSeconds();

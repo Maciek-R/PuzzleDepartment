@@ -16,10 +16,10 @@ import static android.opengl.GLES20.glDrawElements;
 import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
 
 /**
- * Created by Maciek Ruszczyk on 2017-10-15.
+ * Created by Maciek Ruszczyk on 2017-12-08.
  */
 
-public class Dragon extends Entity{
+public class Key extends Entity {
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int NORMAL_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
@@ -28,12 +28,12 @@ public class Dragon extends Entity{
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    public Dragon(Point pos, EntityModel entityModel) {
+    public Key(Point pos, EntityModel entityModel) {
         this(pos, entityModel, new Vector3f(1f, 1f, 1f));
     }
 
-    public Dragon(Point pos, EntityModel entityModel, Vector3f scale) {
-        super(pos, 0.0f, new Vector3f(0.25f * scale.x, 0.25f * scale.y, 0.25f * scale.z));
+    public Key(Point pos, EntityModel entityModel, Vector3f scale) {
+        super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
         this.color = Color.rgb(255, 0, 0);
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
@@ -41,17 +41,11 @@ public class Dragon extends Entity{
         indicesLength = entityModel.indicesArray.length;
     }
 
-    @Override
-    protected void initObjectProperties(){
-        type = Type.UNCOLOURED;
-        isShining = true;
-    }
 
     @Override
-    public void draw() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, intIndexBuffer.getBufferId());
-        glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    protected void initObjectProperties() {
+        type = Type.UNCOLOURED;
+        isShining = true;
     }
 
     @Override
@@ -60,5 +54,13 @@ public class Dragon extends Entity{
         vertexBuffer.setVertexAttribPointer(offset * BYTES_PER_FLOAT, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         offset += POSITION_COMPONENT_COUNT;
         vertexBuffer.setVertexAttribPointer(offset * BYTES_PER_FLOAT, shaderProgram.getNormalAttributeLocation(), NORMAL_COMPONENT_COUNT, STRIDE);
+
     }
+
+    @Override
+    public void draw() {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, intIndexBuffer.getBufferId());
+        glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+      }
 }

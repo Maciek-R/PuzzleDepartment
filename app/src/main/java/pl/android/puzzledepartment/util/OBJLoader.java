@@ -34,15 +34,19 @@ public class OBJLoader {
         float[] normalsArray = null;
         float[] texturesArray = null;
         int[] indicesArray = null;
+        int index = 0;
         try {
             while (true) {
-                    line = bufferedReader.readLine();
-
+                line = bufferedReader.readLine();
                 String[] currentLine = line.split(" ");
                 if (line.startsWith("v ")) {
-                    Vector3f vertex = new Vector3f(Float.parseFloat(currentLine[1]),
-                            Float.parseFloat(currentLine[2]),
-                            Float.parseFloat(currentLine[3]));
+                    if(currentLine[1].equals(""))
+                        index = 1;
+                    else
+                        index = 0;
+                    Vector3f vertex = new Vector3f(Float.parseFloat(currentLine[1+index]),
+                            Float.parseFloat(currentLine[2+index]),
+                            Float.parseFloat(currentLine[3+index]));
                     vertices.add(vertex);
                 }
                 else if(line.startsWith("vt ")){
