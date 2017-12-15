@@ -8,6 +8,7 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
+import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
@@ -100,17 +101,34 @@ public class CollisionManager {
         for(Entity e:room.getEntities())
             add(e);
     }
-    public void add(TeleportPuzzle teleportPuzzle) {
+    public void add(List<? extends AbstractPuzzle> puzzles) {
+        for(AbstractPuzzle puzzle:puzzles)
+            add(puzzle);
+    }
+
+    private void add (AbstractPuzzle puzzle) {
+        if (puzzle instanceof TeleportPuzzle) {
+            addTeleportPuzzle((TeleportPuzzle) puzzle);
+
+        } else if (puzzle instanceof ParticlesOrderPuzzle) {
+            addParticlesOrderPuzzle((ParticlesOrderPuzzle) puzzle);
+
+        } else if (puzzle instanceof ChessPuzzle) {
+            addChessPuzzle((ChessPuzzle) puzzle);
+        }
+    }
+
+    public void addTeleportPuzzle(TeleportPuzzle teleportPuzzle) {
         this.teleportPuzzle = teleportPuzzle;
         for(Room r:teleportPuzzle.getRooms())
             add(r);
         for(Entity e:teleportPuzzle.getTeleports())
             addTeleport(e);
     }
-    public void add(ParticlesOrderPuzzle particlesOrderPuzzle) {
+    public void addParticlesOrderPuzzle(ParticlesOrderPuzzle particlesOrderPuzzle) {
         this.particlesOrderPuzzle = particlesOrderPuzzle;
     }
-    public void add(ChessPuzzle chessPuzzle) {
+    public void addChessPuzzle(ChessPuzzle chessPuzzle) {
         this.chessPuzzle = chessPuzzle;
     }
     public void addTeleport(Entity entity) {

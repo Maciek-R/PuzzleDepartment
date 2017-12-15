@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +13,12 @@ import pl.android.puzzledepartment.util.geometry.Point;
  * Created by Maciek Ruszczyk on 2017-11-26.
  */
 
-public class DragonStatuePuzzle {
+public class DragonStatuePuzzle extends AbstractPuzzle{
     private Point pos;
     private List<DragonStatue> statues;
 
-    private boolean isCompleted = false;
-
     public DragonStatuePuzzle(Point pos, EntityModel dragonModel) {
+        this.pos = pos;
         statues = new ArrayList<DragonStatue>();
         statues.add(new DragonStatue(new Point(pos.x-3f, pos.y, pos.z), dragonModel));
         statues.add(new DragonStatue(new Point(pos.x-1f, pos.y, pos.z), dragonModel));
@@ -29,6 +30,7 @@ public class DragonStatuePuzzle {
         return statues;
     }
 
+    @Override
     public void update() {
         if(checkStatues())
             isCompleted = true;
@@ -41,7 +43,12 @@ public class DragonStatuePuzzle {
                 DragonStatue.Direction.LEFT.equals(statues.get(3).getDirection());
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    @Override
+    public Point getKeySpawnPosition() {
+        return new Point(pos.x, pos.y, pos.z);
+    }
+    @Override
+    public int getKeyColor() {
+        return Color.CYAN;
     }
 }

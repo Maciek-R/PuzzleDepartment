@@ -29,6 +29,7 @@ import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProg
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
+import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
@@ -129,6 +130,28 @@ public class MasterRenderer {
     public void render(Room room) {
         render(room.getEntities());
     }
+
+    public void render(AbstractPuzzle puzzle, float currentTime) {
+        if (puzzle instanceof TeleportPuzzle) {
+            render((TeleportPuzzle) puzzle);
+        }
+        else if (puzzle instanceof ChessPuzzle) {
+            render((ChessPuzzle) puzzle);
+        }
+        else if (puzzle instanceof DragonStatuePuzzle) {
+            render((DragonStatuePuzzle) puzzle);
+        }
+        else if (puzzle instanceof MixColorPuzzle) {
+            render((MixColorPuzzle) puzzle);
+        }
+        else if (puzzle instanceof ParticlesOrderPuzzle) {
+            render((ParticlesOrderPuzzle) puzzle, currentTime);
+        }
+        else if (puzzle instanceof ParticlesWalkPuzzle) {
+            render((ParticlesWalkPuzzle) puzzle, currentTime);
+        }
+    }
+
     public void render(TeleportPuzzle teleportPuzzle) {
         render(teleportPuzzle.getTeleports());
         for(Room r:teleportPuzzle.getRooms())
@@ -174,6 +197,11 @@ public class MasterRenderer {
         rotateM(viewMatrix, 0, camera.getRotationX(), 0f, 1f, 0f);
         rotateM(viewMatrix, 0, skybox.getRotation(), 0f, 1f, 0f);
         skyboxRenderer.render(skybox, viewMatrix, projectionMatrix);
+    }
+
+    public void renderWithNormals(List<Entity> entities) {
+        for(Entity e:entities)
+            renderWithNormals(e);
     }
 
     public void renderWithNormals(Entity entity) {

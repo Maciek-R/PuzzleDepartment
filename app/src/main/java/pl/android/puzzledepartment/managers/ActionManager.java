@@ -5,6 +5,9 @@ import java.util.List;
 
 import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.objects.Camera;
+import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
+import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
+import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-28.
@@ -20,12 +23,26 @@ public class ActionManager {
         activeActionable = null;
     }
 
+    public void addPuzzle(List<? extends AbstractPuzzle> puzzles) {
+        for (AbstractPuzzle puzzle : puzzles)
+            addPuzzle(puzzle);
+    }
+
+    private void addPuzzle(AbstractPuzzle puzzle) {
+        if (puzzle instanceof DragonStatuePuzzle) {
+            add(((DragonStatuePuzzle)puzzle).getStatues());
+
+        } else if (puzzle instanceof MixColorPuzzle) {
+            add(((MixColorPuzzle)puzzle).getLevers());
+        }
+    }
+
     public void add(List<? extends Actionable> actionables) {
         for(Actionable a:actionables)
             add(a);
     }
 
-    public void add(Actionable actionable) {
+    private void add(Actionable actionable) {
         actionables.add(actionable);
     }
 

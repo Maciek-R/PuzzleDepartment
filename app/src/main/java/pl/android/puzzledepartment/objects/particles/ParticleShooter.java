@@ -71,7 +71,7 @@ public class ParticleShooter {
     }
 
     public boolean areParticleCalm() {
-        return speedMultiplier < 0.5f;
+        return speedMultiplier < 0.3f;
     }
 
     public void increaseSpeedMultiplier() {

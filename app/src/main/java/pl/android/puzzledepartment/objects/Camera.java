@@ -171,8 +171,8 @@ public class Camera {
     public float getDeltaX() {
         return deltaX;
     }
-
     public float getDeltaZ() {
         return deltaZ;
     }
+    public float getFlySpeed() { return flySpeed; }
 }

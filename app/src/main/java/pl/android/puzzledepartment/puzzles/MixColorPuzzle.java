@@ -13,7 +13,7 @@ import pl.android.puzzledepartment.util.geometry.Point;
  * Created by Maciek Ruszczyk on 2017-11-26.
  */
 
-public class MixColorPuzzle {
+public class MixColorPuzzle extends AbstractPuzzle{
 
     public final static int LEVELS = 3;
     private Point pos;
@@ -63,5 +63,14 @@ public class MixColorPuzzle {
 
     public List<Lever> getLevers() {
         return levers;
+    }
+
+    @Override
+    public Point getKeySpawnPosition() {
+        return new Point(pos.x, pos.y, pos.z);
+    }
+    @Override
+    public int getKeyColor() {
+        return Color.GREEN;
     }
 }

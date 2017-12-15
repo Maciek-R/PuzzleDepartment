@@ -22,6 +22,7 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Dragon;
+import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Key;
 import pl.android.puzzledepartment.objects.Light;
@@ -31,6 +32,7 @@ import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
+import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
@@ -76,7 +78,7 @@ public class MainGameRenderer implements Renderer {
     private Cylinder cylinder;
     private List<Dragon> dragons;
     private Dragon dragon;
-    private Key key;
+    private List<Entity> keys;
     private Light light;
     private HeightMap heightMap;
     private Room room;
@@ -87,12 +89,7 @@ public class MainGameRenderer implements Renderer {
     private ActionManager actionManager;
     private EntityManager entityManager;
 
-    private TeleportPuzzle teleportPuzzle;
-    private ParticlesOrderPuzzle particlesOrderPuzzle;
-    private ParticlesWalkPuzzle particlesWalkPuzzle;
-    private ChessPuzzle chessPuzzle;
-    private DragonStatuePuzzle dragonStatuePuzzle;
-    private MixColorPuzzle mixColorPuzzle;
+    private List<AbstractPuzzle> puzzles;
     private final Random random = new Random();
 
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
@@ -126,19 +123,20 @@ public class MainGameRenderer implements Renderer {
         blueParticleShooter = new ParticleShooter(new Point(30f, 4.0f, -20f), new Vector3f(0f, 0.5f, 0f), Color.rgb(10, 10, 255), 360f, 0.5f);
 
         entityManager = new EntityManager(context);
-        teleportPuzzle = new TeleportPuzzle(new Point(15f, 2f, -8f), context);
-        particlesOrderPuzzle = new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture);
-        particlesWalkPuzzle = new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture);
-        chessPuzzle = new ChessPuzzle(new Point(20f, 5f, -60f));
-        dragonStatuePuzzle = new DragonStatuePuzzle(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon));
-        mixColorPuzzle = new MixColorPuzzle(new Point(10.0f, 8f, 10.0f));
+        puzzles = new ArrayList<AbstractPuzzle>();
+        puzzles.add(new TeleportPuzzle(new Point(15f, 2f, -8f), context));
+        puzzles.add(new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture));
+        puzzles.add(new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture, camera));
+        puzzles.add(new ChessPuzzle(new Point(20f, 5f, -60f)));
+        puzzles.add(new DragonStatuePuzzle(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon)));
+        puzzles.add(new MixColorPuzzle(new Point(10.0f, 8f, 10.0f)));
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
         cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
         dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));
-        key = new Key(new Point(-2f, 6f, -2f), entityManager.getEntityModel(R.raw.key));
+        keys = new ArrayList<>();
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
                     , new Vector3f(200f, 10f, 200f)
                     , new TerrainTexturePack(new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.mountain))
@@ -152,13 +150,10 @@ public class MainGameRenderer implements Renderer {
         collisionManager = new CollisionManager();
         collisionManager.add(cube);
         collisionManager.add(room);
-        collisionManager.add(teleportPuzzle);
-        collisionManager.add(particlesOrderPuzzle);
-        collisionManager.add(chessPuzzle);
+        collisionManager.add(puzzles);
 
         actionManager = new ActionManager();
-        actionManager.add(dragonStatuePuzzle.getStatues());
-        actionManager.add(mixColorPuzzle.getLevers());
+        actionManager.addPuzzle(puzzles);
     }
 
     @Override
@@ -178,19 +173,22 @@ public class MainGameRenderer implements Renderer {
         masterRenderer.render(light);
         masterRenderer.render(cube);
         masterRenderer.render(room);
-        masterRenderer.render(teleportPuzzle);
-        masterRenderer.render(chessPuzzle);
-        masterRenderer.render(dragonStatuePuzzle);
-        masterRenderer.render(mixColorPuzzle);
 
         masterRenderer.renderWithNormals(shaderCube);
         masterRenderer.renderWithNormals(cylinder);
         masterRenderer.renderWithNormals(dragon);
-        masterRenderer.renderWithNormals(key);
+        masterRenderer.renderWithNormals(keys);
+
+        for(AbstractPuzzle puzzle:puzzles) {
+            if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
+                keys.add(new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), entityManager.getEntityModel(R.raw.key)));
+                puzzle.setWasKeySpawned(true);
+            }
+        }
+        updateAndRenderPuzzles();
 
         light.move2();
         camera.update(heightMap, collisionManager);
-        dragonStatuePuzzle.update();
         actionManager.moveInActionObjects();
         if(actionManager.isNearAnyActionableObject(camera))
             actionGuiEntity.setIsVisible(true);
@@ -198,23 +196,22 @@ public class MainGameRenderer implements Renderer {
             actionGuiEntity.setIsVisible(false);
 
         masterRenderer.renderGuis(guiEntities);
-        drawParticles();
 
         dragon.rotate(60.0f);
-        key.rotate(30.0f);
     }
-    private void drawParticles() {
+
+    private void updateAndRenderPuzzles() {
         float elapsedTime = TimeManager.getElapsedTimeFromBeginningInSeconds();
+        for (AbstractPuzzle puzzle : puzzles) {
+            puzzle.update();
+            puzzle.update(elapsedTime);
+            masterRenderer.render(puzzle, elapsedTime);
+        }
+
         redParticleShooter.addParticles(particleSystem, elapsedTime, 5);
         blueParticleShooter.addParticles(particleSystem, elapsedTime, 5);
         masterRenderer.render(particleSystem, elapsedTime);
         masterRenderer.render(particleSystem, elapsedTime);
-        //
-        particlesOrderPuzzle.update(elapsedTime);
-        masterRenderer.render(particlesOrderPuzzle, elapsedTime);
-        //
-        particlesWalkPuzzle.update(elapsedTime, camera);
-        masterRenderer.render(particlesWalkPuzzle, elapsedTime);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

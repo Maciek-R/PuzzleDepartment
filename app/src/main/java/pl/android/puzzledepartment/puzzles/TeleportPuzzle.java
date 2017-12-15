@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.puzzles;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-21.
  */
 
-public class TeleportPuzzle {
+public class TeleportPuzzle extends AbstractPuzzle{
     private Point pos;
     private List<Vector2f> teleportPositions = new ArrayList<Vector2f>();
     private Vector2f lightPosition;
@@ -108,13 +109,15 @@ public class TeleportPuzzle {
     }
 
     public boolean checkCorrectTeleport(Entity e) {
-        if(currentLevel>=numberOfLevels)
-        {
+        if(currentLevel >= numberOfLevels - 1){
             reset();
             return false;
         }
         if (e == correctTeleportPerLevel[currentLevel]) {
                 nextLevel();
+            if(currentLevel >= numberOfLevels-1){
+                isCompleted = true;
+            }
             return true;
         }
         else {
@@ -127,4 +130,13 @@ public class TeleportPuzzle {
         return new Vector3f(0.0f + pos.x, currentLevel*10f + pos.y, 0.0f + pos.z);
     }
 
+    @Override
+    public Point getKeySpawnPosition() {
+        return new Point(pos.x, (numberOfLevels-1) * 10f + pos.y + 3f, pos.z);
+    }
+
+    @Override
+    public int getKeyColor() {
+        return Color.BLUE;
+    }
 }

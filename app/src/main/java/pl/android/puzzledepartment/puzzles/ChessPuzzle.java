@@ -1,5 +1,7 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +14,7 @@ import pl.android.puzzledepartment.util.geometry.Point;
  * Created by Maciek Ruszczyk on 2017-11-26.
  */
 
-public class ChessPuzzle {
+public class ChessPuzzle extends AbstractPuzzle{
     private final static int NUMBER_OF_CUBES_TO_GET = 6;
     private final static int WIDTH = 5;
     private final static int HEIGHT = 5;
@@ -24,7 +26,6 @@ public class ChessPuzzle {
 
     private Entity nextCube;
     private List<Entity> alreadySelectedCubes;
-    private boolean isCompleted = false;
 
     public ChessPuzzle(Point pos) {
         this.pos = pos;
@@ -72,5 +73,14 @@ public class ChessPuzzle {
 
     public List<Entity> getSelectedEntities() {
         return alreadySelectedCubes;
+    }
+
+    @Override
+    public Point getKeySpawnPosition() {
+        return new Point(pos.x, pos.y, pos.z);
+    }
+    @Override
+    public int getKeyColor() {
+        return Color.MAGENTA;
     }
 }

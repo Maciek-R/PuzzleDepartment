@@ -28,13 +28,13 @@ public class Key extends Entity {
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    public Key(Point pos, EntityModel entityModel) {
-        this(pos, entityModel, new Vector3f(1f, 1f, 1f));
+    public Key(Point pos, int color, EntityModel entityModel) {
+        this(pos, color, entityModel, new Vector3f(1f, 1f, 1f));
     }
 
-    public Key(Point pos, EntityModel entityModel, Vector3f scale) {
+    public Key(Point pos, int color, EntityModel entityModel, Vector3f scale) {
         super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
-        this.color = Color.rgb(255, 0, 0);
+        this.color = color;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();

@@ -15,7 +15,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-11-24.
  */
 
-public class ParticlesOrderPuzzle {
+public class ParticlesOrderPuzzle extends AbstractPuzzle{
     private static final int PARTICLES_SHOOTERS_COUNT = 5;
 
     private Point pos;
@@ -25,7 +25,6 @@ public class ParticlesOrderPuzzle {
     private List<ParticleCollideShooter> particleShootersOrderLevel;
     private List<ParticleCollideShooter> particleShootersOrderLevelAlreadyPicked;
     private int currentLevel = 0;
-    private boolean isCompleted = false;
 
     public ParticlesOrderPuzzle(Point pos, int particleTexture) {
         this.pos = pos;
@@ -76,6 +75,7 @@ public class ParticlesOrderPuzzle {
         currentLevel = 0;
     }
 
+    @Override
     public void update(float elapsedTime) {
         for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i) {
             particleShooters[i].addParticles(particleSystem, elapsedTime, 5);
@@ -88,5 +88,14 @@ public class ParticlesOrderPuzzle {
 
     public ParticleCollideShooter[] getParticleShooters() {
         return particleShooters;
+    }
+
+    @Override
+    public Point getKeySpawnPosition() {
+        return new Point(pos.x, pos.y, pos.z);
+    }
+    @Override
+    public int getKeyColor() {
+        return Color.YELLOW;
     }
 }
