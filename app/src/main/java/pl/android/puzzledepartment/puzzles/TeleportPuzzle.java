@@ -24,7 +24,6 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class TeleportPuzzle extends AbstractPuzzle{
-    private Point pos;
     private List<Vector2f> teleportPositions = new ArrayList<Vector2f>();
     private Vector2f lightPosition;
     private int numberOfLevels;
@@ -35,8 +34,8 @@ public class TeleportPuzzle extends AbstractPuzzle{
     private Entity correctTeleportPerLevel[];
     private int currentLevel = 0;
 
-    public TeleportPuzzle(Point pos, Context context) {
-        this.pos = pos;
+    public TeleportPuzzle(Context context, Point pos) {
+        super(context, pos);
         random = new Random();
         if(loadPuzzleFromFile(context, R.raw.teleportpuzzle)) {
             createScene();
@@ -138,5 +137,9 @@ public class TeleportPuzzle extends AbstractPuzzle{
     @Override
     public int getKeyColor() {
         return Color.BLUE;
+    }
+    @Override
+    protected int getKeyGuiTexturePath() {
+        return R.drawable.bluekey;
     }
 }

@@ -19,6 +19,7 @@ public abstract class Entity implements Collisionable{
     protected float verAngle;
     protected float horAngle;
     protected Vector3f scale;
+    private boolean isVisible = true;
     protected List<ObjectBuilder.DrawCommand> drawList;
 
     protected boolean isShining = false;
@@ -118,5 +119,11 @@ public abstract class Entity implements Collisionable{
     }
     public void setColor(int color) {
         this.color = color;
+    }
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+    public boolean isVisible() {
+        return isVisible;
     }
 }

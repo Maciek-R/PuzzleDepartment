@@ -205,6 +205,8 @@ public class MasterRenderer {
     }
 
     public void renderWithNormals(Entity entity) {
+        if(!entity.isVisible())
+            return;
         EntityShaderProgram entityShaderProgram = null;
         switch(entity.getType())
         {

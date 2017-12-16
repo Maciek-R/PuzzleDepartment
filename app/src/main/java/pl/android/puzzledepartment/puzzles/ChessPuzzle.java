@@ -1,11 +1,13 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -20,15 +22,14 @@ public class ChessPuzzle extends AbstractPuzzle{
     private final static int HEIGHT = 5;
     private Random random;
 
-    private Point pos;
     private Entity chess[][];
     private List<Entity> cubes;
 
     private Entity nextCube;
     private List<Entity> alreadySelectedCubes;
 
-    public ChessPuzzle(Point pos) {
-        this.pos = pos;
+    public ChessPuzzle(Context context, Point pos) {
+        super(context, pos);
         random = new Random();
         cubes = new ArrayList<Entity>();
         chess = new ShaderCube[HEIGHT][WIDTH];
@@ -82,5 +83,10 @@ public class ChessPuzzle extends AbstractPuzzle{
     @Override
     public int getKeyColor() {
         return Color.MAGENTA;
+    }
+
+    @Override
+    protected int getKeyGuiTexturePath() {
+        return R.drawable.magentakey;
     }
 }

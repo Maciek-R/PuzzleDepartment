@@ -7,6 +7,7 @@ import java.util.List;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
+import pl.android.puzzledepartment.objects.Key;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
@@ -22,6 +23,8 @@ public class CollisionManager {
     private List<Entity> entities;
     private CollisionDescription collisionDescription;
 
+    private List<Entity> keys;
+
     private TeleportPuzzle teleportPuzzle;
     private List<Entity> teleports;
 
@@ -30,6 +33,7 @@ public class CollisionManager {
 
     public CollisionManager() {
         entities = new ArrayList<>();
+        keys = new ArrayList<>();
         collisionDescription = new CollisionDescription();
 
         teleports = new ArrayList<>();
@@ -95,7 +99,10 @@ public class CollisionManager {
     }
 
     public void add(Entity entity) {
-        entities.add(entity);
+        if(entity instanceof Key)
+            keys.add(entity);
+        else
+            entities.add(entity);
     }
     public void add(Room room) {
         for(Entity e:room.getEntities())
@@ -118,20 +125,20 @@ public class CollisionManager {
         }
     }
 
-    public void addTeleportPuzzle(TeleportPuzzle teleportPuzzle) {
+    private void addTeleportPuzzle(TeleportPuzzle teleportPuzzle) {
         this.teleportPuzzle = teleportPuzzle;
         for(Room r:teleportPuzzle.getRooms())
             add(r);
         for(Entity e:teleportPuzzle.getTeleports())
             addTeleport(e);
     }
-    public void addParticlesOrderPuzzle(ParticlesOrderPuzzle particlesOrderPuzzle) {
+    private void addParticlesOrderPuzzle(ParticlesOrderPuzzle particlesOrderPuzzle) {
         this.particlesOrderPuzzle = particlesOrderPuzzle;
     }
-    public void addChessPuzzle(ChessPuzzle chessPuzzle) {
+    private void addChessPuzzle(ChessPuzzle chessPuzzle) {
         this.chessPuzzle = chessPuzzle;
     }
-    public void addTeleport(Entity entity) {
+    private void addTeleport(Entity entity) {
         teleports.add(entity);
     }
 
@@ -186,5 +193,14 @@ public class CollisionManager {
             }
         }
         return false;
+    }
+
+    public void checkWithKeyCollision(Camera camera) {
+        for (Entity k : keys)
+            if (checkCollision(k, camera)) {
+                k.setIsVisible(false);
+                keys.remove(k);
+                return;
+            }
     }
 }

@@ -1,10 +1,12 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
 import java.util.Random;
 
+import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
@@ -19,7 +21,6 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
 
     public final static float MAX_DISTANCE = 2500f;
 
-    private Point pos;
     private ParticleSystem particleSystem;
     private ParticleShooter particleShooter;
 
@@ -30,8 +31,8 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     private final Random random;
     private boolean calm = false;
 
-    public ParticlesWalkPuzzle(Point pos, int particleTexture, Camera camera) {
-        this.pos = pos;
+    public ParticlesWalkPuzzle(Context context, Point pos, int particleTexture, Camera camera) {
+        super(context, pos);
         this.camera = camera;
         particleSystem = new ParticleSystem(10000, particleTexture);
         random = new Random();
@@ -74,5 +75,9 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     @Override
     public int getKeyColor() {
         return Color.RED;
+    }
+    @Override
+    protected int getKeyGuiTexturePath() {
+        return R.drawable.redkey;
     }
 }

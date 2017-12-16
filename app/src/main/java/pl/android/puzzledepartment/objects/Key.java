@@ -28,19 +28,25 @@ public class Key extends Entity {
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    public Key(Point pos, int color, EntityModel entityModel) {
-        this(pos, color, entityModel, new Vector3f(1f, 1f, 1f));
+    private final int guiTexture;
+
+    public Key(Point pos, int color, int guiTexture, EntityModel entityModel) {
+        this(pos, color, entityModel, guiTexture, new Vector3f(1f, 1f, 1f));
     }
 
-    public Key(Point pos, int color, EntityModel entityModel, Vector3f scale) {
+    public Key(Point pos, int color, EntityModel entityModel, int guiTexture, Vector3f scale) {
         super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
         this.color = color;
+        this.guiTexture = guiTexture;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
         indicesLength = entityModel.indicesArray.length;
     }
 
+    public int getGuiTexture() {
+        return guiTexture;
+    }
 
     @Override
     protected void initObjectProperties() {

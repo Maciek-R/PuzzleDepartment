@@ -1,10 +1,12 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -16,7 +18,6 @@ import pl.android.puzzledepartment.util.geometry.Point;
 public class MixColorPuzzle extends AbstractPuzzle{
 
     private int LEVELS_COUNT;
-    private Point pos;
     private List<SimpleColorShaderCube> cubes;
     private List<Integer> colors;
     private List<Lever> levers;
@@ -24,8 +25,8 @@ public class MixColorPuzzle extends AbstractPuzzle{
     private List<Round> rounds;
     private int currentLevel = 0;
 
-    public MixColorPuzzle(Point pos) {
-        this.pos = pos;
+    public MixColorPuzzle(Context context, Point pos) {
+        super(context, pos);
         colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
 
@@ -101,6 +102,11 @@ public class MixColorPuzzle extends AbstractPuzzle{
     @Override
     public int getKeyColor() {
         return Color.GREEN;
+    }
+
+    @Override
+    protected int getKeyGuiTexturePath() {
+        return R.drawable.greenkey;
     }
 
     private class Round{

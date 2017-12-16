@@ -112,9 +112,10 @@ public class MainGameRenderer implements Renderer {
 
         camera = new Camera(0f, 0f, 0f);
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
-        guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
+        loadTextures();
         actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
         guiEntities.add(actionGuiEntity);
+
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
         particleSystem = new ParticleSystem(10000, particleTexture);
         globalStartTime = System.nanoTime();
@@ -124,12 +125,12 @@ public class MainGameRenderer implements Renderer {
 
         entityManager = new EntityManager(context);
         puzzles = new ArrayList<AbstractPuzzle>();
-        puzzles.add(new TeleportPuzzle(new Point(15f, 2f, -8f), context));
-        puzzles.add(new ParticlesOrderPuzzle(new Point(25f, 2f, -90f), particleTexture));
-        puzzles.add(new ParticlesWalkPuzzle(new Point(23f, 5f, -70f), particleTexture, camera));
-        puzzles.add(new ChessPuzzle(new Point(20f, 5f, -60f)));
-        puzzles.add(new DragonStatuePuzzle(new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon)));
-        puzzles.add(new MixColorPuzzle(new Point(10.0f, 8f, 10.0f)));
+        puzzles.add(new TeleportPuzzle(context, new Point(15f, 2f, -8f)));
+        puzzles.add(new ParticlesOrderPuzzle(context, new Point(25f, 2f, -90f), particleTexture));
+        puzzles.add(new ParticlesWalkPuzzle(context, new Point(23f, 5f, -70f), particleTexture, camera));
+        puzzles.add(new ChessPuzzle(context, new Point(20f, 5f, -60f)));
+        puzzles.add(new DragonStatuePuzzle(context, new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon)));
+        puzzles.add(new MixColorPuzzle(context, new Point(10.0f, 8f, 10.0f)));
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -181,8 +182,14 @@ public class MainGameRenderer implements Renderer {
 
         for(AbstractPuzzle puzzle:puzzles) {
             if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
-                keys.add(new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), entityManager.getEntityModel(R.raw.key)));
+                Key key = new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), puzzle.getKeyGuiTexture(), entityManager.getEntityModel(R.raw.key));
+                GuiEntity keyGuiEntity = new GuiEntity(key.getGuiTexture(), new Vector2f(-0.9f+0.18f*camera.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
+                keyGuiEntity.setIsVisible(true);
+                guiEntities.add(keyGuiEntity);
+                keys.add(key);
+                collisionManager.add(key);
                 puzzle.setWasKeySpawned(true);
+                camera.incKeysTakenCount();
             }
         }
         updateAndRenderPuzzles();
@@ -212,6 +219,9 @@ public class MainGameRenderer implements Renderer {
         blueParticleShooter.addParticles(particleSystem, elapsedTime, 5);
         masterRenderer.render(particleSystem, elapsedTime);
         masterRenderer.render(particleSystem, elapsedTime);
+    }
+    private void loadTextures() {
+        guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

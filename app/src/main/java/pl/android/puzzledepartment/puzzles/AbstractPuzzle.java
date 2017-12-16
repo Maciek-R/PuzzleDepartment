@@ -3,6 +3,10 @@ package pl.android.puzzledepartment.puzzles;
 
 
 
+import android.content.Context;
+
+import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 /**
@@ -10,8 +14,15 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public abstract class AbstractPuzzle {
+    protected Point pos;
     protected boolean isCompleted = false;
     protected boolean wasKeySpawned = false;
+    protected int guiKeyTexture;
+
+    protected AbstractPuzzle(Context context, Point pos) {
+        this.pos = pos;
+        guiKeyTexture = TextureHelper.loadTexture(context, getKeyGuiTexturePath());
+    }
 
     public abstract Point getKeySpawnPosition();
     public boolean isCompleted(){
@@ -27,5 +38,9 @@ public abstract class AbstractPuzzle {
     public void update() {
     }
     public void update(float elapsedTime){
+    }
+    protected abstract int getKeyGuiTexturePath();
+    public int getKeyGuiTexture() {
+        return guiKeyTexture;
     }
 }

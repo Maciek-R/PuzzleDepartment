@@ -1,10 +1,12 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -14,11 +16,10 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public class DragonStatuePuzzle extends AbstractPuzzle{
-    private Point pos;
     private List<DragonStatue> statues;
 
-    public DragonStatuePuzzle(Point pos, EntityModel dragonModel) {
-        this.pos = pos;
+    public DragonStatuePuzzle(Context context, Point pos, EntityModel dragonModel) {
+        super(context, pos);
         statues = new ArrayList<DragonStatue>();
         statues.add(new DragonStatue(new Point(pos.x-3f, pos.y, pos.z), dragonModel));
         statues.add(new DragonStatue(new Point(pos.x-1f, pos.y, pos.z), dragonModel));
@@ -50,5 +51,10 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
     @Override
     public int getKeyColor() {
         return Color.CYAN;
+    }
+
+    @Override
+    protected int getKeyGuiTexturePath() {
+        return R.drawable.cyankey;
     }
 }

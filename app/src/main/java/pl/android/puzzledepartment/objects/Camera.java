@@ -33,6 +33,8 @@ public class Camera {
     private float deltaX = 0;
     private float deltaZ = 0;
 
+    private int keysTakenCount = 0;
+
     private CollisionManager.CollisionDescription collisionDescription;
 
     public Camera() {
@@ -63,9 +65,8 @@ public class Camera {
         //System.out.println("X: " + this.posX + "Z:  " + this.posZ);
         countNextPossiblePosition(heightMap);
 
+        collisionManager.checkWithKeyCollision(this);
         collisionManager.checkParticlesCollision(this);
-
-
 
         if(collisionManager.checkTeleportCollision(this)){
             isInAir = false;
@@ -175,4 +176,12 @@ public class Camera {
         return deltaZ;
     }
     public float getFlySpeed() { return flySpeed; }
+
+    public int getKeysTakenCount() {
+        return keysTakenCount;
+    }
+
+    public void incKeysTakenCount() {
+        keysTakenCount++;
+    }
 }
