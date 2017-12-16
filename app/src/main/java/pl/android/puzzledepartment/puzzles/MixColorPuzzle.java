@@ -15,46 +15,57 @@ import pl.android.puzzledepartment.util.geometry.Point;
 
 public class MixColorPuzzle extends AbstractPuzzle{
 
-    public final static int LEVELS = 3;
+    private int LEVELS_COUNT;
     private Point pos;
     private List<SimpleColorShaderCube> cubes;
+    private List<Integer> colors;
     private List<Lever> levers;
 
-    private int colors[] = new int[9];
-    private int level = 0;
+    private List<Round> rounds;
+    private int currentLevel = 0;
 
     public MixColorPuzzle(Point pos) {
+        this.pos = pos;
+        colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
+
         for(int i=0; i<3; ++i)
             cubes.add(new SimpleColorShaderCube(new Point(pos.x + i, pos.y, pos.z)));
+        for(int i=0; i<2; ++i)
+            colors.add(new Integer(0));
 
         levers = new ArrayList<Lever>();
         levers.add(new Lever(new Point(pos.x, pos.y, pos.z + 5f), cubes.get(0)));
         levers.add(new Lever(new Point(pos.x+1f, pos.y, pos.z + 5f), cubes.get(1)));
 
         initLevels();
-        loadColors();
+        loadInitColors();
     }
 
     private void initLevels() {
-        colors[0] = Color.GREEN;
-        colors[1] = Color.RED;
-        colors[2] = Color.YELLOW;
+        rounds = new ArrayList<>();
+        rounds.add(new Round(Color.GREEN, Color.RED, Color.YELLOW));
+        rounds.add(new Round(Color.RED, Color.BLUE, Color.MAGENTA));
+        rounds.add(new Round(Color.GREEN, Color.BLUE, Color.CYAN));
 
-        colors[3] = Color.RED;
-        colors[4] = Color.BLUE;
-        colors[5] = Color.MAGENTA;
-
-        colors[6] = Color.GREEN;
-        colors[7] = Color.BLUE;
-        colors[8] = Color.CYAN;
+        LEVELS_COUNT = rounds.size();
     }
 
-    private void loadColors() {
-        for(int i=0; i<3; ++i) {
-            cubes.get(i).setColor(colors[level*3+i]);
-        }
-        ++level;
+    private void loadInitColors() {
+        for(int i=0; i<rounds.get(currentLevel).getColorToMixCount(); ++i)
+            cubes.get(i).setColor(Color.RED);
+
+        loadNextFinalColor();
+    }
+
+    private void loadNextFinalColor() {
+        int colorsCountToMix = rounds.get(currentLevel).getColorToMixCount();
+        cubes.get(colorsCountToMix).setColor(rounds.get(currentLevel).getFinalColor());
+    }
+
+    private void nextLevel() {
+        ++currentLevel;
+        loadNextFinalColor();
     }
 
     public List<SimpleColorShaderCube> getCubes() {
@@ -66,11 +77,62 @@ public class MixColorPuzzle extends AbstractPuzzle{
     }
 
     @Override
+    public void update() {
+        if(!checkIfColorsAreCorrect())
+            return;
+
+        if(currentLevel >= LEVELS_COUNT - 1)
+            isCompleted = true;
+        else
+            nextLevel();
+    }
+
+    private boolean checkIfColorsAreCorrect() {
+        for(int i=0; i<2; ++i)
+            colors.set(i, cubes.get(i).getColor());
+
+        return rounds.get(currentLevel).checkCorrectColors(colors);
+    }
+
+    @Override
     public Point getKeySpawnPosition() {
         return new Point(pos.x, pos.y, pos.z);
     }
     @Override
     public int getKeyColor() {
         return Color.GREEN;
+    }
+
+    private class Round{
+        List<Integer> colorsNeedToBeMixed;
+        int finalColor;
+
+        public Round(int... colors) {
+            colorsNeedToBeMixed = new ArrayList<>();
+            for (int c : colors)
+                colorsNeedToBeMixed.add(new Integer(c));
+
+            finalColor = colorsNeedToBeMixed.remove(colorsNeedToBeMixed.size()-1);
+        }
+
+        public boolean checkCorrectColors(List<Integer> colors) {
+
+           /* int c0 = colorsNeedToBeMixed.get(0);
+            int c1 = colorsNeedToBeMixed.get(1);
+
+            int cc0 = colors.get(0);
+            int cc1 = colors.get(1);
+            boolean x = colorsNeedToBeMixed.containsAll(colors);*/
+            return colorsNeedToBeMixed.containsAll(colors) && colors.containsAll(colorsNeedToBeMixed);
+           // return false;
+        }
+
+        public int getFinalColor() {
+            return finalColor;
+        }
+
+        public int getColorToMixCount() {
+            return colorsNeedToBeMixed.size();
+        }
     }
 }

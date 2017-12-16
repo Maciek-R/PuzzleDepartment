@@ -93,9 +93,13 @@ public class SimpleColorShaderCube extends Entity {
 
     public void setNextColor() {
         switch(color){
-            case Color.RED: color = Color.GREEN; break;
-            case Color.GREEN: color = Color.BLUE; break;
-            case Color.BLUE: color = Color.RED; break;
+            case Color.RED: color = Color.YELLOW; break;
+            case Color.YELLOW: color = Color.GREEN; break;
+            case Color.GREEN: color = Color.MAGENTA; break;
+            case Color.MAGENTA: color = Color.BLUE; break;
+            case Color.BLUE: color = Color.CYAN; break;
+            case Color.CYAN: color = Color.RED; break;
+            default: color = Color.RED;
         }
     }
 }
