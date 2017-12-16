@@ -20,6 +20,8 @@ import pl.android.puzzledepartment.objects.complex_objects.Room;
  */
 
 public class CollisionManager {
+    private GameManager gameManager;
+
     private List<Entity> entities;
     private CollisionDescription collisionDescription;
 
@@ -37,6 +39,10 @@ public class CollisionManager {
         collisionDescription = new CollisionDescription();
 
         teleports = new ArrayList<>();
+    }
+
+    public void addObserver(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     public CollisionDescription checkCollision(Camera camera) {
@@ -198,7 +204,7 @@ public class CollisionManager {
     public void checkWithKeyCollision(Camera camera) {
         for (Entity k : keys)
             if (checkCollision(k, camera)) {
-                k.setIsVisible(false);
+                gameManager.onCollisionNotify(k);
                 keys.remove(k);
                 return;
             }

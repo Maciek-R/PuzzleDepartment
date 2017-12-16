@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
+import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
@@ -28,24 +29,29 @@ public class Key extends Entity {
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    private final int guiTexture;
+    private final GuiEntity guiEntity;
 
-    public Key(Point pos, int color, int guiTexture, EntityModel entityModel) {
-        this(pos, color, entityModel, guiTexture, new Vector3f(1f, 1f, 1f));
+    public Key(Point pos, int color, GuiEntity guiEntity, EntityModel entityModel) {
+        this(pos, color, entityModel, guiEntity, new Vector3f(1f, 1f, 1f));
     }
 
-    public Key(Point pos, int color, EntityModel entityModel, int guiTexture, Vector3f scale) {
+    public Key(Point pos, int color, EntityModel entityModel, GuiEntity guiEntity, Vector3f scale) {
         super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
         this.color = color;
-        this.guiTexture = guiTexture;
+        this.guiEntity = guiEntity;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
         indicesLength = entityModel.indicesArray.length;
     }
 
-    public int getGuiTexture() {
-        return guiTexture;
+    public void update(){
+        rotate(30.0f);
+    }
+
+    public void onCollisionNotify() {
+        setIsVisible(false);
+        guiEntity.setIsVisible(true);
     }
 
     @Override

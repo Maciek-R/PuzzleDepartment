@@ -83,15 +83,12 @@ public abstract class Entity implements Collisionable{
     public void setVerRotation(float rotation) { this.verAngle = rotation; }
     public Vector3f getScale() { return scale; }
 
-
     public void setShining(boolean shining) {
         isShining = shining;
     }
-
     public void setDamper(float damper) {
         this.damper = damper;
     }
-
     public void setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
     }
@@ -126,4 +123,6 @@ public abstract class Entity implements Collisionable{
     public boolean isVisible() {
         return isVisible;
     }
+    public void onCollisionNotify() {}
+    public void update(){}
 }
