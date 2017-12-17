@@ -3,6 +3,8 @@ package pl.android.puzzledepartment.objects.complex_objects;
 import android.graphics.Color;
 
 import pl.android.puzzledepartment.action.Actionable;
+import pl.android.puzzledepartment.managers.GameState;
+import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Door;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.Tower;
@@ -41,8 +43,10 @@ public class EndTower implements Actionable{
 
     @Override
     public void action() {
-        isInAction = true;
-        targetRotation = door.getVerRotation() + 90f;
+        if(GameState.INSTANCE.isAllKeyTaken()) {
+            isInAction = true;
+            targetRotation = door.getVerRotation() + 90f;
+        }
     }
 
     @Override

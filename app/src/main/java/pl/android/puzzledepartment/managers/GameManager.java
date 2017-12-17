@@ -147,13 +147,10 @@ public class GameManager {
 
         for(AbstractPuzzle puzzle:puzzles) {
             if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
-                GuiEntity keyGuiEntity = new GuiEntity(puzzle.getKeyGuiTexture(), new Vector2f(-0.9f+0.18f*camera.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
-                Key key = new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), keyGuiEntity, entityManager.getEntityModel(R.raw.key));
-                guiEntities.add(keyGuiEntity);
+                Key key = new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), puzzle.getKeyGuiTexture(), entityManager.getEntityModel(R.raw.key));
                 keys.add(key);
                 collisionManager.add(key);
                 puzzle.setWasKeySpawned(true);
-                camera.incKeysTakenCount();
             }
         }
         updateAndRenderPuzzles();
@@ -213,5 +210,9 @@ public class GameManager {
 
     public void onCollisionNotify(Entity entity) {
         entity.onCollisionNotify();
+        if (entity instanceof Key) {
+            guiEntities.add(((Key)entity).getGuiEntity());
+            GameState.INSTANCE.incKeysTakenCount();
+        }
     }
 }

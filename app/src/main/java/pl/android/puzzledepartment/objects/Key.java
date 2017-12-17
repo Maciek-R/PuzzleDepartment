@@ -2,11 +2,14 @@ package pl.android.puzzledepartment.objects;
 
 import android.graphics.Color;
 
+import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.gui.GuiEntity;
+import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
@@ -29,16 +32,17 @@ public class Key extends Entity {
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    private final GuiEntity guiEntity;
+    private final int guiTextureId;
+    private GuiEntity guiEntity;
 
-    public Key(Point pos, int color, GuiEntity guiEntity, EntityModel entityModel) {
-        this(pos, color, entityModel, guiEntity, new Vector3f(1f, 1f, 1f));
+    public Key(Point pos, int color, int guiTextureId, EntityModel entityModel) {
+        this(pos, color, entityModel, guiTextureId, new Vector3f(1f, 1f, 1f));
     }
 
-    public Key(Point pos, int color, EntityModel entityModel, GuiEntity guiEntity, Vector3f scale) {
+    public Key(Point pos, int color, EntityModel entityModel, int guiTextureId, Vector3f scale) {
         super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
         this.color = color;
-        this.guiEntity = guiEntity;
+        this.guiTextureId = guiTextureId;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
@@ -50,8 +54,14 @@ public class Key extends Entity {
     }
 
     public void onCollisionNotify() {
+        //GuiEntity keyGuiEntity = new GuiEntity(, new Vector2f(-0.9f+0.18f*camera.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
         setIsVisible(false);
+        guiEntity = new GuiEntity(guiTextureId, new Vector2f(-0.9f+0.18f* GameState.INSTANCE.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
         guiEntity.setIsVisible(true);
+    }
+
+    public GuiEntity getGuiEntity() {
+        return guiEntity;
     }
 
     @Override

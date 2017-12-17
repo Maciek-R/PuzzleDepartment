@@ -33,8 +33,6 @@ public class Camera {
     private float deltaX = 0;
     private float deltaZ = 0;
 
-    private int keysTakenCount = 0;
-
     private CollisionManager.CollisionDescription collisionDescription;
 
     public Camera() {
@@ -176,12 +174,4 @@ public class Camera {
         return deltaZ;
     }
     public float getFlySpeed() { return flySpeed; }
-
-    public int getKeysTakenCount() {
-        return keysTakenCount;
-    }
-
-    public void incKeysTakenCount() {
-        keysTakenCount++;
-    }
 }
