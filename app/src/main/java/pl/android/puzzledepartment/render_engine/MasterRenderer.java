@@ -15,6 +15,7 @@ import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
+import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.color_programs.AttributeColorShaderProgram;
@@ -127,6 +128,12 @@ public class MasterRenderer {
         render(dragonStatue.getCube());
         renderWithNormals(dragonStatue.getDragon());
     }
+
+    public void render(EndTower endTower) {
+        renderWithNormals(endTower.getTower());
+        renderWithNormals(endTower.getDoor());
+    }
+
     public void render(Room room) {
         render(room.getEntities());
     }

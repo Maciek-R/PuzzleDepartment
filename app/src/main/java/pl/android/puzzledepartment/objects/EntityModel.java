@@ -61,6 +61,10 @@ public class EntityModel {
         return intIndexBuffer;
     }
 
+    public int getIndicesArrayLength() {
+        return indicesArray.length;
+    }
+
     /**
      * Order: x, y, z, nx, ny, nz
      *

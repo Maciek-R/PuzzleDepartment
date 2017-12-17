@@ -22,6 +22,7 @@ import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
+import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
@@ -51,6 +52,7 @@ public class GameManager {
     private ShaderCube shaderCube;
     private Cylinder cylinder;
     private List<Dragon> dragons;
+    private EndTower endTower;
     private Dragon dragon;
     private List<Entity> keys;
     private Light light;
@@ -103,6 +105,7 @@ public class GameManager {
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
+        endTower = new EndTower(new Point(-5f, 2.0f, 45f), entityManager.getEntityModel(R.raw.endtower), entityManager.getEntityModel(R.raw.door));
         cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
         dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));
@@ -125,6 +128,7 @@ public class GameManager {
 
         actionManager = new ActionManager();
         actionManager.addPuzzle(puzzles);
+        actionManager.add(endTower);
     }
 
     public void update() {
@@ -134,6 +138,7 @@ public class GameManager {
         masterRenderer.render(light);
         masterRenderer.render(cube);
         masterRenderer.render(room);
+        masterRenderer.render(endTower);
 
         masterRenderer.renderWithNormals(shaderCube);
         masterRenderer.renderWithNormals(cylinder);

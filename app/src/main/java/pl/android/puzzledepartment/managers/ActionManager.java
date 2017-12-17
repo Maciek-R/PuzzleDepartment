@@ -42,7 +42,7 @@ public class ActionManager {
             add(a);
     }
 
-    private void add(Actionable actionable) {
+    public void add(Actionable actionable) {
         actionables.add(actionable);
     }
 

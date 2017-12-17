@@ -7,13 +7,9 @@ import android.util.Log;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.managers.TimeManager;
-import pl.android.puzzledepartment.objects.Key;
-import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.util.Logger;
-import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 import static android.opengl.GLES20.GL_BACK;
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
@@ -26,7 +22,6 @@ import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glCullFace;
 import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
-import static pl.android.puzzledepartment.R.raw.room;
 
 
 /**

@@ -78,7 +78,7 @@ public class ChessPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x, pos.y, pos.z);
+        return new Point(pos.x, pos.y+1f, pos.z);
     }
     @Override
     public int getKeyColor() {
