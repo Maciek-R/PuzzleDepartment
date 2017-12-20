@@ -8,10 +8,14 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Key;
+import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
+import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
+import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
+import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -168,6 +172,27 @@ public class CollisionManager {
 
         } else if (puzzle instanceof ChessPuzzle) {
             addChessPuzzle((ChessPuzzle) puzzle);
+        }
+        else if (puzzle instanceof MixColorPuzzle) {
+            addMixColorPuzzle((MixColorPuzzle) puzzle);
+        }
+        else if (puzzle instanceof DragonStatuePuzzle) {
+            addDragonStatuePuzzle((DragonStatuePuzzle) puzzle);
+        }
+    }
+
+    private void addDragonStatuePuzzle(DragonStatuePuzzle puzzle) {
+        for(DragonStatue d:puzzle.getStatues()){
+            add(d.getVase());
+            add(d.getDragon());
+        }
+    }
+
+    private void addMixColorPuzzle(MixColorPuzzle puzzle) {
+        for(Entity e:puzzle.getCubes())
+            add(e);
+        for(Lever l:puzzle.getLevers()){
+            add(l.getLeverBase());
         }
     }
 

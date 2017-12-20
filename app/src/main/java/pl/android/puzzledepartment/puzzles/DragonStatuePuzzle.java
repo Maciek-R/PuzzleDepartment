@@ -19,13 +19,13 @@ import pl.android.puzzledepartment.util.geometry.Point;
 public class DragonStatuePuzzle extends AbstractPuzzle{
     private List<DragonStatue> statues;
 
-    public DragonStatuePuzzle(Context context, Point pos, EntityModel dragonModel, HeightMap heightMap) {
+    public DragonStatuePuzzle(Context context, Point pos, EntityModel dragonModel, EntityModel vaseModel, HeightMap heightMap) {
         super(context, pos);
         statues = new ArrayList<DragonStatue>();
-        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-3f)+0.5f, pos.z-3f), dragonModel));
-        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-1f)+0.5f, pos.z-1f), dragonModel));
-        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+1f)+0.5f, pos.z+1f), dragonModel));
-        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+3f)+0.5f, pos.z+3f), dragonModel));
+        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-3f)+0.5f, pos.z-3f), dragonModel, vaseModel));
+        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-1f)+0.5f, pos.z-1f), dragonModel, vaseModel));
+        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+1f)+0.5f, pos.z+1f), dragonModel, vaseModel));
+        statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+3f)+0.5f, pos.z+3f), dragonModel, vaseModel));
     }
 
     public List<DragonStatue> getStatues() {

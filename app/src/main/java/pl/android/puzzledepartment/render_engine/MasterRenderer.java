@@ -125,7 +125,7 @@ public class MasterRenderer {
     }
 
     public void render(DragonStatue dragonStatue){
-        render(dragonStatue.getCube());
+        renderWithNormals(dragonStatue.getVase());
         renderWithNormals(dragonStatue.getDragon());
     }
 

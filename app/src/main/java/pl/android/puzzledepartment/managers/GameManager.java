@@ -98,9 +98,8 @@ public class GameManager {
         puzzles.add(new ParticlesOrderPuzzle(context, new Point(33f, 1.5f, -81f), particleTexture));
         puzzles.add(new ParticlesWalkPuzzle(context, new Point(-4.5f, 10.5f, -80f), particleTexture, camera));
         puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f)));
-        puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), heightMap));
+        puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), entityManager.getEntityModel(R.raw.vase), heightMap));
         puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap));
-
 
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
