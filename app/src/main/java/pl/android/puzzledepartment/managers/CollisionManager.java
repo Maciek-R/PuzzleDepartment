@@ -220,6 +220,17 @@ public class CollisionManager {
         return false;
     }
 
+    public boolean checkChessTeleportCollision(Camera camera) {
+        if(checkCollision(chessPuzzle.getTeleport(), camera)){
+            Point p = chessPuzzle.getFirstCube().getPos();
+            camera.goTo(new Vector3f(p.x, p.y+40f, p.z));
+            return true;
+        }
+        return false;
+    }
+
+
+
     public void checkParticlesCollision(Camera camera) {
         for (ParticleCollideShooter particleCollideShooter : particlesOrderPuzzle.getParticleShooters()) {
             if (checkCollision(particleCollideShooter, camera)) {

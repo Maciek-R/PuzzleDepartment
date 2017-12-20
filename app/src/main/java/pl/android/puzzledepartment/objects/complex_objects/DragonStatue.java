@@ -15,7 +15,7 @@ public class DragonStatue implements Actionable{
 
     public enum Direction{LEFT, BACKWARD, RIGHT, FORWARD};
 
-    private Direction direction = Direction.LEFT;
+    private Direction direction = Direction.FORWARD;
     private Point pos;
     private Vector3f scale;
 
@@ -63,10 +63,10 @@ public class DragonStatue implements Actionable{
 
     private void setNextDirection() {
         switch(direction){
-            case RIGHT: direction = Direction.FORWARD; break;
-            case FORWARD: direction = Direction.LEFT; break;
-            case LEFT: direction = Direction.BACKWARD; break;
-            case BACKWARD: direction = Direction.RIGHT; break;
+            case RIGHT: direction = Direction.BACKWARD; break;
+            case FORWARD: direction = Direction.RIGHT; break;
+            case LEFT: direction = Direction.FORWARD; break;
+            case BACKWARD: direction = Direction.LEFT; break;
         }
     }
 

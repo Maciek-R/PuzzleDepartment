@@ -49,11 +49,7 @@ public class GameManager {
     private final Context context;
 
     private Cube cube;
-    private ShaderCube shaderCube;
-    private Cylinder cylinder;
-    private List<Dragon> dragons;
     private EndTower endTower;
-    private Dragon dragon;
     private List<Entity> keys;
     private Light light;
     private HeightMap heightMap;
@@ -65,12 +61,7 @@ public class GameManager {
     private GuiEntity actionGuiEntity;
     private int guiTexture;
 
-    private ParticleSystem particleSystem;
-    private ParticleShooter redParticleShooter;
-    private ParticleShooter blueParticleShooter;
     private int particleTexture;
-    private final Random random = new Random();
-    private long globalStartTime;
 
     private EntityManager entityManager;
     private MasterRenderer masterRenderer;
@@ -88,26 +79,10 @@ public class GameManager {
         guiEntities.add(actionGuiEntity);
 
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
-        particleSystem = new ParticleSystem(10000, particleTexture);
-        globalStartTime = System.nanoTime();
-
-        redParticleShooter = new ParticleShooter(new Point(2f, 4.0f, -20f), new Vector3f(0f, 0.5f, 0f), Color.rgb(255, 50, 5), 60f, 0.5f);
-        blueParticleShooter = new ParticleShooter(new Point(30f, 4.0f, -20f), new Vector3f(0f, 0.5f, 0f), Color.rgb(10, 10, 255), 360f, 0.5f);
-
-        puzzles = new ArrayList<AbstractPuzzle>();
-        puzzles.add(new TeleportPuzzle(context, new Point(15f, 2f, -8f)));
-        puzzles.add(new ParticlesOrderPuzzle(context, new Point(25f, 2f, -90f), particleTexture));
-        puzzles.add(new ParticlesWalkPuzzle(context, new Point(23f, 5f, -70f), particleTexture, camera));
-        puzzles.add(new ChessPuzzle(context, new Point(20f, 5f, -60f)));
-        puzzles.add(new DragonStatuePuzzle(context, new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon)));
-        puzzles.add(new MixColorPuzzle(context, new Point(10.0f, 8f, 10.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand)));
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
-        shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
         endTower = new EndTower(new Point(-5f, 2.0f, 45f), entityManager.getEntityModel(R.raw.endtower), entityManager.getEntityModel(R.raw.door));
-        cylinder = new Cylinder(new Point(0.0f, 6.0f, -5.0f));
         light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
-        dragon = new Dragon(new Point(-2f, 3f, -2f), entityManager.getEntityModel(R.raw.dragon));
         keys = new ArrayList<>();
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
                 , new Vector3f(200f, 10f, 200f)
@@ -117,6 +92,15 @@ public class GameManager {
                 , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.water)))
                 , new TerrainTexture(TextureHelper.loadTexture(context, R.drawable.bluredcolourmap)));
         room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
+
+        puzzles = new ArrayList<AbstractPuzzle>();
+        puzzles.add(new TeleportPuzzle(context, new Point(15f, 2f, -8f)));
+        puzzles.add(new ParticlesOrderPuzzle(context, new Point(33f, 1.5f, -81f), particleTexture));
+        puzzles.add(new ParticlesWalkPuzzle(context, new Point(-4.5f, 10.5f, -80f), particleTexture, camera));
+        puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f)));
+        puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), heightMap));
+        puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap));
+
 
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
@@ -140,9 +124,6 @@ public class GameManager {
         masterRenderer.render(room);
         masterRenderer.render(endTower);
 
-        masterRenderer.renderWithNormals(shaderCube);
-        masterRenderer.renderWithNormals(cylinder);
-        masterRenderer.renderWithNormals(dragon);
         masterRenderer.renderWithNormals(keys);
 
         for(AbstractPuzzle puzzle:puzzles) {
@@ -165,7 +146,6 @@ public class GameManager {
 
         masterRenderer.renderGuis(guiEntities);
 
-        dragon.rotate(60.0f);
         for (Entity key : keys) {
             key.update();
         }
@@ -178,11 +158,6 @@ public class GameManager {
             puzzle.update(elapsedTime);
             masterRenderer.render(puzzle, elapsedTime);
         }
-
-        redParticleShooter.addParticles(particleSystem, elapsedTime, 5);
-        blueParticleShooter.addParticles(particleSystem, elapsedTime, 5);
-        masterRenderer.render(particleSystem, elapsedTime);
-        masterRenderer.render(particleSystem, elapsedTime);
     }
 
     public void handleJump() {

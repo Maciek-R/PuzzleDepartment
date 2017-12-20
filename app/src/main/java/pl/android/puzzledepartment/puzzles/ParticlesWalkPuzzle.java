@@ -19,13 +19,13 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public class ParticlesWalkPuzzle extends AbstractPuzzle{
 
-    public final static float MAX_DISTANCE = 2500f;
+    public final static float MAX_DISTANCE = 1500f;
 
     private ParticleSystem particleSystem;
     private ParticleShooter particleShooter;
 
     private Camera camera;
-    private final static float MAX_CAMERA_SPEED = 0.05f;
+    private final static float MAX_CAMERA_SPEED = 0.02f;
     private final static int COLOR_NUMBERS = 3;
     private int colors[];
     private final Random random;

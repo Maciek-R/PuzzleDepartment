@@ -8,6 +8,7 @@ import java.util.List;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.EntityModel;
+import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -26,19 +27,19 @@ public class MixColorPuzzle extends AbstractPuzzle{
     private List<Round> rounds;
     private int currentLevel = 0;
 
-    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel) {
+    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap) {
         super(context, pos);
         colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
 
         for(int i=0; i<3; ++i)
-            cubes.add(new SimpleColorShaderCube(new Point(pos.x + i, pos.y, pos.z)));
+            cubes.add(new SimpleColorShaderCube(new Point(pos.x - i*2, pos.y, pos.z)));
         for(int i=0; i<2; ++i)
             colors.add(new Integer(0));
 
         levers = new ArrayList<Lever>();
-        levers.add(new Lever(new Point(pos.x, pos.y, pos.z + 5f), leverBaseModel, leverHandleModel, cubes.get(0)));
-        levers.add(new Lever(new Point(pos.x+1f, pos.y, pos.z + 5f), leverBaseModel, leverHandleModel, cubes.get(1)));
+        levers.add(new Lever(new Point(pos.x, heightMap.getHeight(pos.x, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(0)));
+        levers.add(new Lever(new Point(pos.x-2f, heightMap.getHeight(pos.x-2f, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(1)));
 
         initLevels();
         loadInitColors();
@@ -98,7 +99,7 @@ public class MixColorPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x, pos.y, pos.z);
+        return new Point(pos.x-2f, pos.y-1f, pos.z-2.5f);
     }
     @Override
     public int getKeyColor() {
@@ -123,21 +124,12 @@ public class MixColorPuzzle extends AbstractPuzzle{
         }
 
         public boolean checkCorrectColors(List<Integer> colors) {
-
-           /* int c0 = colorsNeedToBeMixed.get(0);
-            int c1 = colorsNeedToBeMixed.get(1);
-
-            int cc0 = colors.get(0);
-            int cc1 = colors.get(1);
-            boolean x = colorsNeedToBeMixed.containsAll(colors);*/
             return colorsNeedToBeMixed.containsAll(colors) && colors.containsAll(colorsNeedToBeMixed);
-           // return false;
         }
 
         public int getFinalColor() {
             return finalColor;
         }
-
         public int getColorToMixCount() {
             return colorsNeedToBeMixed.size();
         }

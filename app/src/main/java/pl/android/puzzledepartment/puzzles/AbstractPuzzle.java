@@ -23,7 +23,9 @@ public abstract class AbstractPuzzle {
         this.pos = pos;
         guiKeyTexture = TextureHelper.loadTexture(context, getKeyGuiTexturePath());
     }
-
+    public Point getPosition(){
+        return pos;
+    }
     public abstract Point getKeySpawnPosition();
     public boolean isCompleted(){
         return isCompleted;

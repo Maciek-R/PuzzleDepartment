@@ -172,6 +172,7 @@ public class MasterRenderer {
 
     public void render(ChessPuzzle chessPuzzle) {
         render(chessPuzzle.getSelectedEntities());
+        renderWithNormals(chessPuzzle.getTeleport());
     }
 
     public void render(DragonStatuePuzzle dragonStatuePuzzle) {

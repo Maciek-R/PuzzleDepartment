@@ -60,7 +60,7 @@ public class Camera {
     }
 
     public void update(HeightMap heightMap, CollisionManager collisionManager) {
-        //System.out.println("X: " + this.posX + "Z:  " + this.posZ);
+        System.out.println("X: " + this.posX + "Z:  " + this.posZ);
         countNextPossiblePosition(heightMap);
 
         collisionManager.checkWithKeyCollision(this);
@@ -71,8 +71,10 @@ public class Camera {
             flySpeed = 0;
             return;
         }
-
-
+        if(collisionManager.checkChessTeleportCollision(this)) {
+            flySpeed = 0;
+            return;
+        }
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
@@ -161,10 +163,10 @@ public class Camera {
         this.deltaZ = deltaZ;
     }
 
-    public void goTo(Vector3f positionOnCurrentFloor) {
-        this.posX = positionOnCurrentFloor.x;
-        this.posY = positionOnCurrentFloor.y;
-        this.posZ = positionOnCurrentFloor.z;
+    public void goTo(Vector3f position) {
+        this.posX = position.x;
+        this.posY = position.y;
+        this.posZ = position.z;
         this.lookPosY = posY + 1.5f;
     }
     public float getDeltaX() {

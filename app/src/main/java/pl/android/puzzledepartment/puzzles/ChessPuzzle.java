@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -17,16 +18,17 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public class ChessPuzzle extends AbstractPuzzle{
-    private final static int NUMBER_OF_CUBES_TO_GET = 6;
+    private final static int NUMBER_OF_CUBES_TO_GET = 15;
     private final static int WIDTH = 5;
     private final static int HEIGHT = 5;
     private Random random;
 
     private Entity chess[][];
     private List<Entity> cubes;
-
     private Entity nextCube;
     private List<Entity> alreadySelectedCubes;
+    private Entity teleport;
+    private Entity firstCube;
 
     public ChessPuzzle(Context context, Point pos) {
         super(context, pos);
@@ -35,12 +37,14 @@ public class ChessPuzzle extends AbstractPuzzle{
         chess = new ShaderCube[HEIGHT][WIDTH];
         for(int i=0; i<HEIGHT; ++i) {
             for(int j=0; j<WIDTH; ++j) {
-                chess[i][j] = new ShaderCube(new Point(pos.x + j, pos.y, pos.z + i));
+                chess[i][j] = new ShaderCube(new Point(pos.x + j, pos.y+20f, pos.z + i));
                 cubes.add(chess[i][j]);
             }
         }
+        teleport = new Cylinder(this.pos);
         alreadySelectedCubes = new ArrayList<Entity>();
         nextCube = selectNextCube();
+        firstCube = nextCube;
     }
 
     public Entity selectNextCube() {
@@ -68,6 +72,14 @@ public class ChessPuzzle extends AbstractPuzzle{
         return cubes;
     }
 
+    public Entity getTeleport(){
+        return teleport;
+    }
+
+    public Entity getFirstCube(){
+        return firstCube;
+    }
+
     public Entity getNextCube() {
         return nextCube;
     }
@@ -78,7 +90,7 @@ public class ChessPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x, pos.y+1f, pos.z);
+        return new Point(firstCube.getPos().x, firstCube.getPos().y+1f, firstCube.getPos().z);
     }
     @Override
     public int getKeyColor() {
