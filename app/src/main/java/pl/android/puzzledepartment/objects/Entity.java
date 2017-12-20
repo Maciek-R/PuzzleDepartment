@@ -69,9 +69,13 @@ public abstract class Entity implements Collisionable{
     public void rotate(float angleInSeconds) {
         this.verAngle+= TimeManager.getDeltaTimeInSeconds() * angleInSeconds;
     }
+    public void horRotate(float angleInSeconds) {
+        this.horAngle+= TimeManager.getDeltaTimeInSeconds() * angleInSeconds;
+    }
     public void singleHorRotate(float angleInDeg) {
         this.horAngle+=angleInDeg;
     }
+    public void singleVerRotate(float angleInDeg) { this.verAngle+=angleInDeg; }
     abstract public void bindData(ShaderProgram shaderProgram);
     abstract public void draw();
 
@@ -81,6 +85,7 @@ public abstract class Entity implements Collisionable{
     public float getVerRotation() { return verAngle; }
     public float getHorRotation() { return horAngle; }
     public void setVerRotation(float rotation) { this.verAngle = rotation; }
+    public void setHorRotation(float rotation) { this.horAngle = rotation; }
     public Vector3f getScale() { return scale; }
 
     public void setShining(boolean shining) {
@@ -125,4 +130,8 @@ public abstract class Entity implements Collisionable{
     }
     public void onCollisionNotify() {}
     public void update(){}
+    @Override
+    public CollisionType getCollisionType() {
+        return CollisionType.CUBE;
+    }
 }

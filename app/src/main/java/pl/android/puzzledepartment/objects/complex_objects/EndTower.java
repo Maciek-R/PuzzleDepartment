@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.managers.GameState;
-import pl.android.puzzledepartment.objects.Camera;
+import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Door;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.Tower;
@@ -16,7 +16,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-12-17.
  */
 
-public class EndTower implements Actionable{
+public class EndTower implements Actionable, Collisionable{
     private Point pos;
     private Vector3f scale;
 
@@ -25,11 +25,12 @@ public class EndTower implements Actionable{
 
     private boolean isInAction = false;
     private float targetRotation;
+
     private boolean isDoorOpen = false;
 
     public EndTower(Point pos, EntityModel towerModel, EntityModel doorModel) {
         this.pos = pos;
-        this.scale = new Vector3f(1f, 1f, 1f);
+        this.scale = new Vector3f(3.1f, 30f, 3.1f);
         this.tower = new Tower(pos, Color.GREEN, towerModel);
         this.door = new Door(new Point(pos.x+2.41f, pos.y, pos.z+0.62f), Color.RED, doorModel);
     }
@@ -39,6 +40,10 @@ public class EndTower implements Actionable{
     }
     public Door getDoor(){
         return door;
+    }
+
+    public boolean isDoorOpen() {
+        return isDoorOpen;
     }
 
     @Override
@@ -66,8 +71,18 @@ public class EndTower implements Actionable{
     }
 
     @Override
+    public Point getPos() {
+        return pos;
+    }
+
+    @Override
     public Vector3f getScale() {
         return scale;
+    }
+
+    @Override
+    public CollisionType getCollisionType() {
+        return CollisionType.CYLINDER_WALL;
     }
 
     @Override

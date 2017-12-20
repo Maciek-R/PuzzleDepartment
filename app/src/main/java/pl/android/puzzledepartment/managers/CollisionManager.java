@@ -8,12 +8,15 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Key;
+import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
+import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
  * Created by Maciek Ruszczyk on 2017-10-20.
@@ -22,7 +25,7 @@ import pl.android.puzzledepartment.objects.complex_objects.Room;
 public class CollisionManager {
     private GameManager gameManager;
 
-    private List<Entity> entities;
+    private List<Collisionable> entities;
     private CollisionDescription collisionDescription;
 
     private List<Entity> keys;
@@ -49,8 +52,8 @@ public class CollisionManager {
         collisionDescription.isCollision = false;
         collisionDescription.isCollisionOverEntity = false;
         collisionDescription.isCollisionSideEntity = false;
-        for (Entity e : entities)
-            checkCollision(e, camera);
+        for (Collisionable c : entities)
+            checkCollision(c, camera);
 
         if(collisionDescription.isCollision())
             return collisionDescription;
@@ -77,7 +80,44 @@ public class CollisionManager {
             return false;
     }
 
-    private boolean collide(Collisionable e, Camera camera) {
+    private boolean collide(Collisionable c, Camera camera) {
+        if(Collisionable.CollisionType.CUBE.equals(c.getCollisionType()))
+            return collideCube(c, camera);
+        else
+            return collideCylinderWall(c, camera);
+    }
+
+    private boolean collideCylinderWall(Collisionable c, Camera camera) {
+        final float scaleX = c.getScale().x;
+        final float scaleY = c.getScale().y;
+        final float scaleZ = c.getScale().z;
+
+        final float possibleCamPosX = camera.getPossibleX();
+        final float possibleCamPosZ = camera.getPossibleZ();
+        final float possibleCamPosY = camera.getLookPosY();
+
+        if(c.getPos().y > possibleCamPosY || c.getPos().y + scaleY< possibleCamPosY)
+            return false;
+
+        final float radius = (scaleX + scaleZ) / 2f;
+        float distance = new Vector3f(Math.abs(c.getPos().x-possibleCamPosX),
+                                        0f,
+                                        Math.abs(c.getPos().z-possibleCamPosZ)).length();
+
+        boolean isCollision =  (distance < radius) && (distance > radius - 0.8f);
+        if(!isCollision)
+            return isCollision;
+
+        if(c instanceof EndTower){
+
+            isCollision = collide(((EndTower)c).getDoor(), camera);
+            if(isCollision && ((EndTower)c).isDoorOpen())
+                return false;
+        }
+        return true;
+    }
+
+    private boolean collideCube(Collisionable e, Camera camera) {
         final float scaleX = e.getScale().x/2;
         final float scaleY = e.getScale().y/2;
         final float scaleZ = e.getScale().z/2;
@@ -104,11 +144,11 @@ public class CollisionManager {
             return true;
     }
 
-    public void add(Entity entity) {
-        if(entity instanceof Key)
-            keys.add(entity);
+    public void add(Collisionable c) {
+        if(c instanceof Key)
+            keys.add((Key)c);
         else
-            entities.add(entity);
+            entities.add(c);
     }
     public void add(Room room) {
         for(Entity e:room.getEntities())

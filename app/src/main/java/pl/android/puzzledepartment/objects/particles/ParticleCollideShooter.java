@@ -19,8 +19,12 @@ public class ParticleCollideShooter extends ParticleShooter implements Collision
     public Point getPos() {
         return pos;
     }
-
     public Vector3f getScale() {
         return scale;
+    }
+
+    @Override
+    public CollisionType getCollisionType() {
+        return CollisionType.CUBE;
     }
 }

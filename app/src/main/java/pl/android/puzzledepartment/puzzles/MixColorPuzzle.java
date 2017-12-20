@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -25,7 +26,7 @@ public class MixColorPuzzle extends AbstractPuzzle{
     private List<Round> rounds;
     private int currentLevel = 0;
 
-    public MixColorPuzzle(Context context, Point pos) {
+    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel) {
         super(context, pos);
         colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
@@ -36,8 +37,8 @@ public class MixColorPuzzle extends AbstractPuzzle{
             colors.add(new Integer(0));
 
         levers = new ArrayList<Lever>();
-        levers.add(new Lever(new Point(pos.x, pos.y, pos.z + 5f), cubes.get(0)));
-        levers.add(new Lever(new Point(pos.x+1f, pos.y, pos.z + 5f), cubes.get(1)));
+        levers.add(new Lever(new Point(pos.x, pos.y, pos.z + 5f), leverBaseModel, leverHandleModel, cubes.get(0)));
+        levers.add(new Lever(new Point(pos.x+1f, pos.y, pos.z + 5f), leverBaseModel, leverHandleModel, cubes.get(1)));
 
         initLevels();
         loadInitColors();

@@ -81,7 +81,6 @@ public class GameManager {
         this.context = context;
 
         entityManager = new EntityManager(context);
-
         camera = new Camera(0f, 0f, 0f);
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
         guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
@@ -101,7 +100,7 @@ public class GameManager {
         puzzles.add(new ParticlesWalkPuzzle(context, new Point(23f, 5f, -70f), particleTexture, camera));
         puzzles.add(new ChessPuzzle(context, new Point(20f, 5f, -60f)));
         puzzles.add(new DragonStatuePuzzle(context, new Point(10.0f, 5.5f, 10.0f), entityManager.getEntityModel(R.raw.dragon)));
-        puzzles.add(new MixColorPuzzle(context, new Point(10.0f, 8f, 10.0f)));
+        puzzles.add(new MixColorPuzzle(context, new Point(10.0f, 8f, 10.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand)));
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         shaderCube = new ShaderCube(new Point(-0.5f, 5.0f, -3.0f));
@@ -125,6 +124,7 @@ public class GameManager {
         collisionManager.add(cube);
         collisionManager.add(room);
         collisionManager.add(puzzles);
+        collisionManager.add(endTower);
 
         actionManager = new ActionManager();
         actionManager.addPuzzle(puzzles);

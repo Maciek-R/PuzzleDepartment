@@ -134,6 +134,11 @@ public class MasterRenderer {
         renderWithNormals(endTower.getDoor());
     }
 
+    public void render(Lever lever){
+        renderWithNormals(lever.getLeverBase());
+        renderWithNormals(lever.getLeverHandle());
+    }
+
     public void render(Room room) {
         render(room.getEntities());
     }
