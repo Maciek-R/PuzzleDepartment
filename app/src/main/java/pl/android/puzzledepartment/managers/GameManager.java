@@ -43,6 +43,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 public class GameManager {
 
     private final Context context;
+    private final GameState gameState;
 
     private Entity elka;
     private Entity mech;
@@ -73,6 +74,7 @@ public class GameManager {
 
     public GameManager(Context context) {
         this.context = context;
+        gameState = new GameState();
 
         entityManager = new EntityManager(context);
         camera = new Camera(0f, 0f, 0f);
@@ -167,6 +169,7 @@ public class GameManager {
         for(AbstractPuzzle puzzle:puzzles) {
             if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
                 Key key = new Key(puzzle.getKeySpawnPosition(), puzzle.getKeyColor(), puzzle.getKeyGuiTexture(), entityManager.getEntityModel(R.raw.key));
+                key.addObserver(this);
                 keys.add(key);
                 collisionManager.add(key);
                 puzzle.setWasKeySpawned(true);
@@ -231,7 +234,15 @@ public class GameManager {
         entity.onCollisionNotify();
         if (entity instanceof Key) {
             guiEntities.add(((Key)entity).getGuiEntity());
-            GameState.INSTANCE.incKeysTakenCount();
+            gameState.incKeysTakenCount();
         }
+    }
+
+    public boolean isAllKeyTaken() {
+        return gameState.isAllKeyTaken();
+    }
+
+    public int getKeysTakenCount() {
+        return gameState.getKeysTakenCount();
     }
 }

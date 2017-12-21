@@ -6,6 +6,7 @@ import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.gui.GuiEntity;
+import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -24,6 +25,8 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  */
 
 public class Key extends Entity {
+    private GameManager gameManager;
+
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int NORMAL_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
@@ -49,13 +52,17 @@ public class Key extends Entity {
         indicesLength = entityModel.indicesArray.length;
     }
 
+    public void addObserver(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
     public void update(){
         rotate(30.0f);
     }
 
     public void onCollisionNotify() {
         setIsVisible(false);
-        guiEntity = new GuiEntity(guiTextureId, new Vector2f(-0.9f+0.18f* GameState.INSTANCE.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
+        guiEntity = new GuiEntity(guiTextureId, new Vector2f(-0.9f+0.18f* gameManager.getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
         guiEntity.setIsVisible(true);
     }
 

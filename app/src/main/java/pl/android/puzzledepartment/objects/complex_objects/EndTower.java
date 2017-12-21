@@ -55,7 +55,7 @@ public class EndTower implements Actionable, Collisionable{
 
     @Override
     public void action() {
-        if(GameState.INSTANCE.isAllKeyTaken()) {
+        if(gameManager.isAllKeyTaken()) {
             isInAction = true;
             targetRotation = door.getVerRotation() + 90f;
         }
