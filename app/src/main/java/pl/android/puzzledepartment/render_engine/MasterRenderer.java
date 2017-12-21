@@ -115,7 +115,7 @@ public class MasterRenderer {
     }
 
     public void createProjectionMatrix(int width, int height) {
-        MatrixHelper.perspectiveM(projectionMatrix, 45, (float)width / (float) height, 0.1f, 500f);
+        MatrixHelper.perspectiveM(projectionMatrix, 45, (float)width / (float) height, 0.1f, 75f);
     }
     public void prepareCamera(Camera camera) {
         setIdentityM(viewMatrix, 0);

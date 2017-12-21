@@ -6,26 +6,21 @@ import android.graphics.drawable.BitmapDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Cube;
-import pl.android.puzzledepartment.objects.Cylinder;
-import pl.android.puzzledepartment.objects.Dragon;
+import pl.android.puzzledepartment.objects.Department;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Key;
 import pl.android.puzzledepartment.objects.Light;
-import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
-import pl.android.puzzledepartment.objects.particles.ParticleShooter;
-import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
@@ -47,6 +42,12 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 public class GameManager {
 
     private final Context context;
+
+    private Entity elka;
+    private Entity mech;
+    private Entity mini;
+    private Entity mel;
+
 
     private Cube cube;
     private EndTower endTower;
@@ -107,6 +108,12 @@ public class GameManager {
         puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), entityManager.getEntityModel(R.raw.vase), heightMap));
         puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap));
 
+        elka = new Department(new Point(-2.5f, 5f, 46.3f), Color.BLUE, entityManager.getEntityModel(R.raw.elka));
+        elka.singleVerRotate(55f);
+        mech = new Department(new Point(2f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mech));
+        mini = new Department(new Point(4f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mini));
+        mel = new Department(new Point(6f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mel));
+
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
         collisionManager.addObserver(this);
@@ -130,6 +137,11 @@ public class GameManager {
         masterRenderer.render(endTower);
 
         masterRenderer.renderWithNormals(keys);
+
+        masterRenderer.renderWithNormals(elka);
+        masterRenderer.renderWithNormals(mech);
+        masterRenderer.renderWithNormals(mini);
+        masterRenderer.renderWithNormals(mel);
 
         for(AbstractPuzzle puzzle:puzzles) {
             if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
