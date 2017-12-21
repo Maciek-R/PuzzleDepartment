@@ -59,7 +59,9 @@ public class GameManager {
     private Skybox skybox;
     private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
     private GuiEntity actionGuiEntity;
+    private GuiEntity notEnoughGuiEntity;
     private int guiTexture;
+    private int notEnoughKeyTexture;
 
     private int particleTexture;
 
@@ -76,12 +78,16 @@ public class GameManager {
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
         guiTexture = TextureHelper.loadTexture(context, R.drawable.action);
         actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
+        notEnoughKeyTexture = TextureHelper.loadTexture(context, R.drawable.not_enough_keys);
+        notEnoughGuiEntity = new GuiEntity(notEnoughKeyTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
         guiEntities.add(actionGuiEntity);
+        guiEntities.add(notEnoughGuiEntity);
 
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         endTower = new EndTower(new Point(-5f, 2.0f, 45f), entityManager.getEntityModel(R.raw.endtower), entityManager.getEntityModel(R.raw.door));
+        endTower.addObserver(this);
         light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
         keys = new ArrayList<>();
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
@@ -144,6 +150,8 @@ public class GameManager {
             actionGuiEntity.setIsVisible(false);
 
         masterRenderer.renderGuis(guiEntities);
+        for(GuiEntity g:guiEntities)
+            g.update();
 
         for (Entity key : keys) {
             key.update();
@@ -180,6 +188,10 @@ public class GameManager {
 
     public void createProjectionMatrix(int width, int height) {
         masterRenderer.createProjectionMatrix(width, height);
+    }
+
+    public void notEnoughKeysMessage(){
+        notEnoughGuiEntity.setVisibleForFewSeconds(3);
     }
 
     public void onCollisionNotify(Entity entity) {

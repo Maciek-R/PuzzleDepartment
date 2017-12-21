@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.objects.complex_objects;
 import android.graphics.Color;
 
 import pl.android.puzzledepartment.action.Actionable;
+import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Door;
@@ -17,6 +18,8 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class EndTower implements Actionable, Collisionable{
+    private GameManager gameManager;
+
     private Point pos;
     private Vector3f scale;
 
@@ -33,6 +36,10 @@ public class EndTower implements Actionable, Collisionable{
         this.scale = new Vector3f(3.1f, 30f, 3.1f);
         this.tower = new Tower(pos, Color.GREEN, towerModel);
         this.door = new Door(new Point(pos.x+2.41f, pos.y, pos.z+0.62f), Color.RED, doorModel);
+    }
+
+    public void addObserver(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     public Tower getTower(){
@@ -52,6 +59,8 @@ public class EndTower implements Actionable, Collisionable{
             isInAction = true;
             targetRotation = door.getVerRotation() + 90f;
         }
+        else
+            gameManager.notEnoughKeysMessage();
     }
 
     @Override

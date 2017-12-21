@@ -1,5 +1,6 @@
 package pl.android.puzzledepartment.gui;
 
+import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 /**
@@ -12,6 +13,10 @@ public class GuiEntity {
     private Vector2f position;
     private Vector2f scale;
     boolean isVisible = false;
+
+    private boolean isVisibleFewSeconds = false;
+    private float startVisibleTime;
+    private float visibleInSeconds;
 
     public GuiEntity(int textureId, Vector2f position) {
         this(textureId, position, new Vector2f(1.0f, 1.0f));
@@ -48,5 +53,21 @@ public class GuiEntity {
     public boolean pressed(float normalizedX, float normalizedY) {
         return normalizedX >= position.x-scale.x && normalizedX <= position.x+scale.x &&
                 normalizedY >= position.y-scale.y && normalizedY <= position.y+scale.y;
+    }
+
+    public void setVisibleForFewSeconds(float seconds) {
+        startVisibleTime = TimeManager.getElapsedTimeFromBeginningInSeconds();
+        isVisibleFewSeconds = true;
+        visibleInSeconds = seconds;
+        isVisible = true;
+    }
+
+    public void update(){
+        if(isVisibleFewSeconds){
+            if(TimeManager.getElapsedTimeFromBeginningInSeconds() - startVisibleTime > visibleInSeconds){
+                isVisibleFewSeconds = false;
+                isVisible = false;
+            }
+        }
     }
 }
