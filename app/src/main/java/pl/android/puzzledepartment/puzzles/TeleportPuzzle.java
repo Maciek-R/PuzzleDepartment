@@ -14,7 +14,6 @@ import java.util.Random;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.managers.EntityManager;
-import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Department;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.EntityModel;
@@ -48,14 +47,7 @@ public class TeleportPuzzle extends AbstractPuzzle{
         this.entityManager = entityManager;
         if(loadPuzzleFromFile(context, R.raw.teleportpuzzle)) {
             createScene();
-            randomTeleports();
         }
-    }
-
-    private void randomTeleports() {
-     //   correctTeleportPerLevel = new ArrayList<>();
-     //   for(int i=0; i<numberOfLevels; ++i)
-     //       correctTeleportPerLevel.add = teleports.get(i*numberOfLevels + random.nextInt(numberOfLevels));
     }
 
     public void nextLevel() {
@@ -85,7 +77,6 @@ public class TeleportPuzzle extends AbstractPuzzle{
                 if(DepartmentType.ELKA.equals(departmentType))
                     correctTeleportPerLevel.add(d);
                 ++l;
-                //teleports.add(new Cylinder(new Point(teleportPosition.x + pos.x, i*10 + pos.y, teleportPosition.y + pos.z)));
             }
             rooms.add(new Room(new Point(0 + pos.x, i*10 + pos.y, 0 + pos.z), 5f, 1f));
         }
