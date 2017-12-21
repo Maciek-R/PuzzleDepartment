@@ -19,6 +19,7 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
@@ -47,7 +48,6 @@ public class GameManager {
     private Entity mech;
     private Entity mini;
     private Entity mel;
-
 
     private Cube cube;
     private EndTower endTower;
@@ -81,8 +81,21 @@ public class GameManager {
         actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
         notEnoughKeyTexture = TextureHelper.loadTexture(context, R.drawable.not_enough_keys);
         notEnoughGuiEntity = new GuiEntity(notEnoughKeyTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        GuiEntity tipGuiTeleport = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_teleport), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        GuiEntity tipGuiDragon = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_dragon), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        GuiEntity tipGuiMixPuzzle = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_mix_puzzle), new Vector2f(0.0f, 0.1f), new Vector2f(0.9f, 0.3f));
+        GuiEntity tipGuiParticleSlow = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_walk), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        GuiEntity tipGuiParticleOrder = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_particle), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        //GuiEntity tipGuiChess = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_teleport), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+
         guiEntities.add(actionGuiEntity);
         guiEntities.add(notEnoughGuiEntity);
+        guiEntities.add(tipGuiTeleport);
+        guiEntities.add(tipGuiDragon);
+        guiEntities.add(tipGuiMixPuzzle);
+        guiEntities.add(tipGuiParticleSlow);
+        guiEntities.add(tipGuiParticleOrder);
+        //guiEntities.add(tipGuiTeleport);
 
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
 
@@ -101,12 +114,20 @@ public class GameManager {
         room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
 
         puzzles = new ArrayList<AbstractPuzzle>();
-        puzzles.add(new TeleportPuzzle(context, new Point(15f, 2f, -8f)));
-        puzzles.add(new ParticlesOrderPuzzle(context, new Point(33f, 1.5f, -81f), particleTexture));
-        puzzles.add(new ParticlesWalkPuzzle(context, new Point(-4.5f, 10.5f, -80f), particleTexture, camera));
-        puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f)));
-        puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), entityManager.getEntityModel(R.raw.vase), heightMap));
-        puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap));
+        puzzles.add(new TeleportPuzzle(context, new Point(15f, 2f, -8f), entityManager,
+                new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiTeleport)));
+        puzzles.add(new ParticlesOrderPuzzle(context, new Point(33f, 1.5f, -81f), particleTexture,
+                new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiParticleOrder)));
+        puzzles.add(new ParticlesWalkPuzzle(context, new Point(-4.5f, 10.5f, -80f), particleTexture, camera,
+                new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiParticleSlow)));
+       // puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f)));
+        puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), entityManager.getEntityModel(R.raw.vase),
+                heightMap, new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiDragon)));
+        puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap,
+                new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiMixPuzzle)));
+
+        //tips.add(new Tip(new Point(46.0f, 1.5f, 60.0f), Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiChess);
+
 
         elka = new Department(new Point(-2.5f, 5f, 46.3f), Color.BLUE, entityManager.getEntityModel(R.raw.elka));
         elka.singleVerRotate(55f);

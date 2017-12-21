@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -18,6 +19,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class ParticlesOrderPuzzle extends AbstractPuzzle{
+
     private static final int PARTICLES_SHOOTERS_COUNT = 5;
 
     private ParticleSystem particleSystem;
@@ -27,8 +29,8 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
     private List<ParticleCollideShooter> particleShootersOrderLevelAlreadyPicked;
     private int currentLevel = 0;
 
-    public ParticlesOrderPuzzle(Context context, Point pos, int particleTexture) {
-        super(context, pos);
+    public ParticlesOrderPuzzle(Context context, Point pos, int particleTexture, Tip tip) {
+        super(context, pos, tip);
         particleSystem = new ParticleSystem(10000, particleTexture);
         particleShooters = new ParticleCollideShooter[PARTICLES_SHOOTERS_COUNT];
         for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i) {
@@ -93,8 +95,14 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x, pos.y, pos.z);
+        return new Point(pos.x, pos.y+1f, pos.z);
     }
+
+    @Override
+    public Point getTipPosition() {
+        return new Point(pos.x, pos.y-0.2f, pos.z);
+    }
+
     @Override
     public int getKeyColor() {
         return Color.YELLOW;

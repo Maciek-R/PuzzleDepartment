@@ -1,9 +1,10 @@
 package pl.android.puzzledepartment.objects;
 
-import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
-import pl.android.puzzledepartment.managers.EntityManager;
+import pl.android.puzzledepartment.gui.GuiEntity;
+import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
@@ -19,7 +20,7 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  * Created by Maciek Ruszczyk on 2017-12-21.
  */
 
-public class Department extends Entity{
+public class Tip extends Entity implements Actionable, Collisionable{
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int NORMAL_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
@@ -28,17 +29,24 @@ public class Department extends Entity{
     private final IntegerIndexBuffer intIndexBuffer;
     private final int indicesLength;
 
-    public Department(Point pos, int color, EntityModel entityModel) {
-        this(pos, color, entityModel, new Vector3f(1f, 1f, 1f));
+    private GuiEntity guiEntity;
+
+    public Tip(int color, EntityModel entityModel, GuiEntity guiEntity) {
+        this(new Point(0f, 0f, 0f), color, entityModel, new Vector3f(1f, 1f, 1f), guiEntity);
     }
 
-    public Department(Point pos, int color, EntityModel entityModel, Vector3f scale) {
+    public Tip(Point pos, int color, EntityModel entityModel, GuiEntity guiEntity) {
+        this(pos, color, entityModel, new Vector3f(1f, 1f, 1f), guiEntity);
+    }
+
+    public Tip(Point pos, int color, EntityModel entityModel, Vector3f scale, GuiEntity guiEntity) {
         super(pos, 0.0f, scale);
         this.color = color;
+        this.guiEntity = guiEntity;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
         intIndexBuffer = entityModel.getIntIndexBuffer();
-        indicesLength = entityModel.getIndicesArrayLength();
+        indicesLength = entityModel.indicesArray.length;
     }
 
     @Override
@@ -60,5 +68,24 @@ public class Department extends Entity{
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, intIndexBuffer.getBufferId());
         glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    @Override
+    public void action() {
+        guiEntity.setVisibleForFewSeconds(3f);
+    }
+
+    @Override
+    public Point getPosition() {
+        return pos;
+    }
+
+    @Override
+    public boolean isInAction() {
+        return false;
+    }
+
+    @Override
+    public void updateAction() {
     }
 }

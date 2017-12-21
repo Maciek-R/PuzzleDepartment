@@ -8,6 +8,7 @@ import java.util.Random;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Camera;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -31,8 +32,8 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     private final Random random;
     private boolean calm = false;
 
-    public ParticlesWalkPuzzle(Context context, Point pos, int particleTexture, Camera camera) {
-        super(context, pos);
+    public ParticlesWalkPuzzle(Context context, Point pos, int particleTexture, Camera camera, Tip tip) {
+        super(context, pos, tip);
         this.camera = camera;
         particleSystem = new ParticleSystem(10000, particleTexture);
         random = new Random();
@@ -72,6 +73,12 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     public Point getKeySpawnPosition() {
         return new Point(pos.x, pos.y, pos.z);
     }
+
+    @Override
+    public Point getTipPosition() {
+        return new Point(pos.x+2f, pos.y-2f, pos.z+5f);
+    }
+
     @Override
     public int getKeyColor() {
         return Color.RED;

@@ -144,6 +144,7 @@ public class MasterRenderer {
     }
 
     public void render(AbstractPuzzle puzzle, float currentTime) {
+        renderWithNormals(puzzle.getTip());
         if (puzzle instanceof TeleportPuzzle) {
             render((TeleportPuzzle) puzzle);
         }
@@ -212,7 +213,7 @@ public class MasterRenderer {
         skyboxRenderer.render(skybox, viewMatrix, projectionMatrix);
     }
 
-    public void renderWithNormals(List<Entity> entities) {
+    public void renderWithNormals(List<? extends Entity> entities) {
         for(Entity e:entities)
             renderWithNormals(e);
     }

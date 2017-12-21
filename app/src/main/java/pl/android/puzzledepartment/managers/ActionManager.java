@@ -29,6 +29,7 @@ public class ActionManager {
     }
 
     private void addPuzzle(AbstractPuzzle puzzle) {
+        add(puzzle.getTip());
         if (puzzle instanceof DragonStatuePuzzle) {
             add(((DragonStatuePuzzle)puzzle).getStatues());
 

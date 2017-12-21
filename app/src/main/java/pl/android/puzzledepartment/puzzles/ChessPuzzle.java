@@ -11,6 +11,7 @@ import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 /**
@@ -30,8 +31,8 @@ public class ChessPuzzle extends AbstractPuzzle{
     private Entity teleport;
     private Entity firstCube;
 
-    public ChessPuzzle(Context context, Point pos) {
-        super(context, pos);
+    public ChessPuzzle(Context context, Point pos, Tip tip) {
+        super(context, pos, tip);
         random = new Random();
         cubes = new ArrayList<Entity>();
         chess = new ShaderCube[HEIGHT][WIDTH];
@@ -92,6 +93,12 @@ public class ChessPuzzle extends AbstractPuzzle{
     public Point getKeySpawnPosition() {
         return new Point(firstCube.getPos().x, firstCube.getPos().y+1f, firstCube.getPos().z);
     }
+
+    @Override
+    public Point getTipPosition() {
+        return pos;
+    }
+
     @Override
     public int getKeyColor() {
         return Color.MAGENTA;

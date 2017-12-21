@@ -60,6 +60,9 @@ public abstract class Entity implements Collisionable{
 
         this.pos = new Point(x, pos.y, z);
     }
+    public void setPos(Point p){
+        this.pos = p;
+    }
     public void move2() {
 
         long time = SystemClock.currentThreadTimeMillis();

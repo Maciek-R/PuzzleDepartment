@@ -10,6 +10,7 @@ import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
 
@@ -27,8 +28,8 @@ public class MixColorPuzzle extends AbstractPuzzle{
     private List<Round> rounds;
     private int currentLevel = 0;
 
-    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap) {
-        super(context, pos);
+    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap, Tip tip) {
+        super(context, pos, tip);
         colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
 
@@ -99,8 +100,14 @@ public class MixColorPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x-2f, pos.y-1f, pos.z-2.5f);
+        return new Point(pos.x-2f, pos.y, pos.z-2.5f);
     }
+
+    @Override
+    public Point getTipPosition() {
+        return new Point(pos.x-2f, pos.y-1.5f, pos.z-2.5f);
+    }
+
     @Override
     public int getKeyColor() {
         return Color.GREEN;

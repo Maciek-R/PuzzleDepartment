@@ -17,6 +17,7 @@ import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
+import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -164,6 +165,8 @@ public class CollisionManager {
     }
 
     private void add (AbstractPuzzle puzzle) {
+        add(puzzle.getTip());
+
         if (puzzle instanceof TeleportPuzzle) {
             addTeleportPuzzle((TeleportPuzzle) puzzle);
 
@@ -246,6 +249,9 @@ public class CollisionManager {
     }
 
     public boolean checkChessTeleportCollision(Camera camera) {
+        if(chessPuzzle == null)
+            return false;
+
         if(checkCollision(chessPuzzle.getTeleport(), camera)){
             Point p = chessPuzzle.getFirstCube().getPos();
             camera.goTo(new Vector3f(p.x, p.y+40f, p.z));
@@ -253,8 +259,6 @@ public class CollisionManager {
         }
         return false;
     }
-
-
 
     public void checkParticlesCollision(Camera camera) {
         for (ParticleCollideShooter particleCollideShooter : particlesOrderPuzzle.getParticleShooters()) {
@@ -266,6 +270,9 @@ public class CollisionManager {
     }
 
     private boolean checkChessCollision(Camera camera) {
+        if(chessPuzzle == null)
+            return false;
+
         for (Entity e : chessPuzzle.getSelectedEntities()) {
             if (checkCollision(e, camera)) {
 

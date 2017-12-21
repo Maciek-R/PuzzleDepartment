@@ -8,12 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.EntityManager;
 import pl.android.puzzledepartment.objects.Cylinder;
+import pl.android.puzzledepartment.objects.Department;
 import pl.android.puzzledepartment.objects.Entity;
+import pl.android.puzzledepartment.objects.EntityModel;
+import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector2f;
@@ -24,6 +29,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class TeleportPuzzle extends AbstractPuzzle{
+    private enum DepartmentType{ELKA, MINI, MECH, MEL};
     private List<Vector2f> teleportPositions = new ArrayList<Vector2f>();
     private Vector2f lightPosition;
     private int numberOfLevels;
@@ -31,12 +37,15 @@ public class TeleportPuzzle extends AbstractPuzzle{
 
     private List<Entity> teleports = new ArrayList<Entity>();
     private List<Room> rooms = new ArrayList<Room>();
-    private Entity correctTeleportPerLevel[];
+    private List<Entity> correctTeleportPerLevel;
     private int currentLevel = 0;
 
-    public TeleportPuzzle(Context context, Point pos) {
-        super(context, pos);
+    private final EntityManager entityManager;
+
+    public TeleportPuzzle(Context context, Point pos, EntityManager entityManager, Tip tip) {
+        super(context, pos, tip);
         random = new Random();
+        this.entityManager = entityManager;
         if(loadPuzzleFromFile(context, R.raw.teleportpuzzle)) {
             createScene();
             randomTeleports();
@@ -44,9 +53,9 @@ public class TeleportPuzzle extends AbstractPuzzle{
     }
 
     private void randomTeleports() {
-        correctTeleportPerLevel = new Cylinder[numberOfLevels];
-        for(int i=0; i<numberOfLevels; ++i)
-            correctTeleportPerLevel[i] = teleports.get(i*numberOfLevels + random.nextInt(numberOfLevels));
+     //   correctTeleportPerLevel = new ArrayList<>();
+     //   for(int i=0; i<numberOfLevels; ++i)
+     //       correctTeleportPerLevel.add = teleports.get(i*numberOfLevels + random.nextInt(numberOfLevels));
     }
 
     public void nextLevel() {
@@ -58,12 +67,52 @@ public class TeleportPuzzle extends AbstractPuzzle{
     }
 
     private void createScene() {
+        correctTeleportPerLevel = new ArrayList<>();
+        List<DepartmentType> departments = new ArrayList<>();
+        departments.add(DepartmentType.ELKA);
+        departments.add(DepartmentType.MECH);
+        departments.add(DepartmentType.MEL);
+        departments.add(DepartmentType.MINI);
+
         for(int i=0; i<numberOfLevels; ++i) {
+            Collections.shuffle(departments);
+            int l = 0;
             for (Vector2f teleportPosition : teleportPositions) {
-                teleports.add(new Cylinder(new Point(teleportPosition.x + pos.x, i*10 + pos.y, teleportPosition.y + pos.z)));
+
+                DepartmentType departmentType = departments.get(l);
+                Entity d = getDepartment(departmentType, teleportPosition, i);
+                teleports.add(d);
+                if(DepartmentType.ELKA.equals(departmentType))
+                    correctTeleportPerLevel.add(d);
+                ++l;
+                //teleports.add(new Cylinder(new Point(teleportPosition.x + pos.x, i*10 + pos.y, teleportPosition.y + pos.z)));
             }
             rooms.add(new Room(new Point(0 + pos.x, i*10 + pos.y, 0 + pos.z), 5f, 1f));
         }
+    }
+
+    private Entity getDepartment(DepartmentType departmentType, Vector2f teleportPosition, int i) {
+        int color = Color.BLUE;
+        EntityModel entityModel = null;
+        switch(departmentType){
+            case ELKA:
+                color = Color.BLUE;
+                entityModel = entityManager.getDepartmentElka();
+                break;
+            case MINI:
+                color = Color.BLUE;
+                entityModel = entityManager.getDepartmentMini();
+                break;
+            case MECH:
+                color = Color.BLUE;
+                entityModel = entityManager.getDepartmentMech();
+                break;
+            case MEL:
+                color = Color.BLUE;
+                entityModel = entityManager.getDepartmentMel();
+                break;
+        }
+        return new Department(new Point(teleportPosition.x + pos.x, i*10 + pos.y+0.5f, teleportPosition.y + pos.z), color, entityModel);
     }
 
     private boolean loadPuzzleFromFile(Context context, int resourceId) {
@@ -112,7 +161,7 @@ public class TeleportPuzzle extends AbstractPuzzle{
             reset();
             return false;
         }
-        if (e == correctTeleportPerLevel[currentLevel]) {
+        if (e == correctTeleportPerLevel.get(currentLevel)) {
                 nextLevel();
             if(currentLevel >= numberOfLevels-1){
                 isCompleted = true;
@@ -132,6 +181,11 @@ public class TeleportPuzzle extends AbstractPuzzle{
     @Override
     public Point getKeySpawnPosition() {
         return new Point(pos.x, (numberOfLevels-1) * 10f + pos.y + 3f, pos.z);
+    }
+
+    @Override
+    public Point getTipPosition() {
+        return new Point(pos.x, pos.y, pos.z-2f);
     }
 
     @Override
