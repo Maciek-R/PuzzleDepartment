@@ -54,7 +54,6 @@ public abstract class Entity implements Collisionable{
         initObjectProperties();
     }
 
-
     protected abstract void initObjectProperties();
 
     public void move() {

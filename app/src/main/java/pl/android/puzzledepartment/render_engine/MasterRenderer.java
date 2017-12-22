@@ -178,7 +178,8 @@ public class MasterRenderer {
     }
 
     public void render(ChessPuzzle chessPuzzle) {
-        render(chessPuzzle.getSelectedEntities());
+        renderWithNormals(chessPuzzle.getChessCubes());
+        render(chessPuzzle.getBaseCube());
         renderWithNormals(chessPuzzle.getTeleport());
     }
 

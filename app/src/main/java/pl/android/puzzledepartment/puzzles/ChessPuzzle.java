@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,7 +13,9 @@ import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.ShaderCube;
+import pl.android.puzzledepartment.objects.TexturedCube;
 import pl.android.puzzledepartment.objects.Tip;
+import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 /**
@@ -19,54 +23,100 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public class ChessPuzzle extends AbstractPuzzle{
-    private final static int NUMBER_OF_CUBES_TO_GET = 15;
-    private final static int WIDTH = 5;
-    private final static int HEIGHT = 5;
-    private Random random;
+    private enum LayersIsoOsi{PHYSICAL, DATA, NET, TRANSPORT, SESSION, PRESENTATION, APPLICATION};
 
-    private Entity chess[][];
+    private Random random;
+    private List<Entity> chess;
+    private Entity baseCube;
+    private List<Entity> allCubes;
+
+
     private List<Entity> cubes;
     private Entity nextCube;
+    int nextCubeIndex = 0;
     private List<Entity> alreadySelectedCubes;
     private Entity teleport;
-    private Entity firstCube;
 
     public ChessPuzzle(Context context, Point pos, Tip tip) {
         super(context, pos, tip);
         random = new Random();
         cubes = new ArrayList<Entity>();
-        chess = new ShaderCube[HEIGHT][WIDTH];
-        for(int i=0; i<HEIGHT; ++i) {
-            for(int j=0; j<WIDTH; ++j) {
-                chess[i][j] = new ShaderCube(new Point(pos.x + j, pos.y+20f, pos.z + i));
-                cubes.add(chess[i][j]);
-            }
-        }
+        chess = new ArrayList<>();
+
+        List<Point> layerPositions = Arrays.asList(new Point(pos.x + 2f, pos.y+20f, pos.z), new Point(pos.x + 2f, pos.y+20f, pos.z+2f),
+                    new Point(pos.x, pos.y+20f, pos.z+2f), new Point(pos.x - 2f, pos.y+20f, pos.z+2f),
+                    new Point(pos.x - 2f, pos.y+20f, pos.z), new Point(pos.x - 2f, pos.y+20f, pos.z - 2f),
+                    new Point(pos.x, pos.y+20f, pos.z - 2f));
+        Collections.shuffle(layerPositions);
+        List<LayersIsoOsi> layers = Arrays.asList(LayersIsoOsi.values());
+
+        baseCube = new ShaderCube(new Point(pos.x, pos.y+20f, pos.z));
+        for(int i=0; i<LayersIsoOsi.values().length; ++i)
+            chess.add(new TexturedCube(layerPositions.get(i), getTexture(context, layers.get(i))));
+
         teleport = new Cylinder(this.pos);
+        allCubes = new ArrayList<>();
+        allCubes.addAll(chess);
+        allCubes.add(baseCube);
+
         alreadySelectedCubes = new ArrayList<Entity>();
         nextCube = selectNextCube();
-        firstCube = nextCube;
+    }
+
+    private int getTexture(final Context context, LayersIsoOsi layersIsoOsi) {
+        int textureId = -1;
+        switch(layersIsoOsi){
+            case PHYSICAL:
+                textureId = R.drawable.layer_physical; break;
+            case DATA:
+                textureId = R.drawable.layer_data; break;
+            case NET:
+                textureId = R.drawable.layer_net; break;
+            case TRANSPORT:
+                textureId = R.drawable.layer_transport; break;
+            case SESSION:
+                textureId =  R.drawable.layer_session; break;
+            case PRESENTATION:
+                textureId = R.drawable.layer_presentation; break;
+            case APPLICATION:
+                textureId = R.drawable.layer_app; break;
+        }
+        return TextureHelper.loadTexture(context, textureId);
     }
 
     public Entity selectNextCube() {
-        if(nextCube!= null)
-            nextCube.singleHorRotate(-90f);
-        if (alreadySelectedCubes.size() >= NUMBER_OF_CUBES_TO_GET) {
+        if(nextCube!= null) {
+            nextCube.setPos(new Point(nextCube.getPos().x, nextCube.getPos().y-1f, nextCube.getPos().z));
+            alreadySelectedCubes.add(nextCube);
+        }
+        if (alreadySelectedCubes.size() >= LayersIsoOsi.values().length) {
             nextCube = null;
             isCompleted = true;
             return null;
         }
-        int x;
-        int z;
-        do {
-            x = random.nextInt(WIDTH);
-            z = random.nextInt(HEIGHT);
-            nextCube = chess[z][x];
-        }while(alreadySelectedCubes.contains(nextCube));
-
-        alreadySelectedCubes.add(nextCube);
-        nextCube.singleHorRotate(90f);
+        nextCube = chess.get(nextCubeIndex++);
         return nextCube;
+    }
+
+    public void checkNextCube(Entity e) {
+        if(e.equals(getNextCube()))
+            selectNextCube();
+        else if(!alreadySelectedCubes.contains(e) && !e.equals(baseCube)){
+            reset();
+        }
+    }
+
+    private void reset() {
+        nextCubeIndex = 0;
+        nextCube = null;
+        nextCube = selectNextCube();
+        for(Entity e:alreadySelectedCubes)
+            e.setPos((new Point(e.getPos().x, e.getPos().y+1f, e.getPos().z)));
+        alreadySelectedCubes.clear();
+    }
+
+    public List<Entity> getChessCubes() {
+        return chess;
     }
 
     public List<Entity> getEntities() {
@@ -77,26 +127,26 @@ public class ChessPuzzle extends AbstractPuzzle{
         return teleport;
     }
 
-    public Entity getFirstCube(){
-        return firstCube;
+    public Entity getBaseCube(){
+        return baseCube;
     }
 
     public Entity getNextCube() {
         return nextCube;
     }
 
-    public List<Entity> getSelectedEntities() {
-        return alreadySelectedCubes;
+    public List<Entity> getAllCubes() {
+        return allCubes;
     }
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(firstCube.getPos().x, firstCube.getPos().y+1f, firstCube.getPos().z);
+        return new Point(baseCube.getPos().x, baseCube.getPos().y+1f, baseCube.getPos().z);
     }
 
     @Override
     public Point getTipPosition() {
-        return pos;
+        return new Point(pos.x+2f, pos.y+0.5f, pos.z);
     }
 
     @Override

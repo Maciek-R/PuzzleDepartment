@@ -253,8 +253,8 @@ public class CollisionManager {
             return false;
 
         if(checkCollision(chessPuzzle.getTeleport(), camera)){
-            Point p = chessPuzzle.getFirstCube().getPos();
-            camera.goTo(new Vector3f(p.x, p.y+40f, p.z));
+            Point p = chessPuzzle.getBaseCube().getPos();
+            camera.goTo(new Vector3f(p.x, p.y+1f, p.z));
             return true;
         }
         return false;
@@ -273,11 +273,10 @@ public class CollisionManager {
         if(chessPuzzle == null)
             return false;
 
-        for (Entity e : chessPuzzle.getSelectedEntities()) {
+        for (Entity e : chessPuzzle.getAllCubes()) {
             if (checkCollision(e, camera)) {
 
-                if(e.equals(chessPuzzle.getNextCube()))
-                    chessPuzzle.selectNextCube();
+                chessPuzzle.checkNextCube(e);
                 return true;
             }
         }

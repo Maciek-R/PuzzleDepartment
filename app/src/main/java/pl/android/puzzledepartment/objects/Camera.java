@@ -72,8 +72,8 @@ public class Camera {
             return;
         }
         if(collisionManager.checkChessTeleportCollision(this)) {
+            isInAir = false;
             flySpeed = 0;
-            return;
         }
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();

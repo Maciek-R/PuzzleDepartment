@@ -19,7 +19,6 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
-import pl.android.puzzledepartment.objects.TexturedCube;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -45,8 +44,6 @@ public class GameManager {
 
     private final Context context;
     private final GameState gameState;
-
-    private Entity texturedCube;
 
     private Entity elka;
     private Entity mech;
@@ -91,7 +88,7 @@ public class GameManager {
         GuiEntity tipGuiMixPuzzle = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_mix_puzzle), new Vector2f(0.0f, 0.1f), new Vector2f(0.9f, 0.3f));
         GuiEntity tipGuiParticleSlow = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_walk), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
         GuiEntity tipGuiParticleOrder = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_particle), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
-        //GuiEntity tipGuiChess = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_teleport), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        GuiEntity tipGuiChess = new GuiEntity(TextureHelper.loadTexture(context, R.drawable.tip_chess), new Vector2f(0.0f, 0.1f), new Vector2f(0.9f, 0.3f));
 
         guiEntities.add(actionGuiEntity);
         guiEntities.add(notEnoughGuiEntity);
@@ -100,14 +97,14 @@ public class GameManager {
         guiEntities.add(tipGuiMixPuzzle);
         guiEntities.add(tipGuiParticleSlow);
         guiEntities.add(tipGuiParticleOrder);
-        //guiEntities.add(tipGuiTeleport);
+        guiEntities.add(tipGuiChess);
 
         particleTexture = TextureHelper.loadTexture(context, R.drawable.particle_texture);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         endTower = new EndTower(new Point(-5f, 2.0f, 45f), entityManager.getEntityModel(R.raw.endtower), entityManager.getEntityModel(R.raw.door));
         endTower.addObserver(this);
-        light = new Light(new Point(2f, 4.5f, 3f), Color.rgb(255, 255, 255));
+        light = new Light(new Point(2f, 30.0f, 3f), Color.rgb(255, 255, 255));
         keys = new ArrayList<>();
         heightMap = new HeightMap(((BitmapDrawable)context.getResources().getDrawable(R.drawable.heightmap)).getBitmap()
                 , new Vector3f(200f, 10f, 200f)
@@ -125,13 +122,14 @@ public class GameManager {
                 new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiParticleOrder)));
         puzzles.add(new ParticlesWalkPuzzle(context, new Point(-4.5f, 10.5f, -80f), particleTexture, camera,
                 new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiParticleSlow)));
-       // puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f)));
+        puzzles.add(new ChessPuzzle(context, new Point(46f, 1f, 60f),
+                new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiChess)));
         puzzles.add(new DragonStatuePuzzle(context, new Point(64.0f, 3.0f, 19.0f), entityManager.getEntityModel(R.raw.dragon), entityManager.getEntityModel(R.raw.vase),
                 heightMap, new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiDragon)));
         puzzles.add(new MixColorPuzzle(context, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap,
                 new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiMixPuzzle)));
 
-        //tips.add(new Tip(new Point(46.0f, 1.5f, 60.0f), Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiChess);
+        //tips.add(;
 
 
         elka = new Department(new Point(-2.5f, 5f, 46.3f), Color.BLUE, entityManager.getEntityModel(R.raw.elka));
@@ -139,8 +137,6 @@ public class GameManager {
         mech = new Department(new Point(2f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mech));
         mini = new Department(new Point(4f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mini));
         mel = new Department(new Point(6f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mel));
-
-        texturedCube = new TexturedCube(new Point(0.0f, 5.0f, 0.0f), TextureHelper.loadTexture(context, R.drawable.layer_app));
 
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
@@ -160,7 +156,6 @@ public class GameManager {
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
         masterRenderer.render(light);
-        masterRenderer.renderWithNormals(texturedCube);
         masterRenderer.render(cube);
         masterRenderer.render(room);
         masterRenderer.render(endTower);
