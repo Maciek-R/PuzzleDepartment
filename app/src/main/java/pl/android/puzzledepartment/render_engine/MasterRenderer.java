@@ -28,6 +28,8 @@ import pl.android.puzzledepartment.programs.HeightmapShaderProgram;
 import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.SimpleColorShaderProgram;
 import pl.android.puzzledepartment.programs.SkyboxShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityTexturedNotShiningShaderProgram;
+import pl.android.puzzledepartment.programs.entity_programs.EntityTexturedShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredNotShiningShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityUncolouredShiningShaderProgram;
 import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
@@ -55,6 +57,8 @@ public class MasterRenderer {
     private final EntityShaderProgram entityColouredNotShiningShaderProgram;
     private final EntityShaderProgram entityUnColouredShiningShaderProgram;
     private final EntityShaderProgram entityColouredShiningShaderProgram;
+    private final EntityShaderProgram entityTexturedShiningShaderProgram;
+    private final EntityShaderProgram entityTexturedNotShiningShaderProgram;
 
     private final ColorShaderProgram attributeColorShaderProgram;
     private final ColorShaderProgram simpleColorShaderProgram;
@@ -79,6 +83,8 @@ public class MasterRenderer {
         entityColouredNotShiningShaderProgram = new EntityColouredNotShiningShaderProgram(context);
         entityUnColouredShiningShaderProgram = new EntityUncolouredShiningShaderProgram(context);
         entityColouredShiningShaderProgram = new EntityColouredShiningShaderProgram(context);
+        entityTexturedShiningShaderProgram = new EntityTexturedShiningShaderProgram(context);
+        entityTexturedNotShiningShaderProgram = new EntityTexturedNotShiningShaderProgram(context);
 
         attributeColorShaderProgram = new AttributeColorShaderProgram(context);
         simpleColorShaderProgram = new SimpleColorShaderProgram(context);
@@ -244,9 +250,11 @@ public class MasterRenderer {
                 }
             case TEXTURED:
                 if(entity.isShining()) {
+                    entityShaderProgram = entityTexturedShiningShaderProgram;
                     break;
                 }
                 else {
+                    entityShaderProgram = entityTexturedNotShiningShaderProgram;
                     break;
                 }
         }

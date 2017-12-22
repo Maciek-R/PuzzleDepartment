@@ -29,6 +29,7 @@ public abstract class Entity implements Collisionable{
     public enum Type{UNCOLOURED, COLOURED, TEXTURED, COMPLEX};
     protected Type type = Type.UNCOLOURED;
 
+    private int textureId;
     protected int color;
 
     protected Entity(Point pos) {
@@ -40,6 +41,10 @@ public abstract class Entity implements Collisionable{
     protected Entity(Point pos, Vector3f scale) {
         this(pos, 0f, scale);
     }
+    protected Entity(Point pos, float angle, Vector3f scale, int textureId) {
+        this(pos, angle, scale);
+        this.textureId = textureId;
+    }
     protected Entity(Point pos, float angle, Vector3f scale) {
         this.pos = pos;
         this.verAngle = angle;
@@ -48,6 +53,7 @@ public abstract class Entity implements Collisionable{
         drawList = new ArrayList<>();
         initObjectProperties();
     }
+
 
     protected abstract void initObjectProperties();
 
@@ -122,6 +128,7 @@ public abstract class Entity implements Collisionable{
     public int getColor() {
         return color;
     }
+    public int getTextureId(){ return textureId; }
     public void setColor(int color) {
         this.color = color;
     }

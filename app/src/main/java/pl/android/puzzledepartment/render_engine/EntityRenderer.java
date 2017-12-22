@@ -56,7 +56,10 @@ public class EntityRenderer {
         }
         if(Entity.Type.UNCOLOURED.equals(entity.getType()))
             shaderProgram.loadColor(entity.getColor());
-
+        if(Entity.Type.TEXTURED.equals(entity.getType())){
+            shaderProgram.loadTextureUnits();
+            shaderProgram.bindTextures(entity);
+        }
         bindDataAndDraw(shaderProgram, entity);
     }
 

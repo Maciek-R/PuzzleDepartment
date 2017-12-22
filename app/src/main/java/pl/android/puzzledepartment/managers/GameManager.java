@@ -19,6 +19,7 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
+import pl.android.puzzledepartment.objects.TexturedCube;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
@@ -44,6 +45,8 @@ public class GameManager {
 
     private final Context context;
     private final GameState gameState;
+
+    private Entity texturedCube;
 
     private Entity elka;
     private Entity mech;
@@ -137,6 +140,8 @@ public class GameManager {
         mini = new Department(new Point(4f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mini));
         mel = new Department(new Point(6f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mel));
 
+        texturedCube = new TexturedCube(new Point(0.0f, 5.0f, 0.0f), TextureHelper.loadTexture(context, R.drawable.layer_app));
+
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager = new CollisionManager();
         collisionManager.addObserver(this);
@@ -155,6 +160,7 @@ public class GameManager {
         masterRenderer.prepareCamera(camera);
         masterRenderer.render(heightMap);
         masterRenderer.render(light);
+        masterRenderer.renderWithNormals(texturedCube);
         masterRenderer.render(cube);
         masterRenderer.render(room);
         masterRenderer.render(endTower);

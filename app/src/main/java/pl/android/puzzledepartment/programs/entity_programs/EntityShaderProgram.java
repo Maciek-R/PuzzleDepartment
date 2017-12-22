@@ -8,9 +8,14 @@ import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 
+import static android.opengl.GLES20.GL_TEXTURE0;
+import static android.opengl.GLES20.GL_TEXTURE_2D;
+import static android.opengl.GLES20.glActiveTexture;
+import static android.opengl.GLES20.glBindTexture;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform1f;
+import static android.opengl.GLES20.glUniform1i;
 import static android.opengl.GLES20.glUniform3f;
 import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
@@ -33,10 +38,12 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     private final int uReflectivity;
     private final int uIsShining;
     private final int uSkyColourLocation;
+    private final int uTextureUnitLocation;
 
     private final int aPositionLocation;
     private final int aColorLocation;
     private final int aNormalLocation;
+    private final int aTextureCoordinatesLocation;
 
     public EntityShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId) {
         super(context, vertexShaderResourceId, fragmentShaderResourceId);
@@ -53,10 +60,12 @@ public abstract class EntityShaderProgram extends ShaderProgram {
         uReflectivity = glGetUniformLocation(program, U_REFLECTIVITY);
         uIsShining = glGetAttribLocation(program, U_IS_SHINING);
         uSkyColourLocation = glGetUniformLocation(program, U_SKY_COLOUR);
+        uTextureUnitLocation = glGetUniformLocation(program, U_TEXTURE_UNIT);
 
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
         aColorLocation = glGetAttribLocation(program, A_COLOR);
         aNormalLocation = glGetAttribLocation(program, A_NORMAL);
+        aTextureCoordinatesLocation = glGetAttribLocation(program, A_TEXTURE_COORDINATES);
     }
 
     public void loadModelMatrix(final float[] matrix) {
@@ -108,6 +117,16 @@ public abstract class EntityShaderProgram extends ShaderProgram {
         glUniform1f(uReflectivity, reflectivity);
     }
 
+    public void loadTextureUnits()
+    {
+        glUniform1i(uTextureUnitLocation, 0);
+    }
+
+    public void bindTextures(Entity entity){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, entity.getTextureId());
+    }
+
     @Override
     public int getPositionAttributeLocation() {
         return aPositionLocation;
@@ -120,4 +139,6 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     public int getColorAttributeLocation() {
         return aColorLocation;
     }
+    @Override
+    public int getTextureCoordsAttributeLocation() { return aTextureCoordinatesLocation; }
 }
