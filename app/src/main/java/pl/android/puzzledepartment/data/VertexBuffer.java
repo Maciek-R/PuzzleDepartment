@@ -9,6 +9,7 @@ import static android.opengl.GLES20.GL_FLOAT;
 import static android.opengl.GLES20.GL_STATIC_DRAW;
 import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glBufferData;
+import static android.opengl.GLES20.glDeleteBuffers;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGenBuffers;
 import static android.opengl.GLES20.glVertexAttribPointer;
@@ -46,5 +47,11 @@ public class VertexBuffer {
         glVertexAttribPointer(attributeLocation, componentCount, GL_FLOAT, false, stride, dataOffsetInBytes);
         glEnableVertexAttribArray(attributeLocation);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    public void clean() {
+        final int buffers[] = new int[1];
+        buffers[0] = bufferId;
+        glDeleteBuffers(buffers.length, buffers, 0);
     }
 }

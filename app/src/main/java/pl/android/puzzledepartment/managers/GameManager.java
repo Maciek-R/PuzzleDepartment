@@ -75,8 +75,9 @@ public class GameManager {
     public GameManager(Context context) {
         this.context = context;
         gameState = new GameState();
+        entityManager = EntityManager.getInstance(context);
+        entityManager.cleanVBO();
 
-        entityManager = new EntityManager(context);
         camera = new Camera(0f, 0f, 0f);
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
         guiTexture = TextureHelper.loadTexture(context, R.drawable.action);

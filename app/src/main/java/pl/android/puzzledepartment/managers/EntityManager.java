@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.EntityModel;
@@ -14,18 +15,33 @@ import pl.android.puzzledepartment.util.OBJLoader;
  */
 
 public class EntityManager {
-    private final Context context;
+
+    private static EntityManager instance = null;
+
+    private Context context;
     private Map<Integer, EntityModel> entitiesModels;
 
-    public EntityManager(Context context) {
+    private EntityManager(Context context) {
+        entitiesModels = new HashMap<>();
         this.context = context;
-        entitiesModels = new HashMap<Integer, EntityModel>();
+    }
+
+    public static EntityManager getInstance(Context context) {
+        if(instance == null) {
+            instance = new EntityManager(context);
+        }
+        return instance;
+    }
+    public void cleanVBO() {
+        for (Integer key : entitiesModels.keySet())
+            entitiesModels.get(key).clean();
     }
 
     public EntityModel getEntityModel(int resourceId) {
         EntityModel entityModel = entitiesModels.get(resourceId);
-        if(entityModel != null)
+        if(entityModel != null) {
             return entityModel;
+        }
         else {
             entityModel = OBJLoader.loadObjModel(context, resourceId);
             entitiesModels.put(resourceId, entityModel);
@@ -36,15 +52,12 @@ public class EntityManager {
     public EntityModel getDepartmentElka(){
         return getEntityModel(R.raw.elka);
     }
-
     public EntityModel getDepartmentMel(){
         return getEntityModel(R.raw.mel);
     }
-
     public EntityModel getDepartmentMech(){
         return getEntityModel(R.raw.mech);
     }
-
     public EntityModel getDepartmentMini(){
         return getEntityModel(R.raw.mini);
     }

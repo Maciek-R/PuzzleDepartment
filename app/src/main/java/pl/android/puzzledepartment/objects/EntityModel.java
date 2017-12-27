@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.objects;
 
-import java.nio.IntBuffer;
 
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
@@ -65,6 +64,16 @@ public class EntityModel {
         return indicesArray.length;
     }
 
+    public void clean(){
+        if(vertexBuffer!=null) {
+            vertexBuffer.clean();
+            vertexBuffer = null;
+        }
+        if (intIndexBuffer != null) {
+            intIndexBuffer.clean();
+            intIndexBuffer = null;
+        }
+    }
     /**
      * Order: x, y, z, nx, ny, nz
      *

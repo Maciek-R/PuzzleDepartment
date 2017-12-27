@@ -8,6 +8,7 @@ import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_STATIC_DRAW;
 import static android.opengl.GLES20.glBindBuffer;
 import static android.opengl.GLES20.glBufferData;
+import static android.opengl.GLES20.glDeleteBuffers;
 import static android.opengl.GLES20.glGenBuffers;
 import static pl.android.puzzledepartment.util.Constants.BYTES_PER_INT;
 
@@ -40,5 +41,11 @@ public class IntegerIndexBuffer {
 
     public int getBufferId() {
         return bufferId;
+    }
+
+    public void clean() {
+        final int buffers[] = new int[1];
+        buffers[0] = bufferId;
+        glDeleteBuffers(buffers.length, buffers, 0);
     }
 }
