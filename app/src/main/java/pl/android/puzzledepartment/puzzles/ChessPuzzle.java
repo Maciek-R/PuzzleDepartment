@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.puzzles;
 
-import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -10,12 +9,12 @@ import java.util.List;
 import java.util.Random;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.Cylinder;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.TexturedCube;
 import pl.android.puzzledepartment.objects.Tip;
-import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 /**
@@ -37,8 +36,8 @@ public class ChessPuzzle extends AbstractPuzzle{
     private List<Entity> alreadySelectedCubes;
     private Entity teleport;
 
-    public ChessPuzzle(Context context, Point pos, Tip tip) {
-        super(context, pos, tip);
+    public ChessPuzzle(TextureManager textureManager, Point pos, Tip tip) {
+        super(textureManager, pos, tip);
         random = new Random();
         cubes = new ArrayList<Entity>();
         chess = new ArrayList<>();
@@ -52,7 +51,7 @@ public class ChessPuzzle extends AbstractPuzzle{
 
         baseCube = new ShaderCube(new Point(pos.x, pos.y+20f, pos.z));
         for(int i=0; i<LayersIsoOsi.values().length; ++i)
-            chess.add(new TexturedCube(layerPositions.get(i), getTexture(context, layers.get(i))));
+            chess.add(new TexturedCube(layerPositions.get(i), getTexture(textureManager, layers.get(i))));
 
         teleport = new Cylinder(this.pos);
         allCubes = new ArrayList<>();
@@ -63,7 +62,7 @@ public class ChessPuzzle extends AbstractPuzzle{
         nextCube = selectNextCube();
     }
 
-    private int getTexture(final Context context, LayersIsoOsi layersIsoOsi) {
+    private int getTexture(final TextureManager textureManager, LayersIsoOsi layersIsoOsi) {
         int textureId = -1;
         switch(layersIsoOsi){
             case PHYSICAL:
@@ -81,7 +80,7 @@ public class ChessPuzzle extends AbstractPuzzle{
             case APPLICATION:
                 textureId = R.drawable.layer_app; break;
         }
-        return TextureHelper.loadTexture(context, textureId);
+        return textureManager.getTextureId(textureId);
     }
 
     public Entity selectNextCube() {

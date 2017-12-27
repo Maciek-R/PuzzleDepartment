@@ -1,18 +1,19 @@
 package pl.android.puzzledepartment.puzzles;
 
-import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
+
 
 /**
  * Created by Maciek Ruszczyk on 2017-11-26.
@@ -28,8 +29,8 @@ public class MixColorPuzzle extends AbstractPuzzle{
     private List<Round> rounds;
     private int currentLevel = 0;
 
-    public MixColorPuzzle(Context context, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap, Tip tip) {
-        super(context, pos, tip);
+    public MixColorPuzzle(TextureManager textureManager, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap, Tip tip) {
+        super(textureManager, pos, tip);
         colors = new ArrayList<>();
         cubes = new ArrayList<SimpleColorShaderCube>();
 

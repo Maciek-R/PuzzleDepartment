@@ -23,4 +23,9 @@ public class TimeManager {
         deltaInSeconds = (currentFrameTime - lastFrameTime) / 1000000000f;
         lastFrameTime = currentFrameTime;
     }
+
+    public static void start() {
+        timeFromBeginningInSeconds = System.nanoTime();
+        lastFrameTime = System.nanoTime();
+    }
 }

@@ -15,6 +15,7 @@ public class GameState {
     public int getKeysTakenCount() {
         return keysTakenCount;
     }
+    public void setKeysTakenCount(int keysTakenCount) {this.keysTakenCount = keysTakenCount;}
     public void incKeysTakenCount() {
         keysTakenCount++;
     }

@@ -14,6 +14,7 @@ import java.util.Random;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.managers.EntityManager;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.Department;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.EntityModel;
@@ -41,8 +42,8 @@ public class TeleportPuzzle extends AbstractPuzzle{
 
     private final EntityManager entityManager;
 
-    public TeleportPuzzle(Context context, Point pos, EntityManager entityManager, Tip tip) {
-        super(context, pos, tip);
+    public TeleportPuzzle(Context context, TextureManager textureManager, Point pos, EntityManager entityManager, Tip tip) {
+        super(textureManager, pos, tip);
         random = new Random();
         this.entityManager = entityManager;
         if(loadPuzzleFromFile(context, R.raw.teleportpuzzle)) {

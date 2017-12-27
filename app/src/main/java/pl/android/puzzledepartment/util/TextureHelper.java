@@ -58,6 +58,12 @@ public class TextureHelper {
         return textureObjectIds[0];
     }
 
+    public static void deleteTexture(int textureObject) {
+        final int[] textureObjectIds = new int[1];
+        textureObjectIds[0] = textureObject;
+        glDeleteTextures(1, textureObjectIds, 0);
+    }
+
     public static int loadCubeMap(Context context, int[] resources) {
         final int[] textureObjectIds = new int[1];
         glGenTextures(1, textureObjectIds, 0);

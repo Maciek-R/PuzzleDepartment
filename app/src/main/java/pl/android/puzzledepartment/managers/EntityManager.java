@@ -32,6 +32,7 @@ public class EntityManager {
         }
         return instance;
     }
+
     public void cleanVBO() {
         for (Integer key : entitiesModels.keySet())
             entitiesModels.get(key).clean();

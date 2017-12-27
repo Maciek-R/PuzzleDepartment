@@ -37,6 +37,7 @@ public class Key extends Entity {
 
     private final int guiTextureId;
     private GuiEntity guiEntity;
+    private String colorStr;
 
     public Key(Point pos, int color, int guiTextureId, EntityModel entityModel) {
         this(pos, color, entityModel, guiTextureId, new Vector3f(1f, 1f, 1f));
@@ -45,6 +46,7 @@ public class Key extends Entity {
     public Key(Point pos, int color, EntityModel entityModel, int guiTextureId, Vector3f scale) {
         super(pos, 0.0f, new Vector3f(0.5f*scale.x, 0.5f*scale.y, 0.5f*scale.z));
         this.color = color;
+        this.colorStr = getColorStr(color);
         this.guiTextureId = guiTextureId;
 
         vertexBuffer = entityModel.getNormalVertexBuffer();
@@ -89,5 +91,26 @@ public class Key extends Entity {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, intIndexBuffer.getBufferId());
         glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-      }
+    }
+
+    public String getColorStr() {
+        return colorStr;
+    }
+
+    public static String[] getColorValues(){
+        return new String[]{getColorStr(Color.RED), getColorStr(Color.GREEN), getColorStr(Color.BLUE),
+                getColorStr(Color.YELLOW), getColorStr(Color.MAGENTA), getColorStr(Color.CYAN)};
+    }
+
+    public static String getColorStr(int color) {
+        switch (color) {
+            case Color.RED: return "Red";
+            case Color.GREEN: return "Green";
+            case Color.BLUE: return "Blue";
+            case Color.YELLOW: return "Yellow";
+            case Color.MAGENTA: return "Magenta";
+            case Color.CYAN: return "Cyan";
+        }
+        return "";
+    }
 }

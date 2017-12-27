@@ -3,19 +3,16 @@ package pl.android.puzzledepartment.puzzles;
 
 
 
-import android.content.Context;
-import android.graphics.Color;
 
-import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.Tip;
-import pl.android.puzzledepartment.util.TextureHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
 
 /**
  * Created by Maciek Ruszczyk on 2017-12-15.
  */
 
-public abstract class AbstractPuzzle {
+public abstract class AbstractPuzzle{
     protected Point pos;
     protected boolean isCompleted = false;
     protected boolean wasKeySpawned = false;
@@ -23,9 +20,9 @@ public abstract class AbstractPuzzle {
 
     private Tip tip;
 
-    protected AbstractPuzzle(Context context, Point pos, Tip tip) {
+    protected AbstractPuzzle(TextureManager textureManager, Point pos, Tip tip) {
         this.pos = pos;
-        guiKeyTexture = TextureHelper.loadTexture(context, getKeyGuiTexturePath());
+        guiKeyTexture = textureManager.getTextureId(getKeyGuiTexturePath());
         this.tip = tip;
         this.tip.setPos(getTipPosition());
     }
@@ -54,5 +51,9 @@ public abstract class AbstractPuzzle {
     }
     public Tip getTip() {
         return tip;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 }

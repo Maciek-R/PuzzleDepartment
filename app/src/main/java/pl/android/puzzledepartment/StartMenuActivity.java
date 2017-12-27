@@ -43,14 +43,14 @@ public class StartMenuActivity extends Activity {
                 startActivity(intent);
                 break;
 
-       /*     case R.id.LoadLastGame:
-                intent = new Intent(this, MainActivity.class);
+            case R.id.LoadLastGame:
+                intent = new Intent(this, MainGameActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("mode", 1);
+                bundle.putInt("mode", LoadGameMode.LOAD.toInt());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-*/
+
             case R.id.Exit:
                 finish();
                 break;

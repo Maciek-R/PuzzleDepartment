@@ -32,9 +32,11 @@ public class MainGameRenderer implements Renderer {
 
     private final Context context;
     private GameManager gameManager;
+    private LoadGameMode loadGameMode;
 
-    public MainGameRenderer(Context context){
+    public MainGameRenderer(Context context, LoadGameMode loadGameMode){
         this.context = context;
+        this.loadGameMode = loadGameMode;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class MainGameRenderer implements Renderer {
         glCullFace(GL_BACK);
         glEnable(GL_DEPTH_TEST);
 
-        gameManager = new GameManager(context);
+        gameManager = new GameManager(context, loadGameMode);
     }
 
     @Override
@@ -79,5 +81,9 @@ public class MainGameRenderer implements Renderer {
 
     public void handleJumpCamera() {
         gameManager.handleJump();
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

@@ -19,7 +19,9 @@ import android.widget.Toast;
 public class MainGameActivity extends Activity {
 
     private GLSurfaceView glSurfaceView;
+    private MainGameRenderer mainGameRenderer;
     private boolean rendererSet = false;
+    private LoadGameMode loadGameMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,12 @@ public class MainGameActivity extends Activity {
         final ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
 
-        final MainGameRenderer mainGameRenderer = new MainGameRenderer(this);
+        loadGameMode= LoadGameMode.NEW;
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            loadGameMode = LoadGameMode.fromIntValue(bundle.getInt("mode"));
+        }
+        mainGameRenderer = new MainGameRenderer(this, loadGameMode);
 
         final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1
@@ -69,7 +76,22 @@ public class MainGameActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        if(rendererSet)
+        if (rendererSet)
             glSurfaceView.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mainGameRenderer != null){
+            if(mainGameRenderer.getGameManager() != null)
+                mainGameRenderer.getGameManager().saveGame();
+        }
     }
 }

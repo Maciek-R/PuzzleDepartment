@@ -1,6 +1,5 @@
 package pl.android.puzzledepartment.puzzles;
 
-import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
@@ -29,8 +29,8 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
     private List<ParticleCollideShooter> particleShootersOrderLevelAlreadyPicked;
     private int currentLevel = 0;
 
-    public ParticlesOrderPuzzle(Context context, Point pos, int particleTexture, Tip tip) {
-        super(context, pos, tip);
+    public ParticlesOrderPuzzle(TextureManager textureManager, Point pos, int particleTexture, Tip tip) {
+        super(textureManager, pos, tip);
         particleSystem = new ParticleSystem(10000, particleTexture);
         particleShooters = new ParticleCollideShooter[PARTICLES_SHOOTERS_COUNT];
         for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i) {

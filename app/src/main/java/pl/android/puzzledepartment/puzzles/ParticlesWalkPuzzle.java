@@ -1,18 +1,18 @@
 package pl.android.puzzledepartment.puzzles;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.Random;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
+
 
 /**
  * Created by Maciek Ruszczyk on 2017-11-25.
@@ -32,8 +32,8 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     private final Random random;
     private boolean calm = false;
 
-    public ParticlesWalkPuzzle(Context context, Point pos, int particleTexture, Camera camera, Tip tip) {
-        super(context, pos, tip);
+    public ParticlesWalkPuzzle(TextureManager textureManager, Point pos, int particleTexture, Camera camera, Tip tip) {
+        super(textureManager, pos, tip);
         this.camera = camera;
         particleSystem = new ParticleSystem(10000, particleTexture);
         random = new Random();

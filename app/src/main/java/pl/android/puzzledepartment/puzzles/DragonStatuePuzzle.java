@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
+import pl.android.puzzledepartment.managers.TextureManager;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Tip;
@@ -20,8 +21,8 @@ import pl.android.puzzledepartment.util.geometry.Point;
 public class DragonStatuePuzzle extends AbstractPuzzle{
     private List<DragonStatue> statues;
 
-    public DragonStatuePuzzle(Context context, Point pos, EntityModel dragonModel, EntityModel vaseModel, HeightMap heightMap, Tip tip) {
-        super(context, pos, tip);
+    public DragonStatuePuzzle(TextureManager textureManager, Point pos, EntityModel dragonModel, EntityModel vaseModel, HeightMap heightMap, Tip tip) {
+        super(textureManager, pos, tip);
         statues = new ArrayList<DragonStatue>();
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-3f)+0.5f, pos.z-3f), dragonModel, vaseModel));
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-1f)+0.5f, pos.z-1f), dragonModel, vaseModel));

@@ -176,4 +176,23 @@ public class Camera {
         return deltaZ;
     }
     public float getFlySpeed() { return flySpeed; }
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(float posY) {
+        this.posY = posY;
+    }
+
+    public void setPosZ(float posZ) {
+        this.posZ = posZ;
+    }
+
+    public void setRotationX(float rotationX) {
+        this.rotationX = rotationX;
+    }
+
+    public void setRotationY(float rotationY) {
+        this.rotationY = rotationY;
+    }
 }
