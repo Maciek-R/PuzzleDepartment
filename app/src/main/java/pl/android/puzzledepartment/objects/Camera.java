@@ -62,6 +62,7 @@ public class Camera {
     public void update(HeightMap heightMap, CollisionManager collisionManager) {
         //System.out.println("X: " + this.posX + "Z:  " + this.posZ);
         countNextPossiblePosition(heightMap);
+        clampHeightMapBorder(heightMap);
 
         collisionManager.checkWithKeyCollision(this);
         collisionManager.checkParticlesCollision(this);
@@ -111,6 +112,11 @@ public class Camera {
             posY = heightY;
             lookPosY = posY + 1.5f;
         }
+    }
+
+    private void clampHeightMapBorder(HeightMap heightMap) {
+        possiblePosX = Math.max(-heightMap.getScale().x/2+1, Math.min(heightMap.getScale().x/2-1, possiblePosX));
+        possiblePosZ = Math.max(-heightMap.getScale().z/2+1, Math.min(heightMap.getScale().z/2-1, possiblePosZ));
     }
 
     private void countNextPossiblePosition(HeightMap heightMap) {
