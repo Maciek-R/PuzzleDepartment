@@ -51,7 +51,7 @@ public class SaverGameState {
             for (File f : files) {
                 System.out.println(f.getAbsolutePath());
             }
-            outputStreamWriter = new OutputStreamWriter(context.openFileOutput("save.txt", Context.MODE_PRIVATE));
+            outputStreamWriter = new OutputStreamWriter(context.openFileOutput(context.getString(R.string.save), Context.MODE_PRIVATE));
             addText(camera);
             addText(gameState);
             addText(keys);

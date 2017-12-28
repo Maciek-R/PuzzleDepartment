@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.io.File;
+
 import pl.android.puzzledepartment.R;
 
 /**
@@ -44,17 +48,26 @@ public class StartMenuActivity extends Activity {
                 break;
 
             case R.id.LoadLastGame:
-                intent = new Intent(this, MainGameActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("mode", LoadGameMode.LOAD.toInt());
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if(checkSaveExists()) {
+                    intent = new Intent(this, MainGameActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("mode", LoadGameMode.LOAD.toInt());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this, "Brak pliku z zapisem", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.Exit:
                 finish();
                 break;
         }
+    }
+
+    private boolean checkSaveExists() {
+        return new File(this.getFilesDir(), this.getString(R.string.save)).exists();
     }
 
     @Override

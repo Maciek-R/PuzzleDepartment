@@ -95,7 +95,7 @@ public class LoaderGameState {
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         try {
-            inputStreamReader = new InputStreamReader(context.openFileInput("save.txt"));
+            inputStreamReader = new InputStreamReader(context.openFileInput(context.getString(R.string.save)));
             bufferedReader = new BufferedReader(inputStreamReader);
 
             String line;

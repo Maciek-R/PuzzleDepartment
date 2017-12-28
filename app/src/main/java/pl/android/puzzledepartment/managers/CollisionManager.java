@@ -8,6 +8,7 @@ import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.Key;
+import pl.android.puzzledepartment.objects.Teleport;
 import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
@@ -40,6 +41,8 @@ public class CollisionManager {
 
     private ParticlesOrderPuzzle particlesOrderPuzzle;
     private ChessPuzzle chessPuzzle;
+
+    private Teleport endTeleport;
 
     public CollisionManager() {
         entities = new ArrayList<>();
@@ -152,6 +155,8 @@ public class CollisionManager {
     public void add(Collisionable c) {
         if(c instanceof Key)
             keys.add((Key)c);
+        else if(c instanceof Teleport)
+            endTeleport = (Teleport) c;
         else
             entities.add(c);
     }
@@ -291,5 +296,18 @@ public class CollisionManager {
                 keys.remove(k);
                 return;
             }
+    }
+
+    public boolean checkEndTeleportCollision(Camera camera) {
+        if(endTeleport == null)
+            return false;
+
+        if(checkCollision(endTeleport, camera)){
+            Point p = endTeleport.getTeleportPlace();
+            camera.goTo(new Vector3f(p.x, p.y, p.z));
+            gameManager.gameCompletedMessage();
+            return true;
+        }
+        return false;
     }
 }

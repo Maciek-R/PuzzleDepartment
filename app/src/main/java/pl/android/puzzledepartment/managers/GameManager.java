@@ -18,6 +18,7 @@ import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Key;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
+import pl.android.puzzledepartment.objects.Teleport;
 import pl.android.puzzledepartment.objects.TerrainTexture;
 import pl.android.puzzledepartment.objects.TerrainTexturePack;
 import pl.android.puzzledepartment.objects.Tip;
@@ -56,6 +57,8 @@ public class GameManager {
     private Entity mel;
 
     private Cube cube;
+    private Cube platform;
+    private Teleport endTeleport;
     private EndTower endTower;
     private List<Key> keys;
     private Light light;
@@ -68,8 +71,10 @@ public class GameManager {
     private List<Integer> keyCollectedColors = new ArrayList<Integer>();
     private GuiEntity actionGuiEntity;
     private GuiEntity notEnoughGuiEntity;
+    private GuiEntity gameCompletedEntity;
     private int guiTexture;
     private int notEnoughKeyTexture;
+    private int gameCompletedTexture;
 
     private int particleTexture;
 
@@ -96,6 +101,9 @@ public class GameManager {
         actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
         notEnoughKeyTexture = textureManager.getTextureId(R.drawable.not_enough_keys);
         notEnoughGuiEntity = new GuiEntity(notEnoughKeyTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+        gameCompletedTexture = textureManager.getTextureId(R.drawable.game_completed);
+        gameCompletedEntity = new GuiEntity(gameCompletedTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
+
         GuiEntity tipGuiTeleport = new GuiEntity(textureManager.getTextureId(R.drawable.tip_teleport), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
         GuiEntity tipGuiDragon = new GuiEntity(textureManager.getTextureId(R.drawable.tip_dragon), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
         GuiEntity tipGuiMixPuzzle = new GuiEntity(textureManager.getTextureId(R.drawable.tip_mix_puzzle), new Vector2f(0.0f, 0.1f), new Vector2f(0.9f, 0.3f));
@@ -105,6 +113,7 @@ public class GameManager {
 
         guiEntities.add(actionGuiEntity);
         guiEntities.add(notEnoughGuiEntity);
+        guiEntities.add(gameCompletedEntity);
         guiEntities.add(tipGuiTeleport);
         guiEntities.add(tipGuiDragon);
         guiEntities.add(tipGuiMixPuzzle);
@@ -115,6 +124,8 @@ public class GameManager {
         particleTexture = textureManager.getTextureId(R.drawable.particle_texture);
 
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
+        platform = new Cube(new Point(0.0f, 60.0f, 0.0f), new Vector3f(10f, 1f, 10f));
+        endTeleport = new Teleport(new Point(-5f, 2.0f, 45f), new Point(platform.getPos().x, platform.getPos().y+1f, platform.getPos().z));
         endTower = new EndTower(new Point(-5f, 2.0f, 45f), entityManager.getEntityModel(R.raw.endtower), entityManager.getEntityModel(R.raw.door));
         endTower.addObserver(this);
         light = new Light(new Point(2f, 30.0f, 3f), Color.rgb(255, 255, 255));
@@ -157,6 +168,8 @@ public class GameManager {
         collisionManager.add(room);
         collisionManager.add(puzzles);
         collisionManager.add(endTower);
+        collisionManager.add(platform);
+        collisionManager.add(endTeleport);
 
         actionManager = new ActionManager();
         actionManager.addPuzzle(puzzles);
@@ -174,6 +187,7 @@ public class GameManager {
         masterRenderer.render(heightMap);
         masterRenderer.render(light);
         masterRenderer.render(cube);
+        masterRenderer.render(platform);
         masterRenderer.render(room);
         masterRenderer.render(endTower);
 
@@ -183,6 +197,7 @@ public class GameManager {
         masterRenderer.renderWithNormals(mech);
         masterRenderer.renderWithNormals(mini);
         masterRenderer.renderWithNormals(mel);
+        masterRenderer.renderWithNormals(endTeleport);
 
         for(AbstractPuzzle puzzle:puzzles) {
             if(puzzle.isCompleted() && !puzzle.wasKeySpawned()) {
@@ -248,6 +263,10 @@ public class GameManager {
 
     public void notEnoughKeysMessage(){
         notEnoughGuiEntity.setVisibleForFewSeconds(3);
+    }
+
+    public void gameCompletedMessage(){
+        gameCompletedEntity.setVisibleForFewSeconds(5);
     }
 
     public void onCollisionNotify(Entity entity) {

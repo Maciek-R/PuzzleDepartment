@@ -76,6 +76,11 @@ public class Camera {
             isInAir = false;
             flySpeed = 0;
         }
+        if (collisionManager.checkEndTeleportCollision(this)) {
+            isInAir = false;
+            flySpeed = 0;
+            return;
+        }
 
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();

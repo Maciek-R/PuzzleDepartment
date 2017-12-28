@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PuzzleDepartment</string>
+    <string name="save">save.txt</string>
 </resources>
