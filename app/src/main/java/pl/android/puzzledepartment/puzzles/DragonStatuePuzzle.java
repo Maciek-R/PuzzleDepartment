@@ -66,4 +66,12 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
     protected int getKeyGuiTexturePath() {
         return R.drawable.cyankey;
     }
+
+    @Override
+    public void setInFinalStage() {
+        statues.get(0).setDirection(DragonStatue.Direction.RIGHT);
+        statues.get(1).setDirection(DragonStatue.Direction.LEFT);
+        statues.get(2).setDirection(DragonStatue.Direction.RIGHT);
+        statues.get(3).setDirection(DragonStatue.Direction.LEFT);
+    }
 }

@@ -112,4 +112,10 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
     protected int getKeyGuiTexturePath() {
         return R.drawable.yellowkey;
     }
+
+    @Override
+    public void setInFinalStage() {
+        for(ParticleCollideShooter p:particleShootersOrderLevel)
+            p.changeColorToGreen();
+    }
 }

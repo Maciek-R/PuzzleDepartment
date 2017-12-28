@@ -157,4 +157,10 @@ public class ChessPuzzle extends AbstractPuzzle{
     protected int getKeyGuiTexturePath() {
         return R.drawable.magentakey;
     }
+
+    @Override
+    public void setInFinalStage() {
+        for(Entity e:chess)
+            e.setPos(new Point(e.getPos().x, e.getPos().y-1f, e.getPos().z));
+    }
 }

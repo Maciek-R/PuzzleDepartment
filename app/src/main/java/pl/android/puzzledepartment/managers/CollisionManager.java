@@ -276,7 +276,8 @@ public class CollisionManager {
         for (Entity e : chessPuzzle.getAllCubes()) {
             if (checkCollision(e, camera)) {
 
-                chessPuzzle.checkNextCube(e);
+                if(!chessPuzzle.isCompleted())
+                    chessPuzzle.checkNextCube(e);
                 return true;
             }
         }

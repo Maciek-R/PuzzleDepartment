@@ -119,6 +119,14 @@ public class MixColorPuzzle extends AbstractPuzzle{
         return R.drawable.greenkey;
     }
 
+    @Override
+    public void setInFinalStage() {
+        for(int i=0; i<2; ++i)
+            cubes.get(i).setColor(rounds.get(rounds.size()-1).colorsNeedToBeMixed.get(i));
+
+        cubes.get(cubes.size()-1).setColor(rounds.get(rounds.size()-1).finalColor);
+    }
+
     private class Round{
         List<Integer> colorsNeedToBeMixed;
         int finalColor;

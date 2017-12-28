@@ -56,4 +56,5 @@ public abstract class AbstractPuzzle{
     public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
+    public abstract void setInFinalStage();
 }

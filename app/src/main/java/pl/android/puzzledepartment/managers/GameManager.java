@@ -286,6 +286,7 @@ public class GameManager {
                     if (puzzle.getKeyColor() == collectedColorKey.intValue()) {
                         puzzle.setIsCompleted(true);
                         puzzle.setWasKeySpawned(true);
+                        puzzle.setInFinalStage();
                         GuiEntity keyGuiEntity = new GuiEntity(puzzle.getKeyGuiTexture(), new Vector2f(-0.9f+0.18f*getKeysTakenCount(), 0.9f), new Vector2f(0.08f, 0.08f));
                         keyGuiEntity.setIsVisible(true);
                         gameState.incKeysTakenCount();
@@ -303,6 +304,7 @@ public class GameManager {
             if(puzzle.getKeyColor() == key.getColor()){
                 puzzle.setWasKeySpawned(true);
                 puzzle.setIsCompleted(true);
+                puzzle.setInFinalStage();
                 return;
             }
         }

@@ -188,4 +188,8 @@ public class TeleportPuzzle extends AbstractPuzzle{
     protected int getKeyGuiTexturePath() {
         return R.drawable.bluekey;
     }
+
+    @Override
+    public void setInFinalStage() {
+    }
 }

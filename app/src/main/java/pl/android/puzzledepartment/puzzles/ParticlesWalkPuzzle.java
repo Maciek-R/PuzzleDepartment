@@ -87,4 +87,8 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     protected int getKeyGuiTexturePath() {
         return R.drawable.redkey;
     }
+
+    @Override
+    public void setInFinalStage() {
+    }
 }

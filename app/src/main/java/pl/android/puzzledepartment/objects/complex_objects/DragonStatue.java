@@ -87,4 +87,12 @@ public class DragonStatue implements Actionable{
     public boolean isInAction() {
         return isInAction;
     }
+
+    public void setDirection(Direction dir) {
+        while(!this.direction.equals(dir)){
+            setNextDirection();
+            vase.singleVerRotate(90f);
+            dragon.singleVerRotate(90f);
+        }
+    }
 }
