@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.managers.EntityManager;
@@ -31,9 +30,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 public class TeleportPuzzle extends AbstractPuzzle{
     private enum DepartmentType{ELKA, MINI, MECH, MEL};
     private List<Vector2f> teleportPositions = new ArrayList<Vector2f>();
-    private Vector2f lightPosition;
-    private int numberOfLevels;
-    private final Random random;
+    private int numberOfLevels = 4;
 
     private List<Entity> teleports = new ArrayList<Entity>();
     private List<Room> rooms = new ArrayList<Room>();
@@ -44,11 +41,18 @@ public class TeleportPuzzle extends AbstractPuzzle{
 
     public TeleportPuzzle(Context context, TextureManager textureManager, Point pos, EntityManager entityManager, Tip tip) {
         super(textureManager, pos, tip);
-        random = new Random();
         this.entityManager = entityManager;
-        if(loadPuzzleFromFile(context, R.raw.teleportpuzzle)) {
-            createScene();
-        }
+        if(!loadPuzzleFromFile(context, R.raw.teleportpuzzle))
+            initFields();
+
+        createScene();
+    }
+
+    private void initFields() {
+        teleportPositions.add(new Vector2f(-3.0f, 0.0f));
+        teleportPositions.add(new Vector2f(-2.0f, -3.0f));
+        teleportPositions.add(new Vector2f(2.0f, -3.0f));
+        teleportPositions.add(new Vector2f(3.0f, 0.0f));
     }
 
     public void nextLevel() {
@@ -79,6 +83,8 @@ public class TeleportPuzzle extends AbstractPuzzle{
                     correctTeleportPerLevel.add(d);
                 ++l;
             }
+        }
+        for(int i=0; i<=numberOfLevels; ++i){
             rooms.add(new Room(new Point(0 + pos.x, i*10 + pos.y, 0 + pos.z), 5f, 1f));
         }
     }
@@ -126,10 +132,7 @@ public class TeleportPuzzle extends AbstractPuzzle{
                                 Float.parseFloat(currentLine[2]));
                         teleportPositions.add(teleportPosition);
                     }
-                    else if(line.startsWith("lp ")){
-                        lightPosition = new Vector2f(Float.parseFloat(currentLine[1]),
-                                Float.parseFloat(currentLine[2]));
-                    }else if(line.startsWith("levels ")){
+                    else if(line.startsWith("levels ")){
                         numberOfLevels = Integer.parseInt(currentLine[1]);
                     }
                 }
@@ -149,13 +152,13 @@ public class TeleportPuzzle extends AbstractPuzzle{
     }
 
     public boolean checkCorrectTeleport(Entity e) {
-        if(currentLevel >= numberOfLevels - 1){
+        if(currentLevel >= numberOfLevels){
             reset();
             return false;
         }
         if (e == correctTeleportPerLevel.get(currentLevel)) {
                 nextLevel();
-            if(currentLevel >= numberOfLevels-1){
+            if(currentLevel >= numberOfLevels){
                 isCompleted = true;
             }
             return true;
@@ -172,7 +175,7 @@ public class TeleportPuzzle extends AbstractPuzzle{
 
     @Override
     public Point getKeySpawnPosition() {
-        return new Point(pos.x, (numberOfLevels-1) * 10f + pos.y + 3f, pos.z);
+        return new Point(pos.x, numberOfLevels * 10f + pos.y + 3f, pos.z);
     }
 
     @Override

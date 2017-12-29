@@ -1,11 +1,9 @@
 //
 //p-position x z
 //levels-number of floors
-//lp-light position
 //
 p -3 0
 p -2 -3
 p 2 -3
 p 3 0
-lp 0 0
 levels 4

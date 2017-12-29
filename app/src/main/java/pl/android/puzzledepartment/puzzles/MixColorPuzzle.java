@@ -1,7 +1,12 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +16,7 @@ import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.Tip;
+import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
 
@@ -21,12 +27,12 @@ import pl.android.puzzledepartment.util.geometry.Point;
 
 public class MixColorPuzzle extends AbstractPuzzle{
 
-    private int LEVELS_COUNT;
+    private int levelsCount;
     private List<SimpleColorShaderCube> cubes;
     private List<Integer> colors;
     private List<Lever> levers;
 
-    private List<Round> rounds;
+    private List<Round> rounds = new ArrayList<>();
     private int currentLevel = 0;
 
     public MixColorPuzzle(TextureManager textureManager, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap, Tip tip) {
@@ -43,17 +49,50 @@ public class MixColorPuzzle extends AbstractPuzzle{
         levers.add(new Lever(new Point(pos.x, heightMap.getHeight(pos.x, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(0)));
         levers.add(new Lever(new Point(pos.x-2f, heightMap.getHeight(pos.x-2f, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(1)));
 
-        initLevels();
+        if(!loadPuzzleFromFile(textureManager.getContext(), R.raw.mix_color_puzzle))
+            initDefaultLevels();
+        levelsCount = rounds.size();
         loadInitColors();
     }
 
-    private void initLevels() {
-        rounds = new ArrayList<>();
+    private boolean loadPuzzleFromFile(Context context, int resourceId) {
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+        String line;
+
+        try {
+            while (true) {
+                line = bufferedReader.readLine();
+                if(line == null)
+                    break;
+
+                String[] currentLine = line.split(" ");
+                if (line.startsWith("l ")) {
+                    String firstColor = currentLine[1];
+                    String secondColor = currentLine[2];
+                    String thirdColor = currentLine[3];
+
+                    rounds.add(new Round(stringToColor(firstColor), stringToColor(secondColor), stringToColor(thirdColor)));
+                }
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if(rounds.isEmpty())
+            return false;
+
+        return true;
+    }
+
+    private void initDefaultLevels() {
+        rounds.clear();
         rounds.add(new Round(Color.GREEN, Color.RED, Color.YELLOW));
         rounds.add(new Round(Color.RED, Color.BLUE, Color.MAGENTA));
         rounds.add(new Round(Color.GREEN, Color.BLUE, Color.CYAN));
-
-        LEVELS_COUNT = rounds.size();
     }
 
     private void loadInitColors() {
@@ -86,7 +125,7 @@ public class MixColorPuzzle extends AbstractPuzzle{
         if(!checkIfColorsAreCorrect())
             return;
 
-        if(currentLevel >= LEVELS_COUNT - 1)
+        if(currentLevel >= levelsCount - 1)
             isCompleted = true;
         else
             nextLevel();
@@ -117,6 +156,21 @@ public class MixColorPuzzle extends AbstractPuzzle{
     @Override
     protected int getKeyGuiTexturePath() {
         return R.drawable.greenkey;
+    }
+
+    private int stringToColor(String strColor){
+        switch (strColor){
+            case "GREEN": return Color.GREEN;
+            case "RED": return Color.RED;
+            case "YELLOW": return Color.YELLOW;
+            case "BLUE": return Color.BLUE;
+            case "MAGENTA": return Color.MAGENTA;
+            case "CYAN": return Color.CYAN;
+            case "BLACK": return Color.BLACK;
+            case "GRAY": return Color.GRAY;
+            case "WHITE": return Color.WHITE;
+        }
+        return -1;
     }
 
     @Override

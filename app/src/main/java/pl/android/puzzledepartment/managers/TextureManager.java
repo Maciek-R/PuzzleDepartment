@@ -62,4 +62,8 @@ public class TextureManager {
         }
         textures.clear();
     }
+
+    public Context getContext(){
+        return context;
+    }
 }

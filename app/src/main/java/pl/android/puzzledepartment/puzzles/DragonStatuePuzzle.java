@@ -3,6 +3,10 @@ package pl.android.puzzledepartment.puzzles;
 import android.content.Context;
 import android.graphics.Color;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +23,10 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public class DragonStatuePuzzle extends AbstractPuzzle{
+    private final static int DRAGONS_COUNT = 4;
+
     private List<DragonStatue> statues;
+    private List<DragonStatue.Direction> correctDirections = new ArrayList<>();
 
     public DragonStatuePuzzle(TextureManager textureManager, Point pos, EntityModel dragonModel, EntityModel vaseModel, HeightMap heightMap, Tip tip) {
         super(textureManager, pos, tip);
@@ -28,6 +35,17 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-1f)+0.5f, pos.z-1f), dragonModel, vaseModel));
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+1f)+0.5f, pos.z+1f), dragonModel, vaseModel));
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+3f)+0.5f, pos.z+3f), dragonModel, vaseModel));
+
+        if(!loadPuzzleFromFile(textureManager.getContext(), R.raw.dragon_statue_puzzle))
+            initDefaultValues();
+    }
+
+    private void initDefaultValues() {
+        correctDirections.clear();
+        correctDirections.add(DragonStatue.Direction.RIGHT);
+        correctDirections.add(DragonStatue.Direction.LEFT);
+        correctDirections.add(DragonStatue.Direction.RIGHT);
+        correctDirections.add(DragonStatue.Direction.LEFT);
     }
 
     public List<DragonStatue> getStatues() {
@@ -41,10 +59,44 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
     }
 
     public boolean checkStatues() {
-        return DragonStatue.Direction.RIGHT.equals(statues.get(0).getDirection()) &&
-                DragonStatue.Direction.RIGHT.equals(statues.get(2).getDirection()) &&
-                DragonStatue.Direction.LEFT.equals(statues.get(1).getDirection()) &&
-                DragonStatue.Direction.LEFT.equals(statues.get(3).getDirection());
+        for(int i=0; i<DRAGONS_COUNT; ++i)
+            if(!correctDirections.get(i).equals(statues.get(i).getDirection()))
+                return false;
+
+        return true;
+    }
+
+    private boolean loadPuzzleFromFile(Context context, int resourceId) {
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+        String line;
+
+        try {
+            while (true) {
+                line = bufferedReader.readLine();
+                if(line == null)
+                    break;
+
+                if (line.startsWith("RIGHT"))
+                    correctDirections.add(DragonStatue.Direction.RIGHT);
+                else if(line.startsWith("LEFT"))
+                    correctDirections.add(DragonStatue.Direction.LEFT);
+                else if(line.startsWith("BACKWARD"))
+                    correctDirections.add(DragonStatue.Direction.BACKWARD);
+                else if(line.startsWith("FORWARD"))
+                    correctDirections.add(DragonStatue.Direction.FORWARD);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if(correctDirections.size()!=DRAGONS_COUNT)
+            return false;
+
+        return true;
     }
 
     @Override
@@ -69,9 +121,7 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
 
     @Override
     public void setInFinalStage() {
-        statues.get(0).setDirection(DragonStatue.Direction.RIGHT);
-        statues.get(1).setDirection(DragonStatue.Direction.LEFT);
-        statues.get(2).setDirection(DragonStatue.Direction.RIGHT);
-        statues.get(3).setDirection(DragonStatue.Direction.LEFT);
+        for(int i=0; i<DRAGONS_COUNT; ++i)
+            statues.get(i).setDirection(correctDirections.get(i));
     }
 }

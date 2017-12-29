@@ -1,7 +1,12 @@
 package pl.android.puzzledepartment.puzzles;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +17,7 @@ import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
@@ -20,7 +26,8 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public class ParticlesOrderPuzzle extends AbstractPuzzle{
 
-    private static final int PARTICLES_SHOOTERS_COUNT = 5;
+    private int particlesShootersCount = 5;
+    private float radius = 3.0f;
 
     private ParticleSystem particleSystem;
     private ParticleCollideShooter particleShooters[];
@@ -32,11 +39,12 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
     public ParticlesOrderPuzzle(TextureManager textureManager, Point pos, int particleTexture, Tip tip) {
         super(textureManager, pos, tip);
         particleSystem = new ParticleSystem(10000, particleTexture);
-        particleShooters = new ParticleCollideShooter[PARTICLES_SHOOTERS_COUNT];
-        for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i) {
-            float angleInRadians = ((float)i / (float)PARTICLES_SHOOTERS_COUNT) * ((float) Math.PI * 2f);
-            float transX = (float)Math.cos(angleInRadians) * 3f;
-            float transZ = (float)Math.sin(angleInRadians) * 3f;
+        loadPuzzleFromFile(textureManager.getContext(), R.raw.particle_order_puzzle);
+        particleShooters = new ParticleCollideShooter[particlesShootersCount];
+        for(int i=0; i<particlesShootersCount; ++i) {
+            float angleInRadians = ((float)i / (float)particlesShootersCount) * ((float) Math.PI * 2f);
+            float transX = (float)Math.cos(angleInRadians) * radius;
+            float transZ = (float)Math.sin(angleInRadians) * radius;
             particleShooters[i] = new ParticleCollideShooter(new Point(pos.x + transX, pos.y, pos.z + transZ), new Vector3f(0f, 0.5f, 0f), Color.rgb(255, 50, 5), 360f, 0.5f);
         }
         randomParticlesOrderToPick();
@@ -44,26 +52,55 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
 
     private void randomParticlesOrderToPick() {
         particleShootersOrderLevelAlreadyPicked = new ArrayList<ParticleCollideShooter>();
-        particleShootersOrderLevel = new ArrayList<ParticleCollideShooter>(PARTICLES_SHOOTERS_COUNT);
-        for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i)
+        particleShootersOrderLevel = new ArrayList<ParticleCollideShooter>(particlesShootersCount);
+        for(int i=0; i<particlesShootersCount; ++i)
             particleShootersOrderLevel.add(particleShooters[i]);
 
         Collections.shuffle(particleShootersOrderLevel);
     }
 
     public void checkIfChoseCorrectParticle(ParticleCollideShooter particleCollideShooter) {
-        if(currentLevel>=PARTICLES_SHOOTERS_COUNT){
+        if(currentLevel>=particlesShootersCount){
             return;
         }
 
         if (particleCollideShooter == particleShootersOrderLevel.get(currentLevel)) {
             particleCollideShooter.changeColorToGreen();
             particleShootersOrderLevelAlreadyPicked.add(particleCollideShooter);
-            if(++currentLevel == PARTICLES_SHOOTERS_COUNT)
+            if(++currentLevel == particlesShootersCount)
                 isCompleted = true;
         }
         else if(!isAlreadyPicked(particleCollideShooter))
             reset();
+    }
+
+    private boolean loadPuzzleFromFile(Context context, int resourceId) {
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+        String line;
+
+        try {
+            while (true) {
+                line = bufferedReader.readLine();
+                if(line == null)
+                    break;
+
+                String[] currentLine = line.split(" ");
+                if (line.startsWith("count ")) {
+                    particlesShootersCount = Integer.parseInt(currentLine[1]);
+                }
+                else if(line.startsWith("radius ")){
+                    radius = Float.parseFloat(currentLine[1]);
+                }
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private boolean isAlreadyPicked(ParticleCollideShooter particleCollideShooter) {
@@ -80,7 +117,7 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
 
     @Override
     public void update(float elapsedTime) {
-        for(int i=0; i<PARTICLES_SHOOTERS_COUNT; ++i) {
+        for(int i=0; i<particlesShootersCount; ++i) {
             particleShooters[i].addParticles(particleSystem, elapsedTime, 5);
         }
     }
