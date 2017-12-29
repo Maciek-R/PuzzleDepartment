@@ -32,6 +32,9 @@ public abstract class Entity implements Collisionable{
     private int textureId;
     protected int color;
 
+    private float targetPositionY;
+    private boolean isMoving = false;
+
     protected Entity(Point pos) {
         this(pos, 0f, new Vector3f(1f, 1f, 1f));
     }
@@ -55,6 +58,11 @@ public abstract class Entity implements Collisionable{
     }
 
     protected abstract void initObjectProperties();
+
+    public void moveToY(float aimY){
+        isMoving = true;
+        targetPositionY = aimY;
+    }
 
     public void move() {
 
@@ -121,7 +129,6 @@ public abstract class Entity implements Collisionable{
     }
 
     public Type getType() {
-
         return type;
     }
     public int getColor() {
@@ -138,7 +145,30 @@ public abstract class Entity implements Collisionable{
         return isVisible;
     }
     public void onCollisionNotify() {}
-    public void update(){}
+    public void update(){
+        if(!isMoving)
+            return;
+
+        boolean reached = false;
+        float trans = TimeManager.getDeltaTimeInSeconds();
+        float nextY;
+
+            if (targetPositionY - pos.y > 0) {
+                nextY = pos.y + trans;
+                if (targetPositionY - nextY < 0)
+                    reached = true;
+
+            } else {
+                nextY = pos.y - trans;
+                if (targetPositionY - nextY > 0)
+                    reached = true;
+            }
+
+        if(reached)
+            isMoving = false;
+
+        this.pos = new Point(pos.x, nextY, pos.z);
+    }
     @Override
     public CollisionType getCollisionType() {
         return CollisionType.CUBE;

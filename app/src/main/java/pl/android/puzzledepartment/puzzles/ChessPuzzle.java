@@ -16,6 +16,7 @@ import pl.android.puzzledepartment.objects.ShaderCube;
 import pl.android.puzzledepartment.objects.TexturedCube;
 import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
  * Created by Maciek Ruszczyk on 2017-11-26.
@@ -84,7 +85,7 @@ public class ChessPuzzle extends AbstractPuzzle{
 
     private Entity selectNextCube() {
         if(nextCube!= null) {
-            nextCube.setPos(new Point(nextCube.getPos().x, nextCube.getPos().y-1f, nextCube.getPos().z));
+            nextCube.moveToY(baseCube.getPos().y-1f);
             alreadySelectedCubes.add(nextCube);
         }
         if (alreadySelectedCubes.size() >= LayersIsoOsi.values().length) {
@@ -109,8 +110,14 @@ public class ChessPuzzle extends AbstractPuzzle{
         nextCube = null;
         nextCube = selectNextCube();
         for(Entity e:alreadySelectedCubes)
-            e.setPos((new Point(e.getPos().x, e.getPos().y+1f, e.getPos().z)));
+            e.moveToY(baseCube.getPos().y);
         alreadySelectedCubes.clear();
+    }
+
+    @Override
+    public void update() {
+        for(Entity e:chess)
+            e.update();
     }
 
     public List<Entity> getChessCubes() {
