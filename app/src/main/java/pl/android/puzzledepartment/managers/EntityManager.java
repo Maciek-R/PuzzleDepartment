@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.objects.EntityModel;

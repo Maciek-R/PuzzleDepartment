@@ -3,7 +3,6 @@ package pl.android.puzzledepartment.objects.particles;
 import android.graphics.Color;
 
 import pl.android.puzzledepartment.data.VertexArray;
-import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;

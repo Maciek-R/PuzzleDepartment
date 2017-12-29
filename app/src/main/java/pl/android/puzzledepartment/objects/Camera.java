@@ -33,8 +33,6 @@ public class Camera {
     private float deltaX = 0;
     private float deltaZ = 0;
 
-    private CollisionManager.CollisionDescription collisionDescription;
-
     public Camera() {
         this(0, 0, 0);
     }
@@ -46,7 +44,7 @@ public class Camera {
         this.lookPosY = posY + 1.5f;
     }
 
-    public void moveXZ() {
+    private void moveXZ() {
         this.posX = possiblePosX;
         this.posZ = possiblePosZ;
 
@@ -85,7 +83,7 @@ public class Camera {
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
 
-        collisionDescription = collisionManager.checkCollision(this);
+        CollisionManager.CollisionDescription collisionDescription = collisionManager.checkCollision(this);
         if (!collisionDescription.isCollision()) {
             moveXZ();
             this.posY = possiblePosY;

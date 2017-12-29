@@ -2,12 +2,10 @@ package pl.android.puzzledepartment.objects;
 
 import android.graphics.Color;
 
-import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.managers.GameManager;
-import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector2f;

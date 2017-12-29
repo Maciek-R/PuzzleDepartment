@@ -12,7 +12,7 @@ public class GuiEntity {
     private final int textureId;
     private Vector2f position;
     private Vector2f scale;
-    boolean isVisible = false;
+    private boolean isVisible = false;
 
     private boolean isVisibleFewSeconds = false;
     private float startVisibleTime;

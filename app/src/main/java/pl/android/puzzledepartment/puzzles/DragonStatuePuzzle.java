@@ -30,7 +30,7 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
 
     public DragonStatuePuzzle(TextureManager textureManager, Point pos, EntityModel dragonModel, EntityModel vaseModel, HeightMap heightMap, Tip tip) {
         super(textureManager, pos, tip);
-        statues = new ArrayList<DragonStatue>();
+        statues = new ArrayList<>();
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-3f)+0.5f, pos.z-3f), dragonModel, vaseModel));
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z-1f)+0.5f, pos.z-1f), dragonModel, vaseModel));
         statues.add(new DragonStatue(new Point(pos.x, heightMap.getHeight(pos.x, pos.z+1f)+0.5f, pos.z+1f), dragonModel, vaseModel));
@@ -58,7 +58,7 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
             isCompleted = true;
     }
 
-    public boolean checkStatues() {
+    private boolean checkStatues() {
         for(int i=0; i<DRAGONS_COUNT; ++i)
             if(!correctDirections.get(i).equals(statues.get(i).getDirection()))
                 return false;
@@ -93,10 +93,8 @@ public class DragonStatuePuzzle extends AbstractPuzzle{
             e.printStackTrace();
             return false;
         }
-        if(correctDirections.size()!=DRAGONS_COUNT)
-            return false;
 
-        return true;
+        return correctDirections.size() == DRAGONS_COUNT;
     }
 
     @Override

@@ -21,7 +21,6 @@ public class MainGameActivity extends Activity {
     private GLSurfaceView glSurfaceView;
     private MainGameRenderer mainGameRenderer;
     private boolean rendererSet = false;
-    private LoadGameMode loadGameMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainGameActivity extends Activity {
         final ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
 
-        loadGameMode= LoadGameMode.NEW;
+        LoadGameMode loadGameMode = LoadGameMode.NEW;
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             loadGameMode = LoadGameMode.fromIntValue(bundle.getInt("mode"));

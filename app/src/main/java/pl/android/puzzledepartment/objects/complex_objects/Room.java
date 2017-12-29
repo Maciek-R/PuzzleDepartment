@@ -20,7 +20,7 @@ public class Room {
 
     public Room(Point center, float size, float height) {
         this.center = center;
-        entities = new ArrayList<Entity>();
+        entities = new ArrayList<>();
 
         createWall(new Point(0.0f, -0.5f, 0.0f), new Vector3f(size*2+1f, 0.5f, size*2+1f));
 

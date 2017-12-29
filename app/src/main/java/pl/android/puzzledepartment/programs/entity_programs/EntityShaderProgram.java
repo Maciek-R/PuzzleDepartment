@@ -45,7 +45,7 @@ public abstract class EntityShaderProgram extends ShaderProgram {
     private final int aNormalLocation;
     private final int aTextureCoordinatesLocation;
 
-    public EntityShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId) {
+    protected EntityShaderProgram(Context context, int vertexShaderResourceId, int fragmentShaderResourceId) {
         super(context, vertexShaderResourceId, fragmentShaderResourceId);
 
         uModelMatrixLocation = glGetUniformLocation(program, U_MODEL_MATRIX);

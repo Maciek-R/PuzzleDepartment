@@ -17,16 +17,16 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 public abstract class Entity implements Collisionable{
     protected Point pos;
     protected float verAngle;
-    protected float horAngle;
-    protected Vector3f scale;
+    private float horAngle;
+    private Vector3f scale;
     private boolean isVisible = true;
     protected List<ObjectBuilder.DrawCommand> drawList;
 
     protected boolean isShining = false;
-    protected float damper = 10;
-    protected float reflectivity = 1;
+    private float damper = 10;
+    private float reflectivity = 1;
 
-    public enum Type{UNCOLOURED, COLOURED, TEXTURED, COMPLEX};
+    public enum Type{UNCOLOURED, COLOURED, TEXTURED, COMPLEX}
     protected Type type = Type.UNCOLOURED;
 
     private int textureId;

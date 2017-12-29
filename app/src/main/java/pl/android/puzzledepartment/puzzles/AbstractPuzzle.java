@@ -15,8 +15,8 @@ import pl.android.puzzledepartment.util.geometry.Point;
 public abstract class AbstractPuzzle{
     protected Point pos;
     protected boolean isCompleted = false;
-    protected boolean wasKeySpawned = false;
-    protected int guiKeyTexture;
+    private boolean wasKeySpawned = false;
+    private int guiKeyTexture;
 
     private Tip tip;
 
@@ -30,7 +30,7 @@ public abstract class AbstractPuzzle{
         return pos;
     }
     public abstract Point getKeySpawnPosition();
-    public abstract Point getTipPosition();
+    protected abstract Point getTipPosition();
     public boolean isCompleted(){
         return isCompleted;
     }

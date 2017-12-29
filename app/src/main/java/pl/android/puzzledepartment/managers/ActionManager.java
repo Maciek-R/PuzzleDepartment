@@ -19,7 +19,7 @@ public class ActionManager {
     private Actionable activeActionable;
 
     public ActionManager() {
-        actionables = new ArrayList<Actionable>();
+        actionables = new ArrayList<>();
         activeActionable = null;
     }
 
@@ -38,7 +38,7 @@ public class ActionManager {
         }
     }
 
-    public void add(List<? extends Actionable> actionables) {
+    private void add(List<? extends Actionable> actionables) {
         for(Actionable a:actionables)
             add(a);
     }
@@ -70,19 +70,16 @@ public class ActionManager {
         final float entityLeftPosZ = a.getPosition().z - scaleZ;
         final float entityRightPosZ = a.getPosition().z + scaleZ;
 
-        final float possibleCamLeftX = camera.getPossibleX() - camera.WIDTH/2;
-        final float possibleCamRightX = camera.getPossibleX() + camera.WIDTH/2;
+        final float possibleCamLeftX = camera.getPossibleX() - Camera.WIDTH/2;
+        final float possibleCamRightX = camera.getPossibleX() + Camera.WIDTH/2;
         final float possibleCamBottomY = camera.getPossibleY();
-        final float possibleCamTopY = camera.getPossibleY() + camera.WIDTH;
-        final float possibleCamLeftZ = camera.getPossibleZ() - camera.WIDTH/2;
-        final float possibleCamRightZ = camera.getPossibleZ() + camera.WIDTH/2;
+        final float possibleCamTopY = camera.getPossibleY() + Camera.WIDTH;
+        final float possibleCamLeftZ = camera.getPossibleZ() - Camera.WIDTH/2;
+        final float possibleCamRightZ = camera.getPossibleZ() + Camera.WIDTH/2;
 
-        if(possibleCamLeftX > entityRightPosX || possibleCamRightX < entityLeftPosX ||
+        return !(possibleCamLeftX > entityRightPosX || possibleCamRightX < entityLeftPosX ||
                 possibleCamBottomY > entityTopPosY || possibleCamTopY < entityBottomPosY ||
-                possibleCamLeftZ > entityRightPosZ || possibleCamRightZ < entityLeftPosZ)
-            return false;
-        else
-            return true;
+                possibleCamLeftZ > entityRightPosZ || possibleCamRightZ < entityLeftPosZ);
     }
 
     public void activate() {

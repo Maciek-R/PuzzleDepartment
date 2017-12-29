@@ -1,23 +1,17 @@
 package pl.android.puzzledepartment.state;
 
 import android.content.Context;
-import android.provider.MediaStore;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
 import pl.android.puzzledepartment.R;
-import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Key;
-import pl.android.puzzledepartment.puzzles.AbstractPuzzle;
 
 import static pl.android.puzzledepartment.state.Consts.CAMERA_POS_X;
 import static pl.android.puzzledepartment.state.Consts.CAMERA_POS_Y;
@@ -44,7 +38,7 @@ public class SaverGameState {
     }
 
     public void saveGameStateToFile(Context context, Camera camera, GameState gameState, List<Key> keys, List<Integer> keyCollectedColors) {
-        OutputStreamWriter outputStreamWriter = null;
+        OutputStreamWriter outputStreamWriter;
         try {
 
             File[] files =  context.getFilesDir().listFiles();

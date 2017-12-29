@@ -72,8 +72,6 @@ public class MasterRenderer {
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
 
-    private List<Dragon> entities;
-
     private Light light;
     private Camera camera;
 
@@ -97,7 +95,6 @@ public class MasterRenderer {
 
         this.light = light;
         this.camera = camera;
-        entities = new ArrayList<Dragon>();
     }
 
     public void render(List<Entity> entities) {

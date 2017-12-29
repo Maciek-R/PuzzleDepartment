@@ -16,7 +16,6 @@ import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.Tip;
-import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.util.geometry.Point;
 
@@ -38,14 +37,14 @@ public class MixColorPuzzle extends AbstractPuzzle{
     public MixColorPuzzle(TextureManager textureManager, Point pos, EntityModel leverBaseModel, EntityModel leverHandleModel, HeightMap heightMap, Tip tip) {
         super(textureManager, pos, tip);
         colors = new ArrayList<>();
-        cubes = new ArrayList<SimpleColorShaderCube>();
+        cubes = new ArrayList<>();
 
         for(int i=0; i<3; ++i)
             cubes.add(new SimpleColorShaderCube(new Point(pos.x - i*2, pos.y, pos.z)));
         for(int i=0; i<2; ++i)
-            colors.add(new Integer(0));
+            colors.add(Integer.valueOf(0));
 
-        levers = new ArrayList<Lever>();
+        levers = new ArrayList<>();
         levers.add(new Lever(new Point(pos.x, heightMap.getHeight(pos.x, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(0)));
         levers.add(new Lever(new Point(pos.x-2f, heightMap.getHeight(pos.x-2f, pos.z - 5f), pos.z - 5f), leverBaseModel, leverHandleModel, cubes.get(1)));
 
@@ -82,10 +81,8 @@ public class MixColorPuzzle extends AbstractPuzzle{
             e.printStackTrace();
             return false;
         }
-        if(rounds.isEmpty())
-            return false;
 
-        return true;
+        return !rounds.isEmpty();
     }
 
     private void initDefaultLevels() {
@@ -188,7 +185,7 @@ public class MixColorPuzzle extends AbstractPuzzle{
         public Round(int... colors) {
             colorsNeedToBeMixed = new ArrayList<>();
             for (int c : colors)
-                colorsNeedToBeMixed.add(new Integer(c));
+                colorsNeedToBeMixed.add(Integer.valueOf(c));
 
             finalColor = colorsNeedToBeMixed.remove(colorsNeedToBeMixed.size()-1);
         }

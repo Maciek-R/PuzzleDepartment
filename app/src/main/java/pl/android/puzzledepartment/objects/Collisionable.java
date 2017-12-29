@@ -9,7 +9,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public interface Collisionable {
 
-    enum CollisionType{CUBE, CYLINDER_WALL};
+    enum CollisionType{CUBE, CYLINDER_WALL}
     Point getPos();
     Vector3f getScale();
     CollisionType getCollisionType();

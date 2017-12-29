@@ -17,7 +17,6 @@ import pl.android.puzzledepartment.objects.Tip;
 import pl.android.puzzledepartment.objects.particles.ParticleCollideShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.util.geometry.Point;
-import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
@@ -51,8 +50,8 @@ public class ParticlesOrderPuzzle extends AbstractPuzzle{
     }
 
     private void randomParticlesOrderToPick() {
-        particleShootersOrderLevelAlreadyPicked = new ArrayList<ParticleCollideShooter>();
-        particleShootersOrderLevel = new ArrayList<ParticleCollideShooter>(particlesShootersCount);
+        particleShootersOrderLevelAlreadyPicked = new ArrayList<>();
+        particleShootersOrderLevel = new ArrayList<>(particlesShootersCount);
         for(int i=0; i<particlesShootersCount; ++i)
             particleShootersOrderLevel.add(particleShooters[i]);
 

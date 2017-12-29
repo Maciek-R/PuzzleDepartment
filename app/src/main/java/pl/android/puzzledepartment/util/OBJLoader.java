@@ -26,15 +26,15 @@ public class OBJLoader {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
         String line;
-        List<Vector3f> vertices = new ArrayList<Vector3f>();
-        List<Vector2f> textures = new ArrayList<Vector2f>();
-        List<Vector3f> normals = new ArrayList<Vector3f>();
-        List<Integer> indices = new ArrayList<Integer>();
-        float[] verticesArray = null;
+        List<Vector3f> vertices = new ArrayList<>();
+        List<Vector2f> textures = new ArrayList<>();
+        List<Vector3f> normals = new ArrayList<>();
+        List<Integer> indices = new ArrayList<>();
+        float[] verticesArray;
         float[] normalsArray = null;
         float[] texturesArray = null;
-        int[] indicesArray = null;
-        int index = 0;
+        int[] indicesArray;
+        int index;
         try {
             while (true) {
                 line = bufferedReader.readLine();

@@ -13,7 +13,7 @@ import static android.opengl.GLES20.glDrawArrays;
  */
 
 public class ObjectBuilder {
-    static interface DrawCommand{
+    interface DrawCommand{
         void draw();
     }
     private static final int POSITION_COMPONENT_COUNT = 3;

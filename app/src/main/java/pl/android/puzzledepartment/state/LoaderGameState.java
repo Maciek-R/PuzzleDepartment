@@ -23,7 +23,6 @@ import static pl.android.puzzledepartment.state.Consts.CAMERA_POS_Y;
 import static pl.android.puzzledepartment.state.Consts.CAMERA_POS_Z;
 import static pl.android.puzzledepartment.state.Consts.CAMERA_ROT_X;
 import static pl.android.puzzledepartment.state.Consts.CAMERA_ROT_Y;
-import static pl.android.puzzledepartment.state.Consts.KEYS_TAKEN_COUNT;
 import static pl.android.puzzledepartment.state.Consts.KEY_COLLECTED_COLOR;
 import static pl.android.puzzledepartment.state.Consts.KEY_COLOR;
 import static pl.android.puzzledepartment.state.Consts.KEY_POS_X;
@@ -92,8 +91,8 @@ public class LoaderGameState {
     }
 
     private void readStateFromFile(Context context) {
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
+        InputStreamReader inputStreamReader;
+        BufferedReader bufferedReader;
         try {
             inputStreamReader = new InputStreamReader(context.openFileInput(context.getString(R.string.save)));
             bufferedReader = new BufferedReader(inputStreamReader);

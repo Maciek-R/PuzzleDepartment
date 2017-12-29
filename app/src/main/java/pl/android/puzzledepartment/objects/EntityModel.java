@@ -9,9 +9,9 @@ import pl.android.puzzledepartment.data.VertexBuffer;
  */
 
 public class EntityModel {
-    final float[] verticesArray;
-    final float[] normalsArray;
-    final float[] texturesArray;
+    private final float[] verticesArray;
+    private final float[] normalsArray;
+    private final float[] texturesArray;
     final int[] indicesArray;
 
     private VertexBuffer vertexBuffer = null;
@@ -74,44 +74,4 @@ public class EntityModel {
             intIndexBuffer = null;
         }
     }
-    /**
-     * Order: x, y, z, nx, ny, nz
-     *
-     * @return VertexArray
-     */
-    /*public VertexArray getNormalVertexArray() {
-        if(vertexArray != null)
-            return vertexArray;
-
-        float[] vertexData = new float[verticesArray.length + normalsArray.length];
-
-        int verticesOffset = 0;
-        int normalsOffset = 0;
-        int offset = 0;
-        while (verticesOffset < verticesArray.length) {
-
-            vertexData[offset++] = verticesArray[verticesOffset++];
-            vertexData[offset++] = verticesArray[verticesOffset++];
-            vertexData[offset++] = verticesArray[verticesOffset++];
-
-            vertexData[offset++] = normalsArray[normalsOffset++];
-            vertexData[offset++] = normalsArray[normalsOffset++];
-            vertexData[offset++] = normalsArray[normalsOffset++];
-        }
-        vertexArray = new VertexArray(vertexData);
-        return vertexArray;
-    }
-
-
-
-    public IntBuffer getIndexArray() {
-        if(indexArray!=null)
-            return indexArray;
-
-        indexArray = IntBuffer.allocate(indicesArray.length).put(indicesArray);
-        indexArray.position(0);
-
-        return indexArray;
-    }
-*/
 }

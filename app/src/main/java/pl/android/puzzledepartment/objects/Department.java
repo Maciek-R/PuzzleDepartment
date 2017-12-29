@@ -1,9 +1,7 @@
 package pl.android.puzzledepartment.objects;
 
-import pl.android.puzzledepartment.R;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
-import pl.android.puzzledepartment.managers.EntityManager;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;

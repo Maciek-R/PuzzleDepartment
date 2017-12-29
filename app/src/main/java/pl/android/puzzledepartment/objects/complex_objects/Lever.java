@@ -16,7 +16,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class Lever implements Actionable{
-    public enum Direction{LEFT, RIGHT};
+    public enum Direction{LEFT, RIGHT}
     private Direction direction = Direction.LEFT;
 
     private Point pos;

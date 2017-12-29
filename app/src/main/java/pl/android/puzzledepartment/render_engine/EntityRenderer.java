@@ -10,7 +10,6 @@ import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
 import pl.android.puzzledepartment.programs.entity_programs.EntityShaderProgram;
 
 import static android.opengl.Matrix.invertM;
-import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.scaleM;
 import static android.opengl.Matrix.setIdentityM;

@@ -52,9 +52,6 @@ public class GameManager {
     private final LoaderGameState loaderGameState;
 
     private Entity elka;
-    private Entity mech;
-    private Entity mini;
-    private Entity mel;
 
     private Cube cube;
     private Cube platform;
@@ -67,16 +64,11 @@ public class GameManager {
     private Camera camera;
     private List<AbstractPuzzle> puzzles;
     private Skybox skybox;
-    private List<GuiEntity> guiEntities = new ArrayList<GuiEntity>();
-    private List<Integer> keyCollectedColors = new ArrayList<Integer>();
+    private List<GuiEntity> guiEntities = new ArrayList<>();
+    private List<Integer> keyCollectedColors = new ArrayList<>();
     private GuiEntity actionGuiEntity;
     private GuiEntity notEnoughGuiEntity;
     private GuiEntity gameCompletedEntity;
-    private int guiTexture;
-    private int notEnoughKeyTexture;
-    private int gameCompletedTexture;
-
-    private int particleTexture;
 
     private TextureManager textureManager;
     private EntityManager entityManager;
@@ -97,11 +89,11 @@ public class GameManager {
         loaderGameState = new LoaderGameState(entityManager, textureManager);
 
         skybox = new Skybox(TextureHelper.loadCubeMap(context, new int[]{R.drawable.left, R.drawable.right, R.drawable.bottom, R.drawable.top, R.drawable.front, R.drawable.back}));
-        guiTexture = textureManager.getTextureId(R.drawable.action);
+        int guiTexture = textureManager.getTextureId(R.drawable.action);
         actionGuiEntity = new GuiEntity(guiTexture, new Vector2f(-0.6f, 0.6f), new Vector2f(0.2f, 0.2f));
-        notEnoughKeyTexture = textureManager.getTextureId(R.drawable.not_enough_keys);
+        int notEnoughKeyTexture = textureManager.getTextureId(R.drawable.not_enough_keys);
         notEnoughGuiEntity = new GuiEntity(notEnoughKeyTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
-        gameCompletedTexture = textureManager.getTextureId(R.drawable.game_completed);
+        int gameCompletedTexture = textureManager.getTextureId(R.drawable.game_completed);
         gameCompletedEntity = new GuiEntity(gameCompletedTexture, new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
 
         GuiEntity tipGuiTeleport = new GuiEntity(textureManager.getTextureId(R.drawable.tip_teleport), new Vector2f(0.0f, 0.1f), new Vector2f(0.8f, 0.3f));
@@ -121,8 +113,6 @@ public class GameManager {
         guiEntities.add(tipGuiParticleOrder);
         guiEntities.add(tipGuiChess);
 
-        particleTexture = textureManager.getTextureId(R.drawable.particle_texture);
-
         cube = new Cube(new Point(-16f, 3.0f, -33f), new Vector3f(5f, 5f, 5f));
         platform = new Cube(new Point(0.0f, 60.0f, 0.0f), new Vector3f(10f, 1f, 10f));
         endTeleport = new Teleport(new Point(-5f, 2.0f, 45f), new Point(platform.getPos().x, platform.getPos().y+1f, platform.getPos().z));
@@ -139,7 +129,8 @@ public class GameManager {
                 , new TerrainTexture(textureManager.getTextureId(R.drawable.bluredcolourmap)));
         room = new Room(new Point(-25f, 0.5f, 25f), 3f, 20f);
 
-        puzzles = new ArrayList<AbstractPuzzle>();
+        int particleTexture = textureManager.getTextureId(R.drawable.particle_texture);
+        puzzles = new ArrayList<>();
         puzzles.add(new TeleportPuzzle(context, textureManager, new Point(15f, 2f, -8f), entityManager,
                 new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiTeleport)));
         puzzles.add(new ParticlesOrderPuzzle(textureManager, new Point(33f, 1.5f, -81f), particleTexture,
@@ -153,14 +144,8 @@ public class GameManager {
         puzzles.add(new MixColorPuzzle(textureManager, new Point(-2.0f, 5f, 69.0f), entityManager.getEntityModel(R.raw.lever_base), entityManager.getEntityModel(R.raw.lever_hand), heightMap,
                 new Tip(Color.rgb(70, 15, 0), entityManager.getEntityModel(R.raw.tip), tipGuiMixPuzzle)));
 
-        //tips.add(;
-
-
         elka = new Department(new Point(-2.5f, 5f, 46.3f), Color.BLUE, entityManager.getEntityModel(R.raw.elka));
         elka.singleVerRotate(55f);
-        mech = new Department(new Point(2f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mech));
-        mini = new Department(new Point(4f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mini));
-        mel = new Department(new Point(6f, 5f, 0f), Color.BLUE, entityManager.getEntityModel(R.raw.mel));
 
         masterRenderer = new MasterRenderer(context, light, camera);
         collisionManager.addObserver(this);
@@ -194,9 +179,6 @@ public class GameManager {
         masterRenderer.renderWithNormals(keys);
 
         masterRenderer.renderWithNormals(elka);
-        masterRenderer.renderWithNormals(mech);
-        masterRenderer.renderWithNormals(mini);
-        masterRenderer.renderWithNormals(mel);
         masterRenderer.renderWithNormals(endTeleport);
 
         for(AbstractPuzzle puzzle:puzzles) {
@@ -273,7 +255,7 @@ public class GameManager {
         entity.onCollisionNotify();
         if (entity instanceof Key) {
             guiEntities.add(((Key)entity).getGuiEntity());
-            keyCollectedColors.add(((Key)entity).getColor());
+            keyCollectedColors.add(entity.getColor());
             gameState.incKeysTakenCount();
         }
     }
@@ -289,7 +271,7 @@ public class GameManager {
             saverGameState.saveGameStateToFile(context, camera, gameState, keys, keyCollectedColors);
     }
 
-    public void loadGame() {
+    private void loadGame() {
         if (loaderGameState != null) {
             loaderGameState.loadGameStateFromFile(context, camera, gameState);
             for(Key key:loaderGameState.getKeys()){

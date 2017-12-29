@@ -22,9 +22,8 @@ import pl.android.puzzledepartment.util.geometry.Point;
  */
 
 public class ChessPuzzle extends AbstractPuzzle{
-    private enum LayersIsoOsi{PHYSICAL, DATA, NET, TRANSPORT, SESSION, PRESENTATION, APPLICATION};
+    private enum LayersIsoOsi{PHYSICAL, DATA, NET, TRANSPORT, SESSION, PRESENTATION, APPLICATION}
 
-    private Random random;
     private List<Entity> chess;
     private Entity baseCube;
     private List<Entity> allCubes;
@@ -32,14 +31,14 @@ public class ChessPuzzle extends AbstractPuzzle{
 
     private List<Entity> cubes;
     private Entity nextCube;
-    int nextCubeIndex = 0;
+    private int nextCubeIndex = 0;
     private List<Entity> alreadySelectedCubes;
     private Entity teleport;
 
     public ChessPuzzle(TextureManager textureManager, Point pos, Tip tip) {
         super(textureManager, pos, tip);
-        random = new Random();
-        cubes = new ArrayList<Entity>();
+        Random random = new Random();
+        cubes = new ArrayList<>();
         chess = new ArrayList<>();
 
         List<Point> layerPositions = Arrays.asList(new Point(pos.x + 2f, pos.y+20f, pos.z), new Point(pos.x + 2f, pos.y+20f, pos.z+2f),
@@ -58,7 +57,7 @@ public class ChessPuzzle extends AbstractPuzzle{
         allCubes.addAll(chess);
         allCubes.add(baseCube);
 
-        alreadySelectedCubes = new ArrayList<Entity>();
+        alreadySelectedCubes = new ArrayList<>();
         nextCube = selectNextCube();
     }
 
@@ -83,7 +82,7 @@ public class ChessPuzzle extends AbstractPuzzle{
         return textureManager.getTextureId(textureId);
     }
 
-    public Entity selectNextCube() {
+    private Entity selectNextCube() {
         if(nextCube!= null) {
             nextCube.setPos(new Point(nextCube.getPos().x, nextCube.getPos().y-1f, nextCube.getPos().z));
             alreadySelectedCubes.add(nextCube);
@@ -130,7 +129,7 @@ public class ChessPuzzle extends AbstractPuzzle{
         return baseCube;
     }
 
-    public Entity getNextCube() {
+    private Entity getNextCube() {
         return nextCube;
     }
 

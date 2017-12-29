@@ -5,7 +5,6 @@ import pl.android.puzzledepartment.programs.ParticleShaderProgram;
 
 import static android.opengl.GLES20.GL_BLEND;
 import static android.opengl.GLES20.GL_ONE;
-import static android.opengl.GLES20.GL_ONE_MINUS_SRC_ALPHA;
 import static android.opengl.GLES20.GL_ONE_MINUS_SRC_COLOR;
 import static android.opengl.GLES20.glBlendFunc;
 import static android.opengl.GLES20.glDepthMask;

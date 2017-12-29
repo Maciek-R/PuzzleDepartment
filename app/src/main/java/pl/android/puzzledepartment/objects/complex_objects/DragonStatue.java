@@ -3,7 +3,6 @@ package pl.android.puzzledepartment.objects.complex_objects;
 import android.graphics.Color;
 
 import pl.android.puzzledepartment.action.Actionable;
-import pl.android.puzzledepartment.objects.Cube;
 import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.EntityModel;
 import pl.android.puzzledepartment.objects.Vase;
@@ -16,7 +15,7 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 public class DragonStatue implements Actionable{
 
-    public enum Direction{LEFT, BACKWARD, RIGHT, FORWARD};
+    public enum Direction{LEFT, BACKWARD, RIGHT, FORWARD}
 
     private Direction direction = Direction.FORWARD;
     private Point pos;

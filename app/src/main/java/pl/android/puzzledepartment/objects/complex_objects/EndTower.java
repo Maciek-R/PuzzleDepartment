@@ -4,7 +4,6 @@ import android.graphics.Color;
 
 import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.managers.GameManager;
-import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.objects.Collisionable;
 import pl.android.puzzledepartment.objects.Door;
 import pl.android.puzzledepartment.objects.EntityModel;

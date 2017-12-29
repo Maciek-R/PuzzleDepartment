@@ -28,12 +28,12 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  */
 
 public class TeleportPuzzle extends AbstractPuzzle{
-    private enum DepartmentType{ELKA, MINI, MECH, MEL};
-    private List<Vector2f> teleportPositions = new ArrayList<Vector2f>();
+    private enum DepartmentType{ELKA, MINI, MECH, MEL}
+    private List<Vector2f> teleportPositions = new ArrayList<>();
     private int numberOfLevels = 4;
 
-    private List<Entity> teleports = new ArrayList<Entity>();
-    private List<Room> rooms = new ArrayList<Room>();
+    private List<Entity> teleports = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
     private List<Entity> correctTeleportPerLevel;
     private int currentLevel = 0;
 
@@ -55,11 +55,11 @@ public class TeleportPuzzle extends AbstractPuzzle{
         teleportPositions.add(new Vector2f(3.0f, 0.0f));
     }
 
-    public void nextLevel() {
+    private void nextLevel() {
         currentLevel ++;
     }
 
-    public void reset() {
+    private void reset() {
         currentLevel = 0;
     }
 

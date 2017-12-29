@@ -4,7 +4,6 @@ import pl.android.puzzledepartment.action.Actionable;
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
 import pl.android.puzzledepartment.gui.GuiEntity;
-import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
 import pl.android.puzzledepartment.util.geometry.Vector3f;

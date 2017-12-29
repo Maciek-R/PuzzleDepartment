@@ -18,7 +18,6 @@ import pl.android.puzzledepartment.puzzles.ChessPuzzle;
 import pl.android.puzzledepartment.puzzles.DragonStatuePuzzle;
 import pl.android.puzzledepartment.puzzles.MixColorPuzzle;
 import pl.android.puzzledepartment.puzzles.ParticlesOrderPuzzle;
-import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.geometry.Point;
@@ -114,7 +113,7 @@ public class CollisionManager {
 
         boolean isCollision =  (distance < radius) && (distance > radius - 0.8f);
         if(!isCollision)
-            return isCollision;
+            return false;
 
         if(c instanceof EndTower){
 
@@ -137,19 +136,16 @@ public class CollisionManager {
         final float entityLeftPosZ = e.getPos().z - scaleZ;
         final float entityRightPosZ = e.getPos().z + scaleZ;
 
-        final float possibleCamLeftX = camera.getPossibleX() - camera.WIDTH/2;
-        final float possibleCamRightX = camera.getPossibleX() + camera.WIDTH/2;
+        final float possibleCamLeftX = camera.getPossibleX() - Camera.WIDTH/2;
+        final float possibleCamRightX = camera.getPossibleX() + Camera.WIDTH/2;
         final float possibleCamBottomY = camera.getPossibleY();
-        final float possibleCamTopY = camera.getPossibleY() + camera.WIDTH;
-        final float possibleCamLeftZ = camera.getPossibleZ() - camera.WIDTH/2;
-        final float possibleCamRightZ = camera.getPossibleZ() + camera.WIDTH/2;
+        final float possibleCamTopY = camera.getPossibleY() + Camera.WIDTH;
+        final float possibleCamLeftZ = camera.getPossibleZ() - Camera.WIDTH/2;
+        final float possibleCamRightZ = camera.getPossibleZ() + Camera.WIDTH/2;
 
-        if(possibleCamLeftX > entityRightPosX || possibleCamRightX < entityLeftPosX ||
+        return !(possibleCamLeftX > entityRightPosX || possibleCamRightX < entityLeftPosX ||
                 possibleCamBottomY > entityTopPosY || possibleCamTopY < entityBottomPosY ||
-                possibleCamLeftZ > entityRightPosZ || possibleCamRightZ < entityLeftPosZ)
-            return false;
-        else
-            return true;
+                possibleCamLeftZ > entityRightPosZ || possibleCamRightZ < entityLeftPosZ);
     }
 
     public void add(Collisionable c) {
@@ -246,7 +242,7 @@ public class CollisionManager {
     public boolean checkTeleportCollision(Camera camera) {
         for (Entity t : teleports)
             if (checkCollision(t, camera)) {
-                boolean x = teleportPuzzle.checkCorrectTeleport(t);
+                teleportPuzzle.checkCorrectTeleport(t);
                 camera.goTo(teleportPuzzle.getPositionOnCurrentFloor());
                 return true;
             }

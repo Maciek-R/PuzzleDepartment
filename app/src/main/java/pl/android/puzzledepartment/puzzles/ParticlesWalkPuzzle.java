@@ -30,7 +30,6 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
     private final static int COLOR_NUMBERS = 3;
     private int colors[];
     private final Random random;
-    private boolean calm = false;
 
     public ParticlesWalkPuzzle(TextureManager textureManager, Point pos, int particleTexture, Camera camera, Tip tip) {
         super(textureManager, pos, tip);
@@ -53,7 +52,7 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
         else
             particleShooter.decreaseSpeedMultiplier();
 
-        calm = particleShooter.areParticleCalm();
+        boolean calm = particleShooter.areParticleCalm();
         if(calm && isCameraClose())
             isCompleted = true;
         particleShooter.addParticles(particleSystem, elapsedTime, 5);

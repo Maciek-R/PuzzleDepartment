@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">PuzzleDepartment</string>
+    <string name="app_name_upp">PUZZLEDEPARTMENT</string>
     <string name="save">save.txt</string>
+    <string name="author">Maciej Ruszczyk</string>
+    <string name="new_game">NOWA GRA</string>
+    <string name="load">ZAŁADUJ STAN GRY</string>
+    <string name="exit">WYJSCIE</string>
 </resources>

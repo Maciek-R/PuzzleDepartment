@@ -2,11 +2,8 @@ package pl.android.puzzledepartment.objects;
 
 import pl.android.puzzledepartment.data.IntegerIndexBuffer;
 import pl.android.puzzledepartment.data.VertexBuffer;
-import pl.android.puzzledepartment.gui.GuiEntity;
-import pl.android.puzzledepartment.managers.GameState;
 import pl.android.puzzledepartment.programs.ShaderProgram;
 import pl.android.puzzledepartment.util.geometry.Point;
-import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 import static android.opengl.GLES20.GL_ELEMENT_ARRAY_BUFFER;

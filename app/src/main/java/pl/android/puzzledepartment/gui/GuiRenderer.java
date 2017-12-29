@@ -41,7 +41,7 @@ public class GuiRenderer {
         shaderProgram.stopProgram();
     }
 
-    public void bindData() {
+    private void bindData() {
         vertexArray.setVertexAttribPointer(0, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, 0);
     }
 
