@@ -16,33 +16,33 @@
         android:id="@+id/AUTHOR" />
 
     <Button
+        android:id="@+id/NewGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/new_game"
-        android:id="@+id/NewGame"
-        android:background="#f7a9a9"
-        android:textSize="30dp"
+        android:layout_above="@+id/Exit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="180dp"
+        android:background="@color/colorPrimaryDark"
         android:onClick="checkButton"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:layout_marginBottom="180dp"
-        android:layout_above="@+id/Exit"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/new_game"
+        android:textSize="30dp" />
 
     <Button
+        android:id="@+id/Exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exit"
-        android:id="@+id/Exit"
-        android:textSize="30dp"
-        android:background="#f59898"
-        android:onClick="checkButton"
-        android:layout_marginBottom="73dp"
         android:layout_above="@+id/AUTHOR"
-        android:layout_alignRight="@+id/NewGame"
         android:layout_alignEnd="@+id/NewGame"
         android:layout_alignLeft="@+id/NewGame"
-        android:layout_alignStart="@+id/NewGame" />
+        android:layout_alignRight="@+id/NewGame"
+        android:layout_alignStart="@+id/NewGame"
+        android:layout_marginBottom="73dp"
+        android:background="@color/colorPrimaryDark"
+        android:onClick="checkButton"
+        android:text="@string/exit"
+        android:textSize="30dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -85,7 +85,7 @@
         android:layout_marginBottom="61dp"
         android:layout_marginLeft="7dp"
         android:layout_marginStart="7dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
         android:onClick="checkButton"
         android:text="@string/load"
         android:textSize="30dp" />
