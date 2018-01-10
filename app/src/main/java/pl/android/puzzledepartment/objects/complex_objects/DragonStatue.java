@@ -13,12 +13,11 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-28.
  */
 
-public class DragonStatue implements Actionable{
+public class DragonStatue extends ComplexEntity implements Actionable{
 
     public enum Direction{LEFT, BACKWARD, RIGHT, FORWARD}
 
     private Direction direction = Direction.FORWARD;
-    private Point pos;
     private Vector3f scale;
 
     private Vase vase;
@@ -28,10 +27,13 @@ public class DragonStatue implements Actionable{
     private float targetRotation;
 
     public DragonStatue(Point pos, EntityModel dragonModel, EntityModel vaseModel) {
-        this.pos = pos;
+        super(pos);
         this.scale = new Vector3f(1f, 1f, 1f);
         this.vase = new Vase(pos, Color.GREEN, vaseModel);
         this.dragon = new Dragon(new Point(pos.x, pos.y+0.5f, pos.z), dragonModel, new Vector3f(0.5f, 0.5f, 0.5f));
+
+        add(vase);
+        add(dragon);
     }
 
     public Vase getVase(){

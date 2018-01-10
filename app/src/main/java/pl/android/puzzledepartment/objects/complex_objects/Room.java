@@ -12,14 +12,13 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-10-20.
  */
 
-public class Room {
+public class Room extends ComplexEntity{
 
-    private Point center;
     private static final float SPACE = 1.0f;
     private List<Entity> entities;
 
     public Room(Point center, float size, float height) {
-        this.center = center;
+        super(center);
         entities = new ArrayList<>();
 
         createWall(new Point(0.0f, -0.5f, 0.0f), new Vector3f(size*2+1f, 0.5f, size*2+1f));
@@ -31,7 +30,7 @@ public class Room {
     }
 
     private void createWall(Point point, Vector3f scale) {
-        Cube cube = new Cube(new Point(point.x + center.x, point.y + center.y, point.z + center.z), scale);
+        Cube cube = new Cube(new Point(point.x + pos.x, point.y + pos.y, point.z + pos.z), scale);
         entities.add(cube);
     }
 

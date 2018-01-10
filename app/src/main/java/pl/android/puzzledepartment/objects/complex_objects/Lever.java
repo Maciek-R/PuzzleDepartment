@@ -15,11 +15,10 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-11-26.
  */
 
-public class Lever implements Actionable{
+public class Lever extends ComplexEntity implements Actionable{
     public enum Direction{LEFT, RIGHT}
     private Direction direction = Direction.LEFT;
 
-    private Point pos;
     private Vector3f scale;
 
     private LeverBase leverBase;
@@ -34,7 +33,7 @@ public class Lever implements Actionable{
     }
 
     public Lever(Point pos, EntityModel leverBaseModel, EntityModel leverHandModel, Vector3f scale, SimpleColorShaderCube simpleColorShaderCube) {
-        this.pos = pos;
+        super(pos);
         this.scale = scale;
         this.simpleColorShaderCube = simpleColorShaderCube;
 
@@ -42,6 +41,9 @@ public class Lever implements Actionable{
         leverHandle = new LeverHandle(pos, Color.GREEN, leverHandModel);
         leverHandle.singleHorRotate(30f);
         leverHandle.singleVerRotate(90f);
+
+        add(leverBase);
+        add(leverHandle);
     }
 
     public LeverBase getLeverBase() {

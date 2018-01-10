@@ -16,10 +16,9 @@ import pl.android.puzzledepartment.util.geometry.Vector3f;
  * Created by Maciek Ruszczyk on 2017-12-17.
  */
 
-public class EndTower implements Actionable, Collisionable{
+public class EndTower extends ComplexEntity implements Actionable, Collisionable{
     private GameManager gameManager;
 
-    private Point pos;
     private Vector3f scale;
 
     private Tower tower;
@@ -31,10 +30,13 @@ public class EndTower implements Actionable, Collisionable{
     private boolean isDoorOpen = false;
 
     public EndTower(Point pos, EntityModel towerModel, EntityModel doorModel) {
-        this.pos = pos;
+        super(pos);
         this.scale = new Vector3f(3.1f, 30f, 3.1f);
         this.tower = new Tower(pos, Color.GREEN, towerModel);
         this.door = new Door(new Point(pos.x+2.41f, pos.y, pos.z+0.62f), Color.RED, doorModel);
+
+        add(tower);
+        add(door);
     }
 
     public void addObserver(GameManager gameManager) {

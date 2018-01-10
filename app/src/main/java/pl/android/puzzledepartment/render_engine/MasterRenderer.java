@@ -10,6 +10,7 @@ import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
 import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
+import pl.android.puzzledepartment.objects.complex_objects.ComplexEntity;
 import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
 import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
@@ -127,19 +128,11 @@ public class MasterRenderer {
         translateM(viewMatrix, 0, -camera.getPosX(), -camera.getLookPosY(), -camera.getPosZ());
     }
 
-    public void render(DragonStatue dragonStatue){
-        renderWithNormals(dragonStatue.getVase());
-        renderWithNormals(dragonStatue.getDragon());
-    }
-
-    public void render(EndTower endTower) {
-        renderWithNormals(endTower.getTower());
-        renderWithNormals(endTower.getDoor());
-    }
-
-    public void render(Lever lever){
-        renderWithNormals(lever.getLeverBase());
-        renderWithNormals(lever.getLeverHandle());
+    public void render(ComplexEntity complexEntity) {
+        if(complexEntity instanceof Room)
+            render((Room)complexEntity);
+        else
+            renderWithNormals(complexEntity.getEntities());
     }
 
     public void render(Room room) {
