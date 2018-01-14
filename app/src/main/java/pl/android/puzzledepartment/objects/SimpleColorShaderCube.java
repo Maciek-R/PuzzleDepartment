@@ -17,7 +17,7 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  * Created by Maciek Ruszczyk on 2017-11-26.
  */
 
-public class SimpleColorShaderCube extends Entity {
+public class SimpleColorShaderCube extends Cube {
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int NORMAL_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
@@ -67,10 +67,14 @@ public class SimpleColorShaderCube extends Entity {
             0.5f,  0.5f,  0.5f,	     0.0f,  1.0f,  0.0f
     };
 
-    private final VertexArray vertexArray;
+    private VertexArray vertexArray;
 
     public SimpleColorShaderCube(Point pos) {
-        super(pos, 0, new Vector3f(1f, 1f, 1f));
+        super(pos, new Vector3f(1f, 1f, 1f));
+    }
+
+    @Override
+    protected void initVertexData() {
         vertexArray = new VertexArray(VERTEX_DATA);
     }
 
@@ -79,6 +83,7 @@ public class SimpleColorShaderCube extends Entity {
         type = Type.UNCOLOURED;
     }
 
+    @Override
     public void bindData(ShaderProgram shaderProgram) {
         int offset = 0;
         vertexArray.setVertexAttribPointer(offset, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);

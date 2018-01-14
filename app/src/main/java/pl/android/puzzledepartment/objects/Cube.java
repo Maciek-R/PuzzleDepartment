@@ -51,18 +51,24 @@ public class Cube extends Entity {
             3, 6, 7
     };
 
-    private final VertexArray vertexArray;
-    private final ByteBuffer indexArray;
+    private VertexArray vertexArray;
+    private ByteBuffer indexArray;
 
     public Cube(Point pos) {
-        super(pos);
-        vertexArray = new VertexArray(VERTEX_DATA);
-        indexArray = ByteBuffer.allocateDirect(6*6).put(INDEX_DATA);
-        indexArray.position(0);
+        this(pos, new Vector3f(1.0f, 1.0f, 1.0f));
     }
 
     public Cube(Point pos, Vector3f scale) {
         super(pos, scale);
+        initVertexData();
+    }
+
+    public Cube(Point pos, int angle, Vector3f scale, int textureId) {
+        super(pos, angle, scale, textureId);
+        initVertexData();
+    }
+
+    protected void initVertexData() {
         vertexArray = new VertexArray(VERTEX_DATA);
         indexArray = ByteBuffer.allocateDirect(6*6).put(INDEX_DATA);
         indexArray.position(0);

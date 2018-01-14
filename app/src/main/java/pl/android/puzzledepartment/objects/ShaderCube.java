@@ -14,13 +14,11 @@ import static pl.android.puzzledepartment.util.Constants.BYTES_PER_FLOAT;
  * Created by Maciek Ruszczyk on 2017-10-13.
  */
 
-public class ShaderCube extends Entity {
+public class ShaderCube extends Cube {
     private static final int POSITION_COMPONENT_COUNT = 3;
     private static final int COLOR_COORDINATES_COMPONENT_COUNT = 3;
     private static final int NORMAL_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT + NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
-    private static final int STRIDE_1 = (POSITION_COMPONENT_COUNT + COLOR_COORDINATES_COMPONENT_COUNT ) * BYTES_PER_FLOAT;
-    private static final int STRIDE_2 = (NORMAL_COMPONENT_COUNT) * BYTES_PER_FLOAT;
 
     private final static float[] VERTEX_DATA = {
             //Back
@@ -67,13 +65,15 @@ public class ShaderCube extends Entity {
              0.5f,  0.5f,  0.5f,	 0.0f,  1.0f,  0.0f,		1.0f, 0, 1.0f
     };
 
-    private final VertexArray vertexArray;
-   // private final VertexArray normalsArray;
+    private VertexArray vertexArray;
 
     public ShaderCube(Point pos) {
-        super(pos, 0, new Vector3f(1f, 1f, 1f));
-        vertexArray = new VertexArray(VERTEX_DATA);
+        super(pos, new Vector3f(1f, 1f, 1f));
+    }
 
+    @Override
+    protected void initVertexData() {
+        vertexArray = new VertexArray(VERTEX_DATA);
     }
 
     @Override
@@ -82,21 +82,14 @@ public class ShaderCube extends Entity {
         isShining = false;
     }
 
+    @Override
     public void bindData(ShaderProgram shaderProgram) {
-        /*int offset = 0;
-        vertexArray.setVertexAttribPointer(offset, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE_1);
-        offset+=POSITION_COMPONENT_COUNT;
-        vertexArray.setVertexAttribPointer(offset, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE_1);
-       // offset+=NORMAL_COMPONENT_COUNT;
-        normalsArray.setVertexAttribPointer(0, shaderProgram.getNormalAttributeLocation(), NORMAL_COMPONENT_COUNT, STRIDE_2);*/
-
         int offset = 0;
         vertexArray.setVertexAttribPointer(offset, shaderProgram.getPositionAttributeLocation(), POSITION_COMPONENT_COUNT, STRIDE);
         offset+=POSITION_COMPONENT_COUNT;
         vertexArray.setVertexAttribPointer(offset, shaderProgram.getNormalAttributeLocation(), NORMAL_COMPONENT_COUNT, STRIDE);
         offset+=NORMAL_COMPONENT_COUNT;
         vertexArray.setVertexAttribPointer(offset, shaderProgram.getColorAttributeLocation(), COLOR_COORDINATES_COMPONENT_COUNT, STRIDE);
-
     }
 
     @Override

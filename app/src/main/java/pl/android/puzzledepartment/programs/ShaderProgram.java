@@ -11,6 +11,7 @@ import static android.opengl.GLES20.glUseProgram;
  * Created by Maciek Ruszczyk on 2017-10-06.
  */
 
+
 public abstract class ShaderProgram {
     //Uniform
     protected static final String U_MODEL_MATRIX = "u_ModelMatrix";
