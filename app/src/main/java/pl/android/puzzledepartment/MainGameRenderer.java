@@ -2,6 +2,7 @@ package pl.android.puzzledepartment;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
+import android.os.SystemClock;
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -11,6 +12,7 @@ import pl.android.puzzledepartment.managers.GameManager;
 import pl.android.puzzledepartment.managers.TimeManager;
 import pl.android.puzzledepartment.util.Logger;
 
+import static android.content.ContentValues.TAG;
 import static android.opengl.GLES20.GL_BACK;
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_CULL_FACE;
@@ -33,6 +35,10 @@ public class MainGameRenderer implements Renderer {
     private final Context context;
     private GameManager gameManager;
     private LoadGameMode loadGameMode;
+
+    private long frameStartTimeMs;
+    private long startTimeMs;
+    private int frameCount;
 
     public MainGameRenderer(Context context, LoadGameMode loadGameMode){
         this.context = context;
@@ -57,10 +63,36 @@ public class MainGameRenderer implements Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl10) {
+        //limitFrameRate(80);
+        logFrameRate();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         TimeManager.update();
         gameManager.update();
+    }
+
+    private void limitFrameRate(int framesPerSecond){
+        long elapsedFrameTimeMs = SystemClock.elapsedRealtime() - frameStartTimeMs;
+        long expectedFrameTimeMs = 1000 / framesPerSecond;
+        long timeToSleepMs = expectedFrameTimeMs - elapsedFrameTimeMs;
+
+        if(timeToSleepMs > 0){
+            SystemClock.sleep(timeToSleepMs);
+        }
+        frameStartTimeMs = SystemClock.elapsedRealtime();
+    }
+    private void logFrameRate() {
+        if(Logger.FPS_ON){
+            long elapsedRealTimeMs = SystemClock.elapsedRealtime();
+            double elapsedSeconds = (elapsedRealTimeMs - startTimeMs) / 1000.0;
+
+            if(elapsedSeconds > 1.0){
+                Log.v("FPS: ", frameCount / elapsedSeconds + "fps");
+                startTimeMs = SystemClock.elapsedRealtime();
+                frameCount = 0;
+            }
+            frameCount++;
+        }
     }
 
     public void handleMoveCamera(float deltaMoveX, float deltaMoveY) {

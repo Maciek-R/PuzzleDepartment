@@ -5,5 +5,6 @@ package pl.android.puzzledepartment.util;
  */
 
 public class Logger {
-    public static final boolean ON = true;
+    public static final boolean ON = false;
+    public static final boolean FPS_ON = true;
 }
