@@ -64,6 +64,8 @@ public class ParticlesWalkPuzzle extends AbstractPuzzle{
                 (camera.getPosZ()-pos.z)*(camera.getPosZ()-pos.z) <= MAX_DISTANCE;
     }
 
+    public ParticleShooter getParticleShooter() {return particleShooter;}
+
     public ParticleSystem getParticleSystem() {
         return particleSystem;
     }

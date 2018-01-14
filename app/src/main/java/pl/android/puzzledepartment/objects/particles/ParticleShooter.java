@@ -90,4 +90,6 @@ public class ParticleShooter {
     private void clampSpeedMultiplier() {
         speedMultiplier = Math.max(MIN_SPEED_MULTIPLIER, Math.min(MAX_SPEED_MULTIPLIER, speedMultiplier));
     }
+
+    public Point getPos(){return pos;}
 }

@@ -3,6 +3,7 @@ package pl.android.puzzledepartment.objects;
 
 import pl.android.puzzledepartment.managers.CollisionManager;
 import pl.android.puzzledepartment.managers.TimeManager;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 import pl.android.puzzledepartment.util.geometry.Vector3f;
 
 /**
@@ -203,5 +204,10 @@ public class Camera {
 
     public void setRotationY(float rotationY) {
         this.rotationY = rotationY;
+    }
+
+    public Vector2f getRotationHor(){
+        float angleInRadians = (float) Math.toRadians(rotationX + 90f) ;
+        return new Vector2f((float)Math.cos(angleInRadians), (float)Math.sin(angleInRadians));
     }
 }

@@ -1,6 +1,7 @@
 package pl.android.puzzledepartment.render_engine;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
 import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
+import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
 import pl.android.puzzledepartment.programs.color_programs.AttributeColorShaderProgram;
 import pl.android.puzzledepartment.programs.color_programs.ColorShaderProgram;
@@ -42,6 +44,8 @@ import pl.android.puzzledepartment.puzzles.ParticlesWalkPuzzle;
 import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
+import pl.android.puzzledepartment.util.geometry.Point;
+import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
@@ -52,6 +56,9 @@ import static android.opengl.Matrix.translateM;
  */
 
 public class MasterRenderer {
+
+    private final static float RENDER_ENTITY_DISTANCE = 65.0f;
+    private final static float RENDER_PARTICLES_DISTANCE = 80.0f;
 
     private final EntityRenderer entityRenderer;
     private final EntityShaderProgram entityUnColouredNotShiningShaderProgram;
@@ -104,6 +111,9 @@ public class MasterRenderer {
     }
 
     public void render(Entity entity) {
+        if(!isObjectInRenderArea(entity.getPos(), camera))
+            return;
+
         ColorShaderProgram colorShaderProgram = null;
         if(Entity.Type.UNCOLOURED.equals(entity.getType()))
             colorShaderProgram = simpleColorShaderProgram;
@@ -186,10 +196,18 @@ public class MasterRenderer {
     }
 
     public void render(ParticlesOrderPuzzle particlesOrderPuzzle, float currentTime){
+        int notInArea = 0;
+        for(ParticleShooter particleShooter:particlesOrderPuzzle.getParticleShooters())
+            if(!isParticleInRenderArea(particleShooter.getPos(), camera))
+                ++notInArea;
+        if(notInArea == particlesOrderPuzzle.getParticleShooters().length)
+            return;
         render(particlesOrderPuzzle.getParticleSystem(), currentTime);
     }
 
     public void render(ParticlesWalkPuzzle particlesWalkPuzzle, float currentTime) {
+        if(!isParticleInRenderArea(particlesWalkPuzzle.getParticleShooter().getPos(), camera))
+            return;
         render(particlesWalkPuzzle.getParticleSystem(), currentTime);
     }
 
@@ -216,7 +234,7 @@ public class MasterRenderer {
     }
 
     public void renderWithNormals(Entity entity) {
-        if(!entity.isVisible())
+        if(!entity.isVisible() || !isObjectInRenderArea(entity.getPos(), camera))
             return;
         EntityShaderProgram entityShaderProgram = null;
         switch(entity.getType())
@@ -250,5 +268,36 @@ public class MasterRenderer {
                 }
         }
         entityRenderer.renderWithNormals(entityShaderProgram, entity, viewMatrix, projectionMatrix, light, camera);
+    }
+
+
+
+    private boolean isObjectInRenderArea(Point center, Camera camera) {
+        if(!(countDistance(center, camera) < RENDER_ENTITY_DISTANCE))
+            return false;
+
+        Vector2f distanceHor = new Vector2f(center.x - camera.getPosX(), center.z - camera.getPosZ());
+        Vector2f cameraRotationHor = camera.getRotationHor();
+
+        float dotProduct = cameraRotationHor.dotProduct(distanceHor.normalize());
+        return dotProduct < - 0.6f;
+    }
+
+    private boolean isParticleInRenderArea(Point center, Camera camera) {
+        if(!(countDistance(center, camera) < RENDER_PARTICLES_DISTANCE))
+            return false;
+        Vector2f distanceHor = new Vector2f(center.x - camera.getPosX(), center.z - camera.getPosZ());
+        Vector2f cameraRotationHor = camera.getRotationHor();
+
+        float dotProduct = cameraRotationHor.dotProduct(distanceHor.normalize());
+        return dotProduct < - 0.4f;
+    }
+
+    private float countDistance(Point center, Camera camera) {
+        float diffX = camera.getPosX() - center.x;
+        float diffY = camera.getPosY() - center.y;
+        float diffZ = camera.getPosZ() - center.z;
+
+        return (float) Math.sqrt(diffX*diffX + diffY*diffY + diffZ*diffZ);
     }
 }
