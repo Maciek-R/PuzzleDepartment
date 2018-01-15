@@ -60,7 +60,7 @@ public class Camera {
 
     public void update(HeightMap heightMap, CollisionManager collisionManager) {
         //System.out.println("X: " + this.posX + "Z:  " + this.posZ);
-        countNextPossiblePosition(heightMap);
+        countNextPossiblePosition();
         clampHeightMapBorder(heightMap);
 
         collisionManager.checkWithKeyCollision(this);
@@ -84,6 +84,21 @@ public class Camera {
         flySpeed += GRAVITY * TimeManager.getDeltaTimeInSeconds();
         this.possiblePosY = this.posY + flySpeed * TimeManager.getDeltaTimeInSeconds();
 
+        serveCollisionsWithEntities(collisionManager);
+        serveCollisionWithHeightmap(heightMap);
+    }
+
+    private void serveCollisionWithHeightmap(HeightMap heightMap) {
+        float heightY = heightMap.getHeight(posX, posZ);
+        if (posY < heightY) {
+            isInAir = false;
+            flySpeed = 0;
+            posY = heightY;
+            lookPosY = posY + 1.5f;
+        }
+    }
+
+    private void serveCollisionsWithEntities(CollisionManager collisionManager) {
         CollisionManager.CollisionDescription collisionDescription = collisionManager.checkCollision(this);
         if (!collisionDescription.isCollision()) {
             moveXZ();
@@ -108,14 +123,6 @@ public class Camera {
                 this.lookPosY = posY + 1.5f;
             }
         }
-
-        float heightY = heightMap.getHeight(posX, posZ);
-        if (posY < heightY) {
-            isInAir = false;
-            flySpeed = 0;
-            posY = heightY;
-            lookPosY = posY + 1.5f;
-        }
     }
 
     private void clampHeightMapBorder(HeightMap heightMap) {
@@ -123,7 +130,7 @@ public class Camera {
         possiblePosZ = Math.max(-heightMap.getScale().z/2+1, Math.min(heightMap.getScale().z/2-1, possiblePosZ));
     }
 
-    private void countNextPossiblePosition(HeightMap heightMap) {
+    private void countNextPossiblePosition() {
         possiblePosX = posX;
         possiblePosZ = posZ;
 
@@ -138,9 +145,6 @@ public class Camera {
 
         possiblePosX += translationX;
         possiblePosZ += translationZ;
-
-       // final float height = heightMap.getHeight(possiblePosX, possiblePosZ);
-       // possiblePosY = height;
     }
 
     public void rotateX(float angle) {
@@ -204,10 +208,5 @@ public class Camera {
 
     public void setRotationY(float rotationY) {
         this.rotationY = rotationY;
-    }
-
-    public Vector2f getRotationHor(){
-        float angleInRadians = (float) Math.toRadians(rotationX);
-        return new Vector2f((float)Math.sin(angleInRadians), -(float)Math.cos(angleInRadians));
     }
 }

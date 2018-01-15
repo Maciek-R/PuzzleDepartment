@@ -87,7 +87,6 @@ public class OnTouchListener implements View.OnTouchListener {
             if (indexMove == -1) {
                 startX = event.getX(pointerIndex);
                 startY = event.getY(pointerIndex);
-                Log.v("TAP1", String.valueOf(event.getPointerId(event.getActionIndex())));
                 indexMove = event.getPointerId(event.getActionIndex());
             }
 
@@ -101,7 +100,6 @@ public class OnTouchListener implements View.OnTouchListener {
             if (indexRotate == -1) {
                 previousRotateX = event.getX(pointerIndex);
                 previousRotateY = event.getY(pointerIndex);
-                Log.v("TAP2", String.valueOf(event.getPointerId(event.getActionIndex())));
                 indexRotate = event.getPointerId(event.getActionIndex());
                 touchTime = SystemClock.elapsedRealtime();
             }
@@ -109,7 +107,6 @@ public class OnTouchListener implements View.OnTouchListener {
     }
 
     private void actionUp(MotionEvent event) {
-        Log.v("UP", String.valueOf(event.getPointerId(event.getActionIndex())));
         if (event.getPointerId(event.getActionIndex()) == indexMove) {
             indexMove = -1;
             glSurfaceView.queueEvent(new Runnable() {
