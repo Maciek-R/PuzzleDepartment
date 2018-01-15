@@ -207,7 +207,7 @@ public class Camera {
     }
 
     public Vector2f getRotationHor(){
-        float angleInRadians = (float) Math.toRadians(rotationX + 90f) ;
-        return new Vector2f((float)Math.cos(angleInRadians), (float)Math.sin(angleInRadians));
+        float angleInRadians = (float) Math.toRadians(rotationX);
+        return new Vector2f((float)Math.sin(angleInRadians), -(float)Math.cos(angleInRadians));
     }
 }

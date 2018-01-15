@@ -9,7 +9,6 @@ import java.util.List;
 import pl.android.puzzledepartment.gui.GuiEntity;
 import pl.android.puzzledepartment.gui.GuiRenderer;
 import pl.android.puzzledepartment.objects.Camera;
-import pl.android.puzzledepartment.objects.Dragon;
 import pl.android.puzzledepartment.objects.SimpleColorShaderCube;
 import pl.android.puzzledepartment.objects.complex_objects.ComplexEntity;
 import pl.android.puzzledepartment.objects.complex_objects.DragonStatue;
@@ -17,7 +16,6 @@ import pl.android.puzzledepartment.objects.Entity;
 import pl.android.puzzledepartment.objects.HeightMap;
 import pl.android.puzzledepartment.objects.Light;
 import pl.android.puzzledepartment.objects.Skybox;
-import pl.android.puzzledepartment.objects.complex_objects.EndTower;
 import pl.android.puzzledepartment.objects.complex_objects.Lever;
 import pl.android.puzzledepartment.objects.particles.ParticleShooter;
 import pl.android.puzzledepartment.objects.particles.ParticleSystem;
@@ -45,7 +43,6 @@ import pl.android.puzzledepartment.puzzles.TeleportPuzzle;
 import pl.android.puzzledepartment.objects.complex_objects.Room;
 import pl.android.puzzledepartment.util.MatrixHelper;
 import pl.android.puzzledepartment.util.geometry.Point;
-import pl.android.puzzledepartment.util.geometry.Vector2f;
 
 import static android.opengl.Matrix.rotateM;
 import static android.opengl.Matrix.setIdentityM;
@@ -270,27 +267,12 @@ public class MasterRenderer {
         entityRenderer.renderWithNormals(entityShaderProgram, entity, viewMatrix, projectionMatrix, light, camera);
     }
 
-
-
     private boolean isObjectInRenderArea(Point center, Camera camera) {
-        if(!(countDistance(center, camera) < RENDER_ENTITY_DISTANCE))
-            return false;
-
-        Vector2f distanceHor = new Vector2f(center.x - camera.getPosX(), center.z - camera.getPosZ());
-        Vector2f cameraRotationHor = camera.getRotationHor();
-
-        float dotProduct = cameraRotationHor.dotProduct(distanceHor.normalize());
-        return dotProduct < - 0.6f;
+        return countDistance(center, camera) < RENDER_ENTITY_DISTANCE;
     }
 
     private boolean isParticleInRenderArea(Point center, Camera camera) {
-        if(!(countDistance(center, camera) < RENDER_PARTICLES_DISTANCE))
-            return false;
-        Vector2f distanceHor = new Vector2f(center.x - camera.getPosX(), center.z - camera.getPosZ());
-        Vector2f cameraRotationHor = camera.getRotationHor();
-
-        float dotProduct = cameraRotationHor.dotProduct(distanceHor.normalize());
-        return dotProduct < - 0.4f;
+        return countDistance(center, camera) < RENDER_PARTICLES_DISTANCE;
     }
 
     private float countDistance(Point center, Camera camera) {
