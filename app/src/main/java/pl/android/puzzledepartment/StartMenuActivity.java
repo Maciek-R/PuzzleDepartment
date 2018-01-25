@@ -29,11 +29,6 @@ public class StartMenuActivity extends Activity {
 
         setContentView(R.layout.start_activity);
 
-        /*NewGameButton = (Button) findViewById(R.id.NewGame);
-        ExitButton = (Button) findViewById(R.id.Exit);
-        BestScoreButton = (Button) findViewById(R.id.BestScore);
-        HardModeButton = (Button) findViewById(R.id.HardMode);*/
-
     }
 
     public void checkButton(View view){
